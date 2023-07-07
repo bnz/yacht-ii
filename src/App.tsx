@@ -16,7 +16,7 @@ export const App: FC = () => {
                     [GamePhases.PRE_GAME]: (
                         <>
                             <div className="p-5">
-                                <button onClick={() => setPhase(GamePhases.PLAYERS_SELECTION)}>
+                                <button type="button" onClick={() => setPhase(GamePhases.PLAYERS_SELECTION)}>
                                     {i18n('button.startNewGame')}
                                 </button>
                             </div>
@@ -26,9 +26,13 @@ export const App: FC = () => {
                     [GamePhases.PLAYERS_SELECTION]: (
                         <>
                             <div>list of players</div>
-                            <div>StartGameButton</div>
+                            <button type="button" onClick={() => setPhase(GamePhases.IN_PLAY)}>
+                                {i18n('button.startGame')}
+                            </button>
                             <div>AddPlayer</div>
-                            <div>CancelStartGameButton</div>
+                            <button type="button" onClick={() => setPhase(GamePhases.PRE_GAME)}>
+                                {i18n('button.cancel')}
+                            </button>
                             <div>ResetToDefaultPlayersButton</div>
                         </>
                     ),

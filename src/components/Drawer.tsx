@@ -1,11 +1,15 @@
 import type { FC } from "react"
-import { Footer } from "./Footer"
 import { useCallback, useState } from "react"
+import { Footer } from "./Footer"
 import cx from "classnames"
+import { i18n } from "../helpers/i18n/i18n"
+import { useSetRecoilState } from "recoil"
+import { gamePhase, GamePhases } from "../atoms"
 
 export const Drawer: FC = () => {
     const [open, setOpen] = useState(false)
     const toggle = useCallback(() => setOpen((prev) => !prev), [setOpen])
+    const setGamePhase = useSetRecoilState(gamePhase)
 
     return (
         <>
@@ -26,14 +30,19 @@ export const Drawer: FC = () => {
                 } : {}),
             }}>
                 <div>change game select</div>
-                <div>RestartGame</div>
+                <button type="button" onClick={() => {
+                    setGamePhase(GamePhases.PRE_GAME)
+                    toggle()
+                }}>
+                    {i18n('button.restartGame')}
+                </button>
                 <div>SettingsTabContent</div>
                 <div>HistoryTab</div>
                 <Footer />
             </div>
             <button
                 onClick={toggle}
-                className={cx("w-20 h-20 bg-red-500 absolute top-5 left-5 rounded")}
+                className={cx("w-20 h-20 bg-red-500 fixed md:top-5 md:left-5 bottom-5 right-5 rounded")}
             />
         </>
     )
