@@ -1,26 +1,43 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import type { FC } from "react"
+import { Wrapper } from "./components/Wrapper"
+import { Drawer } from "./components/Drawer"
+import { Rules } from "./components/Rules"
+import { useRecoilState } from "recoil"
+import { gamePhase, GamePhases } from "./atoms"
+import { i18n } from "./helpers/i18n/i18n"
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+export const App: FC = () => {
+    const [phase, setPhase] = useRecoilState(gamePhase)
+
+    return (
+        <>
+            <Wrapper>
+                {{
+                    [GamePhases.PRE_GAME]: (
+                        <>
+                            <div className="p-5">
+                                <button onClick={() => setPhase(GamePhases.PLAYERS_SELECTION)}>
+                                    {i18n('button.startNewGame')}
+                                </button>
+                            </div>
+                            <Rules />
+                        </>
+                    ),
+                    [GamePhases.PLAYERS_SELECTION]: (
+                        <>
+                            <div>list of players</div>
+                            <div>StartGameButton</div>
+                            <div>AddPlayer</div>
+                            <div>CancelStartGameButton</div>
+                            <div>ResetToDefaultPlayersButton</div>
+                        </>
+                    ),
+                    [GamePhases.IN_PLAY]: (
+                        <>IN_PLAY</>
+                    ),
+                }[phase]}
+            </Wrapper>
+            <Drawer />
+        </>
+    )
 }
-
-export default App;
