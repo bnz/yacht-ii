@@ -2,9 +2,30 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+    --background-color: #fff;
+    --text-color: #000;
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --background-color: #081229;
+        --text-color: #fff;
+    }
+}
+
+@media (prefers-color-scheme: light) {
+
+}
+
 html,
 body {
     height: 100%;
+}
+
+body {
+    background-color: var(--background-color);
+    color: var(--text-color);
 }
 
 #root {
@@ -13,9 +34,17 @@ body {
 
 @layer components {
 
+    input[type="text"] {
+        @apply text-black dark:text-white;
+        @apply bg-white dark:bg-dark-bg;
+        @apply outline-0 px-3 py-2 border border-white/30 rounded;
+    }
+
     button[type="button"] {
-        @apply shadow py-2 px-5 rounded bg-gray-200;
+        @apply shadow py-2 px-5 rounded;
         @apply active:shadow-inner;
+        @apply bg-indigo-200 dark:bg-indigo-900;
+        @apply text-indigo-950 dark:text-indigo-200;
     }
 
 }

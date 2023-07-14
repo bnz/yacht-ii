@@ -1,10 +1,11 @@
 import type { FC } from "react"
 import { Wrapper } from "./components/Wrapper"
-import { Drawer } from "./components/Drawer"
+import { Drawer } from "./components/Drawer/Drawer"
 import { Rules } from "./components/Rules"
 import { useRecoilState } from "recoil"
 import { gamePhase, GamePhases } from "./atoms"
 import { i18n } from "./helpers/i18n/i18n"
+import { AddPlayer } from "./components/AddPlayer/AddPlayer"
 
 export const App: FC = () => {
     const [phase, setPhase] = useRecoilState(gamePhase)
@@ -29,11 +30,13 @@ export const App: FC = () => {
                             <button type="button" onClick={() => setPhase(GamePhases.IN_PLAY)}>
                                 {i18n('button.startGame')}
                             </button>
-                            <div>AddPlayer</div>
+                            <AddPlayer />
                             <button type="button" onClick={() => setPhase(GamePhases.PRE_GAME)}>
                                 {i18n('button.cancel')}
                             </button>
-                            <div>ResetToDefaultPlayersButton</div>
+                            <button type="button">
+                                {i18n('button.reset2')}
+                            </button>
                         </>
                     ),
                     [GamePhases.IN_PLAY]: (
