@@ -47,4 +47,9 @@ body {
         @apply text-indigo-950 dark:text-indigo-200;
     }
 
+    button[type="button"][disabled] {
+        @apply bg-indigo-100 dark:bg-indigo-950;
+        @apply text-indigo-500 dark:text-indigo-500;
+    }
+
 }

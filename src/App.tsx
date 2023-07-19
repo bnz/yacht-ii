@@ -6,6 +6,8 @@ import { useRecoilState } from "recoil"
 import { gamePhase, GamePhases } from "./atoms"
 import { i18n } from "./helpers/i18n/i18n"
 import { AddPlayer } from "./components/AddPlayer/AddPlayer"
+import { PlayersList } from "./components/PlayersList/PlayersList"
+import { StartGameButton } from "./components/StartGameButton"
 
 export const App: FC = () => {
     const [phase, setPhase] = useRecoilState(gamePhase)
@@ -26,10 +28,8 @@ export const App: FC = () => {
                     ),
                     [GamePhases.PLAYERS_SELECTION]: (
                         <>
-                            <div>list of players</div>
-                            <button type="button" onClick={() => setPhase(GamePhases.IN_PLAY)}>
-                                {i18n('button.startGame')}
-                            </button>
+                            <PlayersList />
+                            <StartGameButton />
                             <AddPlayer />
                             <button type="button" onClick={() => setPhase(GamePhases.PRE_GAME)}>
                                 {i18n('button.cancel')}

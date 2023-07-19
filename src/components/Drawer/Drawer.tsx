@@ -7,6 +7,7 @@ import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil"
 import { drawerState, gamePhase, GamePhases } from "../../atoms"
 import { Backdrop } from "../parts/Backdrop"
 import { MenuButton } from "./MenuButton"
+import { KeyboardActions } from "../../helpers/KeyboardActions"
 
 export const Drawer: FC = () => {
     const [open, setOpen] = useRecoilState(drawerState)
@@ -17,7 +18,10 @@ export const Drawer: FC = () => {
     return (
         <>
             {open && (
-                <Backdrop onClick={toggle} />
+                <>
+                    <KeyboardActions actions={{ Escape: toggle }} />
+                    <Backdrop onClick={toggle} />
+                </>
             )}
             <div className={cx(
                 "w-80 pt-28 px-5",

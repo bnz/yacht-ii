@@ -35,6 +35,7 @@ export const eng: LanguageMap = {
   'button.writeDownYourPoints': 'Write down your points',
   'button.goHome': 'Go home',
   'button.strikeOut': 'Strike out',
+  'button.remove': "Remove",
 
   'tab.combinations': 'Combinations',
   'tab.settings': 'Settings',

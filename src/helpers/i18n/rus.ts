@@ -35,6 +35,7 @@ export const rus: LanguageMap = {
   'button.writeDownYourPoints': 'Запишите ваши очки',
   'button.goHome': 'На главную',
   'button.strikeOut': 'Вычеркнуть',
+  'button.remove': "Удалить",
 
   'tab.combinations': 'Комбинации',
   'tab.settings': 'Настройки',

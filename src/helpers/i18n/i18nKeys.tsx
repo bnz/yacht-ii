@@ -33,6 +33,7 @@ export type i18nKeys =
     | 'button.writeDownYourPoints'
     | 'button.goHome'
     | 'button.strikeOut'
+    | 'button.remove'
 
     | 'tab.combinations'
     | 'tab.settings'
