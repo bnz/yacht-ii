@@ -18,26 +18,24 @@ export const AddPlayerForm: FC<AddPlayerFormProps> = ({ callback }) => {
     useEffect(() => ref.current?.focus(), [ref])
 
     return (
-        <div className="grid grid-cols-2 gap-5 max-w-xs">
+        <form
+            className="flex flex-col md:flex-row gap-5 max-w-xs items-center"
+            onSubmit={(e) => {
+                e.preventDefault()
+                setPlayer({ id: makeId(), name: value })
+                callback()
+            }}
+        >
             <input
-                className="col-span-2"
+                className="col-span-2 min-w-full"
                 type="text"
                 ref={ref}
                 value={value}
                 onChange={(e) => setValue(e.currentTarget.value)}
             />
-            <button onClick={callback}>
-                {i18n('button.cancel')}
-            </button>
-            <button type="submit" onClick={() => {
-                setPlayer({
-                    id: makeId(),
-                    name: value,
-                })
-                callback()
-            }}>
+            <button type="submit" className="max-w-[50%]">
                 {i18n('button.add')}
             </button>
-        </div>
+        </form>
     )
 }

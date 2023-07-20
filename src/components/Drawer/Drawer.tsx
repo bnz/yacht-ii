@@ -40,15 +40,17 @@ export const Drawer: FC = () => {
                 <div className="h-full -mb-20">
                     <div>change game select</div>
                     {phase === GamePhases.IN_PLAY && (
-                        <button type="button" onClick={() => {
-                            setGamePhase(GamePhases.PRE_GAME)
-                            toggle()
-                        }}>
-                            {i18n('button.restartGame')}
-                        </button>
+                        <>
+                            <button type="button" onClick={() => {
+                                setGamePhase(GamePhases.PRE_GAME)
+                                toggle()
+                            }}>
+                                {i18n('button.restartGame')}
+                            </button>
+                            <div>SettingsTabContent</div>
+                            <div>HistoryTab</div>
+                        </>
                     )}
-                    <div>SettingsTabContent</div>
-                    <div>HistoryTab</div>
                 </div>
                 <Footer />
             </div>

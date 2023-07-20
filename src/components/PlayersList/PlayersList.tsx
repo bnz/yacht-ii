@@ -8,9 +8,9 @@ export const PlayersList: FC = () => {
     const remove = useSetRecoilState(removePlayer)
 
     return (
-        <ul className="mb-5">
+        <ul className="mb-5 md:w-full">
             {players.map(({ id, name }) => (
-                <li key={id} className="flex max-w-xs px-5 py-3 border-gray-500 border box-border">
+                <li key={id} className="flex px-5 py-3 border-gray-500 border box-border">
                     <div className="flex-1">{name}</div>
                     <button onClick={() => remove({ id, name: "" })}>
                         {i18n("button.remove")}

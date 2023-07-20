@@ -27,17 +27,16 @@ export const App: FC = () => {
                         </>
                     ),
                     [GamePhases.PLAYERS_SELECTION]: (
-                        <>
+                        <div className="md:max-w-[50%]">
                             <PlayersList />
-                            <StartGameButton />
-                            <AddPlayer />
-                            <button type="button" onClick={() => setPhase(GamePhases.PRE_GAME)}>
-                                {i18n('button.cancel')}
-                            </button>
-                            <button type="button">
-                                {i18n('button.reset2')}
-                            </button>
-                        </>
+                            <div className="flex flex-col md:flex-row gap-5">
+                                <AddPlayer />
+                                <StartGameButton />
+                                <button type="button" onClick={() => setPhase(GamePhases.PRE_GAME)}>
+                                    {i18n('button.cancel')}
+                                </button>
+                            </div>
+                        </div>
                     ),
                     [GamePhases.IN_PLAY]: (
                         <>IN_PLAY</>
