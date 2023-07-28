@@ -22,9 +22,11 @@ export const drawerState = atom<boolean>({
     effects: [persist('drawer-state')],
 })
 
-const players = atomFamily<string, string>({
+export const players = atomFamily<PlayerData, string>({
     key: "players",
-    default: "",
+    default: {
+        name: "",
+    },
     effects: [persist("players")],
 })
 
@@ -34,26 +36,30 @@ const playersIds = atom<string[]>({
     effects: [persist('players-ids')],
 })
 
-interface Player {
-    id: string
+interface PlayerData {
     name: string
+}
+
+export interface Player {
+    id: string
+    data: PlayerData
 }
 
 export const addPlayer = selector<Player>({
     key: "addPlayer",
-    get: () => ({ id: "", name: "" }),
+    get: () => ({ id: "", data: { name: "" } }),
     set: ({ get, set }, props) => {
         if (!(props instanceof DefaultValue)) {
-            const { id, name } = props
+            const { id, data } = props
             set(playersIds, [...get(playersIds), id])
-            set(players(id), name)
+            set(players(id), data)
         }
     },
 })
 
 export const removePlayer = selector<Player>({
     key: "removePlayer",
-    get: () => ({ id: "", name: "" }),
+    get: () => ({ id: "", data: { name: "" } }),
     set: ({ get, set, reset }, props) => {
         if (!(props instanceof DefaultValue)) {
             const playersArray = [...get(playersIds)]
@@ -73,7 +79,17 @@ export const playersData = selector({
     get: ({ get }) => (
         get(playersIds).map((id) => ({
             id,
-            name: get(players(id)),
+            data: get(players(id)),
         }))
     ),
+})
+
+export const playersCount = selector({
+    key: "playersCount",
+    get: ({ get }) => get(playersIds).length,
+})
+
+export const addPlayerFormVisible = atom<boolean>({
+    key: "addPlayerFormVisible",
+    default: false,
 })

@@ -37,7 +37,7 @@ body {
     input[type="text"] {
         @apply text-black dark:text-white;
         @apply bg-white dark:bg-dark-bg;
-        @apply outline-0 px-3 py-2 border border-white/30 rounded;
+        @apply outline-0 px-3 py-2 border dark:border-white/30 rounded;
     }
 
     button[type="button"],
@@ -48,9 +48,11 @@ body {
         @apply text-indigo-950 dark:text-indigo-200;
     }
 
+    button[type="submit"][disabled],
     button[type="button"][disabled] {
         @apply bg-indigo-100 dark:bg-indigo-950;
         @apply text-indigo-500 dark:text-indigo-500;
+        @apply cursor-not-allowed;
     }
 
 }
