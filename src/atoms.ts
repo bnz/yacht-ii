@@ -93,3 +93,38 @@ export const addPlayerFormVisible = atom<boolean>({
     key: "addPlayerFormVisible",
     default: false,
 })
+
+export const loading = atom<boolean>({
+    key: "loading",
+    default: false,
+})
+
+export const MAX_SHOT_COUNT = 3
+
+
+export const dicesSelected = atom<number[]>({
+    key: "dicesSelected",
+    default: [],
+})
+
+export const selectDice = selector<number>({
+    key: "selectDice",
+    get: () => {
+        return 0
+    },
+    set: ({ get, set }, props) => {
+        if (!(props instanceof DefaultValue)) {
+            const all = [...get(dicesSelected)]
+            const diceIndex = props
+            const index = all.indexOf(diceIndex)
+
+            if (index !== -1) {
+                all.splice(index, 1)
+            } else if (all.length !== 4) {
+                all.push(diceIndex)
+            }
+
+            set(dicesSelected, all)
+        }
+    },
+})
