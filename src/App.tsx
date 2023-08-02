@@ -10,6 +10,7 @@ import { PlayersList } from "./components/Players/PlayersList"
 import { StartGameButton } from "./components/StartGameButton"
 import { Dices } from "./components/Dices/Dices"
 import { DicesActions } from "./components/Dices/DicesActions"
+import { Combinations } from "./components/Combinations/Combinations"
 
 function DebugButton() {
     const onClick = useRecoilCallback(({ snapshot }) => async () => {
@@ -58,6 +59,7 @@ export const App: FC = () => {
                         <>
                             <Dices />
                             <DicesActions />
+                            <Combinations />
                         </>
                     ),
                 }[phase]}
