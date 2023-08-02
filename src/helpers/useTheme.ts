@@ -22,4 +22,11 @@ export const InitThemeChangeWatch: FC = () => {
     return null
 }
 
-export const useTheme = () => useRecoilValue(theme)
+export const useTheme = (isDark?: boolean) => {
+    const t = useRecoilValue(theme)
+
+    if (isDark) {
+        return t === "dark"
+    }
+    return t
+}

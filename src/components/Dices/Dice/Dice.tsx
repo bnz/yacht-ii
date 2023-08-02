@@ -2,6 +2,8 @@ import React, { FC } from 'react'
 import { DiceDot } from './DiceDot'
 import cx from "classnames"
 import { useTheme } from "../../../helpers/useTheme"
+import faceIcon from "../../../icons/face.svg"
+import faceIconDark from "../../../icons/face-dark.svg"
 
 const dots: { [key: number]: number[] } = {
     1: [5],
@@ -16,45 +18,44 @@ interface DiceProps {
     value: number
     roll?: boolean
     selected?: boolean
+    index: number
 
     onClick?(): void
 }
 
 const array9 = [...window.Array(9).keys()]
 
-export const Dice: FC<DiceProps> = ({ value, roll, selected, onClick }) => {
-    const theme = useTheme()
+export const Dice: FC<DiceProps> = ({ value, roll, selected, onClick, index }) => {
+    const isDark = useTheme(true)
 
     return (
         <div className="w-[2em] min-w-[2em] max-w-[2em] h-[2em] m-[0.333em] flex-wrap flex-grow" onClick={onClick}>
             <div
                 className={cx(
+                    "relative",
                     "flex flex-wrap",
-                    "bg-black dark:bg-white",
+                    "bg-white dark:bg-black",
                     "rounded-[.2em]",
                     "w-[1.8em] max-w-[1.8em] min-w-[1.8em] h-[1.8em]",
                     "duration-300",
                 )}
                 style={{
-                    transform: roll ? 'rotate(359deg)' : 'none',
+                    transform: roll ? `rotate(${359 * (index % 2 === 1 ? 1 : -1)}deg)` : 'none',
                     boxShadow: selected
-                        ? theme === 'dark'
-                            ? `rgba(0, 0, 0, 1) 0 0 0 2px`
+                        ? isDark
+                            ? `rgba(255, 255, 255, 0.5) 0 0 0 2px`
                             : '0 0 .2em rgba(0, 0, 0, 1)'
                         : '0 0 .1em rgba(0, 0, 0, .4)',
                 }}
             >
-                {array9.map((i) => {
-                    // console.log(dots[value])
-
-                    return (
-                        <DiceDot
-                            key={i}
-                            roll={roll}
-                            filled={dots[value] && dots[value].indexOf(i + 1) !== -1}
-                        />
-                    )
-                })}
+                {roll ? (
+                    <div
+                        className="bg-no-repeat bg-center bg-contain absolute left-2 right-2 top-2 bottom-2"
+                        style={{ backgroundImage: `url('${isDark ? faceIconDark : faceIcon}')` }}
+                    />
+                ) : array9.map((i) => (
+                    <DiceDot key={i} filled={dots[value] && dots[value].indexOf(i + 1) !== -1} />
+                ))}
             </div>
         </div>
     )

@@ -47,8 +47,10 @@ export interface Player {
 
 export const addPlayer = selector<Player>({
     key: "addPlayer",
-    get: () => ({ id: "", data: { name: "" } }),
-    set: ({ get, set }, props) => {
+    get() {
+        throw new Error("use only as setter")
+    },
+    set({ get, set }, props) {
         if (!(props instanceof DefaultValue)) {
             const { id, data } = props
             set(playersIds, [...get(playersIds), id])
@@ -59,8 +61,10 @@ export const addPlayer = selector<Player>({
 
 export const removePlayer = selector<Player>({
     key: "removePlayer",
-    get: () => ({ id: "", data: { name: "" } }),
-    set: ({ get, set, reset }, props) => {
+    get() {
+        throw new Error("use only as setter")
+    },
+    set({ get, set, reset }, props) {
         if (!(props instanceof DefaultValue)) {
             const playersArray = [...get(playersIds)]
             const { id } = props
@@ -94,27 +98,48 @@ export const addPlayerFormVisible = atom<boolean>({
     default: false,
 })
 
-export const loading = atom<boolean>({
-    key: "loading",
+export const loadingAtom = atom<boolean>({
+    key: "loadingAtom",
     default: false,
+})
+
+export type DicesType = number[]
+
+export const dicesAtom = atom<DicesType>({
+    key: "dicesAtom",
+    default: [-1, -1, -1, -1, -1],
+    effects: [persist("dices")],
+})
+
+type PlayerMove = [playerId: string, shot: number]
+
+export const playerMoveAtom = atom<PlayerMove>({
+    key: "playerMoveAtom",
+    default: ['', 0],
+    effects: [persist('player-move')],
 })
 
 export const MAX_SHOT_COUNT = 3
 
+export const isMoveAvailable = selector({
+    key: "isMoveAvailable",
+    get: ({get}) => get(playerMoveAtom)[1] >= MAX_SHOT_COUNT
+})
 
-export const dicesSelected = atom<number[]>({
-    key: "dicesSelected",
+export const dicesSelectedAtom = atom<number[]>({
+    key: "dicesSelectedAtom",
     default: [],
+    effects: [persist('dices-selected')],
 })
 
 export const selectDice = selector<number>({
     key: "selectDice",
-    get: () => {
-        return 0
+    get() {
+        throw new Error("use only as setter")
     },
-    set: ({ get, set }, props) => {
+    set({ get, set }, props) {
         if (!(props instanceof DefaultValue)) {
-            const all = [...get(dicesSelected)]
+            const all = [...get(dicesSelectedAtom)]
             const diceIndex = props
             const index = all.indexOf(diceIndex)
 
@@ -123,8 +148,28 @@ export const selectDice = selector<number>({
             } else if (all.length !== 4) {
                 all.push(diceIndex)
             }
-
-            set(dicesSelected, all)
+            set(dicesSelectedAtom, all)
         }
+    },
+})
+
+export const restartGame = selector<boolean>({
+    key: "restartGame",
+    get() {
+        throw new Error("use only as setter")
+    },
+    set({ get, reset }) {
+        reset(playerMoveAtom)
+        reset(dicesAtom)
+        reset(dicesSelectedAtom)
+        reset(gamePhase)
+        get(playersIds).forEach((id) => reset(players(id)))
+        reset(playersIds)
+
+        // TODO
+        // resetPlayerPoints()
+        // resetHistory()
+        // unselectAllDices()
+        // changeActiveTab(ActiveTab.SETTINGS)
     },
 })

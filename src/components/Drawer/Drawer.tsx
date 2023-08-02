@@ -4,7 +4,7 @@ import { Footer } from "../Footer"
 import cx from "classnames"
 import { i18n } from "../../helpers/i18n/i18n"
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil"
-import { drawerState, gamePhase, GamePhases } from "../../atoms"
+import { drawerState, gamePhase, GamePhases, restartGame } from "../../atoms"
 import { Backdrop } from "../parts/Backdrop"
 import { MenuButton } from "./MenuButton"
 import { KeyboardActions } from "../../helpers/KeyboardActions"
@@ -12,8 +12,8 @@ import { KeyboardActions } from "../../helpers/KeyboardActions"
 export const Drawer: FC = () => {
     const [open, setOpen] = useRecoilState(drawerState)
     const toggle = useCallback(() => setOpen((prev) => !prev), [setOpen])
-    const setGamePhase = useSetRecoilState(gamePhase)
     const phase = useRecoilValue(gamePhase)
+    const restart = useSetRecoilState(restartGame)
 
     return (
         <>
@@ -42,7 +42,7 @@ export const Drawer: FC = () => {
                     {phase === GamePhases.IN_PLAY && (
                         <>
                             <button type="button" onClick={() => {
-                                setGamePhase(GamePhases.PRE_GAME)
+                                restart(true)
                                 toggle()
                             }}>
                                 {i18n('button.restartGame')}
