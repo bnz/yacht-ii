@@ -1,20 +1,28 @@
 import type { FC } from "react"
 import { Dice } from "./Dice/Dice"
-import { DicesWrapper } from "./DicesWrapper"
 import { useRecoilValue, useSetRecoilState } from "recoil"
-import { dicesSelectedAtom, loadingAtom, selectDice, dicesAtom, isMoveAvailable } from "../../atoms"
+import { dicesSelectedAtom, loadingAtom, selectDice, dicesAtom, isShotAvailable } from "../../atoms"
+import cx from "classnames"
 
 export const Dices: FC = () => {
     const loading = useRecoilValue(loadingAtom)
     const dicesSelected = useRecoilValue(dicesSelectedAtom)
     const doSelectDice = useSetRecoilState(selectDice)
     const dices = useRecoilValue(dicesAtom)
-    const isMove = useRecoilValue(isMoveAvailable)
+    const isShot = useRecoilValue(isShotAvailable)
 
     return (
-        <DicesWrapper>
+        <div className={cx(
+            "flex flex-nowrap justify-center overflow-hidden gap-[0.333em] text-3xl lg:text-4xl",
+            isShot ? "pt-3 pb-2" : "pt-8 pb-3"
+            )}>
             {dices.map((dice, index) => {
                 const selected = dicesSelected.indexOf(index) !== -1
+                const onClick = () => {
+                    if (!isShot && dice !== -1) {
+                        doSelectDice(index)
+                    }
+                }
 
                 return (
                     <Dice
@@ -23,14 +31,10 @@ export const Dices: FC = () => {
                         value={dice}
                         selected={selected}
                         roll={!selected && loading}
-                        onClick={() => {
-                            if (!isMove && dice !== -1) {
-                                doSelectDice(index)
-                            }
-                        }}
+                        onClick={onClick}
                     />
                 )
             })}
-        </DicesWrapper>
+        </div>
     )
 }

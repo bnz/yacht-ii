@@ -3,19 +3,15 @@
 @tailwind utilities;
 
 :root {
-    --background-color: #fff;
-    --text-color: #000;
+    --background-color: rgba(247, 248, 251, 1);
+    --text-color: rgba(0, 32, 51, 1);
 }
 
 @media (prefers-color-scheme: dark) {
     :root {
-        --background-color: #081229;
-        --text-color: #fff;
+        --background-color: rgba(57, 57, 61, 1);
+        --text-color: rgba(255, 255, 255, 0.8);
     }
-}
-
-@media (prefers-color-scheme: light) {
-
 }
 
 html,
@@ -35,24 +31,32 @@ body {
 @layer components {
 
     input[type="text"] {
-        @apply text-black dark:text-white;
-        @apply bg-white dark:bg-dark-bg;
+        @apply text-[var(--text-color)];
+        @apply bg-[var(--background-color)];
         @apply outline-0 px-3 py-2 border dark:border-white/30 rounded;
     }
 
     button[type="button"],
     button[type="submit"] {
         @apply shadow py-2 px-5 rounded;
+        @apply bg-[rgba(92,121,177,0.1)] dark:bg-[rgba(255,255,255,0.08)];
+        @apply text-[rgba(0,32,51,0.8)] dark:text-[rgba(255,255,255,0.8)];
+    }
+
+    button[type="button"]:not([disabled]),
+    button[type="submit"]:not([disabled]) {
         @apply active:shadow-inner;
-        @apply bg-indigo-200 dark:bg-indigo-900;
-        @apply text-indigo-950 dark:text-indigo-200;
     }
 
     button[type="submit"][disabled],
     button[type="button"][disabled] {
-        @apply bg-indigo-100 dark:bg-indigo-950;
-        @apply text-indigo-500 dark:text-indigo-500;
+        @apply relative;
+        @apply bg-[rgba(92,121,177,0.025)] dark:bg-[rgba(255,255,255,0.025)];
         @apply cursor-not-allowed;
+        @apply text-[rgba(0,32,51,0.25)] dark:text-[rgba(255,255,255,0.25)];
+        @apply after:absolute after:inset-0;
+        @apply after:rounded;
+        @apply after:bg-white/50 dark:after:bg-black/20;
     }
 
 }

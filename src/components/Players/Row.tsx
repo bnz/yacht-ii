@@ -1,8 +1,10 @@
 import type { FC } from "react"
+import React, { useCallback } from "react"
 import { i18n } from "../../helpers/i18n/i18n"
 import { useRecoilValue, useSetRecoilState } from "recoil"
 import { players, removePlayer } from "../../atoms"
-import { useCallback } from "react"
+import { ButtonWithIcon } from "../ButtonWithIcon"
+import { AvatarChooser } from "./AvatarChooser"
 
 interface RowProps {
     id: string
@@ -12,13 +14,14 @@ interface RowProps {
 }
 
 export const Row: FC<RowProps> = ({ id, callback, flash, flashEnd }) => {
-    const { name } = useRecoilValue(players(id))
+    const { name, avatar } = useRecoilValue(players(id))
     const remove = useSetRecoilState(removePlayer)
-    const handleRemove = useCallback(() => remove({ id, data: { name: "" } }), [id, remove])
+    const handleRemove = useCallback(() => remove(id), [id, remove])
 
     return (
         <>
-            <div className="flex-1 px-3 py-2 border-l border-r border-transparent relative">
+            <AvatarChooser avatar={avatar} />
+            <div className="flex-1 border-l border-r border-transparent relative flex items-center pl-2">
                 {name}
                 {flash && (
                     <div
@@ -29,12 +32,8 @@ export const Row: FC<RowProps> = ({ id, callback, flash, flashEnd }) => {
                     </div>
                 )}
             </div>
-            <button onClick={callback}>
-                {i18n("edit")}
-            </button>
-            <button onClick={handleRemove}>
-                {i18n("button.remove")}
-            </button>
+            <ButtonWithIcon className="w-10" icon="edit" onClick={callback} />
+            <ButtonWithIcon className="w-10" icon="delete" onClick={handleRemove} />
         </>
     )
 }

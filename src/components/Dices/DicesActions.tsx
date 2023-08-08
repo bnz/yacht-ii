@@ -2,9 +2,13 @@ import type { FC } from "react"
 import { i18n } from "../../helpers/i18n/i18n"
 import { useCallback } from "react"
 import { useRecoilState, useRecoilValue } from "recoil"
-import { dicesAtom, dicesSelectedAtom, isMoveAvailable, loadingAtom, MAX_SHOT_COUNT, playerMoveAtom } from "../../atoms"
+import { dicesAtom, dicesSelectedAtom, isShotAvailable, loadingAtom, MAX_SHOT_COUNT, playerMoveAtom } from "../../atoms"
 import casinoIcon from "../../icons/casino.svg"
+import casinoWhiteIcon from "../../icons/casino-white.svg"
 import { rand } from "../../helpers/random"
+import { useTheme } from "../../helpers/useTheme"
+import { ButtonWithIcon } from "../ButtonWithIcon"
+import cx from "classnames"
 
 const defaultDelay = 300
 let delay = 0
@@ -16,7 +20,8 @@ export const DicesActions: FC = () => {
     const [dicesSelected, setDicesSelected] = useRecoilState(dicesSelectedAtom)
     const [dices, setDices] = useRecoilState(dicesAtom)
     const [[, shot], setPlayerMove] = useRecoilState(playerMoveAtom)
-    const isMove = useRecoilValue(isMoveAvailable)
+    const isShot = useRecoilValue(isShotAvailable)
+    const isDark = useTheme(true)
 
     const shuffle = useCallback(() => {
         delay = Date.now()
@@ -50,31 +55,28 @@ export const DicesActions: FC = () => {
         }
     }, [loading, setLoading, dices, setDices, dicesSelected, setPlayerMove])
 
-    const deselectAll = useCallback(() => {
-        setDicesSelected([])
-    }, [setDicesSelected])
+    const deselectAll = useCallback(() => setDicesSelected([]), [setDicesSelected])
 
     return (
-        <div className="mb-6 justify-center flex gap-5">
-            <button
-                type="button"
+        <div className={cx("justify-center flex gap-5 transition-all duration-300", isShot ? "h-0 overflow-hidden" : "mb-6 py-3")}>
+            <ButtonWithIcon
                 onMouseUp={shuffleUp}
                 onMouseDown={shuffle}
-                disabled={isMove}
-                className="!pl-10 bg-no-repeat bg-[8px_center]"
-                style={{ backgroundImage: `url(${casinoIcon})` }}
+                disabled={isShot}
+                className="!pl-10 !bg-[8px_center] flex"
+                icon="casino"
             >
-                {isMove ? i18n('button.writeDownYourPoints') : (
+                {isShot ? i18n('button.writeDownYourPoints') : (
                     <>
                         {i18n('button.dropDices')}
-                        <span className="ml-2 text-red-600">
+                        <span className="ml-2 text-red-600 w-12 block">
                             {shot}
                             <span className="text-gray-500 dark:text-gray-300 font-bold"> / {MAX_SHOT_COUNT}</span>
                         </span>
                     </>
                 )}
-            </button>
-            <button type="button" onClick={deselectAll} disabled={dicesSelected.length === 0 || isMove}>
+            </ButtonWithIcon>
+            <button type="button" onClick={deselectAll} disabled={dicesSelected.length === 0 || isShot}>
                 {i18n('button.reset')}
             </button>
         </div>

@@ -2,9 +2,9 @@ import { LanguageMap } from './i18n'
 
 export const eng: LanguageMap = {
   yacht: 'Yacht',
-  indigo: 'Indigo',
   darkTheme: 'Dark theme',
   language: 'Language',
+  playersHeader: "Players",
   compactTable: 'Compact table',
   activePlayerFirst: 'Active player first',
   diceSize: 'Dice size',
@@ -17,6 +17,9 @@ export const eng: LanguageMap = {
   ofMax: 'of max',
   more: '',
   auto: 'Auto (sync with OS settings)',
+  enterName: 'Enter name',
+  saved: 'Saved',
+  required: "Required",
   points1: 'points left',
   points2: 'points left',
   points3: 'points left',

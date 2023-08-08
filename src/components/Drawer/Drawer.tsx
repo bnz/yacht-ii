@@ -24,6 +24,7 @@ export const Drawer: FC = () => {
                 </>
             )}
             <div className={cx(
+                "z-10",
                 "w-80 pt-28 px-5",
                 "fixed top-0 left-0 h-full shadow-xl",
                 "transition-transform duration-100",

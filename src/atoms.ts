@@ -1,6 +1,9 @@
 import { atom, atomFamily, DefaultValue, selector } from "recoil"
-
 import { recoilPersist } from 'recoil-persist'
+import { Combination, combinationsData } from "./components/Combinations/combinationsData"
+import { checkMatch } from "./helpers/checkMatch"
+import { makeId } from "./helpers/makeId"
+import { getRandomInt } from "./helpers/random"
 
 export enum GamePhases {
     PRE_GAME = 'preGame',
@@ -22,10 +25,18 @@ export const drawerState = atom<boolean>({
     effects: [persist('drawer-state')],
 })
 
+export enum Avatar {
+    dog0,
+    dog1,
+    dog2,
+    dog3,
+}
+
 export const players = atomFamily<PlayerData, string>({
     key: "players",
     default: {
         name: "",
+        avatar: Avatar.dog0,
     },
     effects: [persist("players")],
 })
@@ -38,6 +49,7 @@ const playersIds = atom<string[]>({
 
 interface PlayerData {
     name: string
+    avatar: Avatar
 }
 
 export interface Player {
@@ -45,29 +57,64 @@ export interface Player {
     data: PlayerData
 }
 
-export const addPlayer = selector<Player>({
+export const MAX_PLAYERS_COUNT = 4
+
+export const getAvailableAvatar = selector<Avatar>({
+    key: "getAvailableAvatar",
+    get({ get }) {
+        const taken = get(playersData).map(({ data: { avatar } }) => avatar)
+        let avatar
+
+        do {
+            avatar = getRandomInt(0, MAX_PLAYERS_COUNT - 1)
+        } while (taken.includes(avatar) && taken.length !== MAX_PLAYERS_COUNT)
+
+        return avatar as Avatar
+    },
+})
+
+const dogNames = [
+    "Ася", "Боня", "Вита", "Голди", "Джес", "Ева", "Жужа", "Зара", "Ирма", "Кира", "Кики", "Лора", "Марта", "Нора", "Рада", "Соня", "Тося", "Феня", "Хася", "Чара",
+    "Макс", "Чарли", "Альф", "Лео", "Ник", "Оскар", "Рекс", "Сёма", "Том", "Чак", "Шрек", "Ярик", "Арчи", "Буч", "Веня", "Грей", "Джек", "Жорик", "Зак", "Каспер",
+]
+
+export const getRandomDogName = selector({
+    key: "getRandomDogName",
+    get({ get }) {
+        const taken = get(playersData).map(({ data: { name } }) => name)
+        let index
+
+        do {
+            index = getRandomInt(0, dogNames.length - 1)
+        } while (taken.includes(dogNames[index]))
+
+        return dogNames[index]
+    },
+})
+
+export const addPlayer = selector<{ name: string, avatar: Avatar }>({
     key: "addPlayer",
     get() {
         throw new Error("use only as setter")
     },
     set({ get, set }, props) {
         if (!(props instanceof DefaultValue)) {
-            const { id, data } = props
+            const id = makeId()
+            const { name, avatar } = props
             set(playersIds, [...get(playersIds), id])
-            set(players(id), data)
+            set(players(id), { name, avatar })
         }
     },
 })
 
-export const removePlayer = selector<Player>({
+export const removePlayer = selector<string>({
     key: "removePlayer",
     get() {
         throw new Error("use only as setter")
     },
-    set({ get, set, reset }, props) {
-        if (!(props instanceof DefaultValue)) {
+    set({ get, set, reset }, id) {
+        if (!(id instanceof DefaultValue)) {
             const playersArray = [...get(playersIds)]
-            const { id } = props
             const index = playersArray.indexOf(id)
             if (index !== -1) {
                 playersArray.splice(index, 1)
@@ -86,6 +133,35 @@ export const playersData = selector({
             data: get(players(id)),
         }))
     ),
+})
+
+export type PlayersTotals = {
+    [playerId: string]: number
+}
+
+export const playerTotals = selector({
+    key: "playerTotals",
+    get({ get }) {
+        const players = get(playersData)
+
+        let totals: PlayersTotals = {}
+
+        players.forEach(({ id: playerId }) => {
+            // const points = playerPoints[playerId] || {}
+            //
+            // totals[playerId] = Object.keys(points).reduce((prev, key) => {
+            //     const curr = points[key as Combination]! // this points should exists!
+            //
+            //     if (key === Combination.BONUS && Math.sign(curr) === -1) {
+            //         return prev
+            //     }
+            //
+            //     return prev + curr
+            // }, 0)
+        })
+
+        return totals
+    },
 })
 
 export const playersCount = selector({
@@ -119,11 +195,33 @@ export const playerMoveAtom = atom<PlayerMove>({
     effects: [persist('player-move')],
 })
 
+export const startGameSelector = selector<boolean>({
+    key: "startGameSelector",
+    get() {
+        throw new Error("use only as setter")
+    },
+    set({ get, set }) {
+        const players = get(playersData)
+        const playerMove = get(playerMoveAtom)
+        let { 0: playerId } = playerMove
+
+        if (!playerId) {
+            playerId = players[0].id
+        } else {
+            const index = players.findIndex(({ id }) => id === playerId)
+            const player = players[index + 1]
+            playerId = player ? player.id : players[0].id
+        }
+        set(playerMoveAtom, [playerId, 0] as PlayerMove)
+        set(gamePhase, GamePhases.IN_PLAY)
+    },
+})
+
 export const MAX_SHOT_COUNT = 3
 
-export const isMoveAvailable = selector({
-    key: "isMoveAvailable",
-    get: ({get}) => get(playerMoveAtom)[1] >= MAX_SHOT_COUNT
+export const isShotAvailable = selector({
+    key: "isShotAvailable",
+    get: ({ get }) => get(playerMoveAtom)[1] >= MAX_SHOT_COUNT,
 })
 
 export const dicesSelectedAtom = atom<number[]>({
@@ -171,5 +269,52 @@ export const restartGame = selector<boolean>({
         // resetHistory()
         // unselectAllDices()
         // changeActiveTab(ActiveTab.SETTINGS)
+    },
+})
+
+export type Points = {
+    [key in Combination]?: number
+}
+
+export interface PlayerPoints {
+    [playerId: string]: Points
+}
+
+export const playerPointsAtomFamily = atomFamily<PlayerPoints, string>({
+    key: "playerPointsAtomFamily",
+    default: {},
+    effects: [persist("player-points")],
+})
+
+export const isMoveAvailableSelector = selector<boolean>({
+    key: "isMoveAvailable",
+    get({ get }) {
+        const [activePlayerId, shot] = get(playerMoveAtom)
+        const player = get(playerPointsAtomFamily(activePlayerId))
+        const dices = get(dicesAtom)
+
+        let matchesCount = 0
+        let noMoves = false
+
+        combinationsData.forEach(({ combination }) => {
+            const { points } = checkMatch(combination, dices)
+            const isInPlayerPoints = combination !== Combination.BONUS && player && !!player[combination]
+
+            /**
+             * Combination matched AND player hasn't this combination
+             */
+            if (points !== undefined && !isInPlayerPoints) {
+                matchesCount = matchesCount + 1
+            }
+
+            /**
+             * If no matches, no more shots and player already have this combination
+             */
+            if (points === undefined && shot === MAX_SHOT_COUNT) {
+                noMoves = true
+            }
+        })
+
+        return !(matchesCount === 0 && noMoves)
     },
 })

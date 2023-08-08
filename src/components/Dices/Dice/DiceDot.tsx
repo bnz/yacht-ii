@@ -14,7 +14,7 @@ export const DiceDot: FC<DotProps> = ({ filled,  }) => {
                 className="w-[80%] h-[80%] rounded-full"
                 style={{
                     boxShadow: filled && isDark ? "inset 0 0 .1em rgba(0, 0, 0, .8)" : "none",
-                    background: filled ? isDark ? "#ccc" : "#000" : "transparent",
+                    background: filled ? isDark ? "#ccc" : "var(--text-color)" : "transparent",
                 }}
             />
         </div>

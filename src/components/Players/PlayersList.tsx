@@ -11,14 +11,11 @@ export const PlayersList: FC = () => {
     const players = useRecoilValue(playersData)
 
     if (players.length <= 0) {
-        if (addPlayerVisible) {
-            return (
-                <ListWrap>
-                    <AddPlayerForm />
-                </ListWrap>
-            )
-        }
-        return null
+        return (
+            <ListWrap>
+                <AddPlayerForm initial />
+            </ListWrap>
+        )
     }
 
     return (

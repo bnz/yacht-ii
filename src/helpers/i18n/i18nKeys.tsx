@@ -1,7 +1,7 @@
 export type i18nKeys =
     | 'yacht'
-    | 'indigo'
     | 'darkTheme'
+    | 'playersHeader'
     | 'language'
     | 'playerNo'
     | 'diceSize'
@@ -15,6 +15,9 @@ export type i18nKeys =
     | 'ofMax'
     | 'more'
     | 'auto'
+    | 'enterName'
+    | 'saved'
+    | 'required'
     | 'points1'
     | 'points2'
     | 'points3'

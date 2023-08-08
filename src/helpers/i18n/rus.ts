@@ -2,9 +2,9 @@ import { LanguageMap } from './i18n'
 
 export const rus: LanguageMap = {
   yacht: 'Яхта',
-  indigo: 'Индиго',
   darkTheme: 'Темная тема',
   language: 'Язык',
+  playersHeader: "Игроки",
   compactTable: 'Компактная таблица',
   activePlayerFirst: 'Активный игрок первый',
   diceSize: 'Размер костей',
@@ -17,6 +17,9 @@ export const rus: LanguageMap = {
   ofMax: 'из макс.',
   more: 'еще',
   auto: 'Авто (синхронизировать с настройками системы)',
+  enterName: 'Введите имя',
+  saved: 'Сохранено',
+  required: 'Обязательное поле',
   points1: 'очков',
   points2: 'очко',
   points3: 'очка',
