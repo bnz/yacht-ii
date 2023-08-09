@@ -3,6 +3,8 @@ import { useCallback, useState } from "react"
 import { EditName } from "./EditName"
 import { Row } from "./Row"
 import { ItemWrap } from "./ItemWrap"
+import { useSetRecoilState } from "recoil"
+import { editingInProgress } from "../../atoms"
 
 interface PlayersListItemProps {
     id: string
@@ -13,6 +15,12 @@ export const PlayersListItem: FC<PlayersListItemProps> = ({ id, name }) => {
     const [edit, setEdit] = useState(false)
     const toggle = useCallback(() => setEdit((prev) => !prev), [setEdit])
     const [flash, setFlash] = useState<boolean>(false)
+    const setEditingInProgress = useSetRecoilState(editingInProgress)
+
+    const rowCallback = useCallback(() => {
+        toggle()
+        setEditingInProgress(true)
+    }, [toggle, setEditingInProgress])
 
     return (
         <ItemWrap>
@@ -24,12 +32,13 @@ export const PlayersListItem: FC<PlayersListItemProps> = ({ id, name }) => {
                             setFlash(true)
                         }
                         toggle()
+                        setEditingInProgress(false)
                     }}
                 />
             ) : (
                 <Row
                     id={id}
-                    callback={toggle}
+                    callback={rowCallback}
                     flash={flash}
                     flashEnd={() => setFlash(false)}
                 />

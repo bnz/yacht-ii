@@ -2,6 +2,7 @@ export type i18nKeys =
     | 'yacht'
     | 'darkTheme'
     | 'playersHeader'
+    | 'chooseDog'
     | 'language'
     | 'playerNo'
     | 'diceSize'

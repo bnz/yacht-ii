@@ -5,6 +5,7 @@ export const rus: LanguageMap = {
   darkTheme: 'Темная тема',
   language: 'Язык',
   playersHeader: "Игроки",
+  chooseDog: "Выбирите собачку",
   compactTable: 'Компактная таблица',
   activePlayerFirst: 'Активный игрок первый',
   diceSize: 'Размер костей',

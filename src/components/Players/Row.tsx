@@ -2,7 +2,7 @@ import type { FC } from "react"
 import React, { useCallback } from "react"
 import { i18n } from "../../helpers/i18n/i18n"
 import { useRecoilValue, useSetRecoilState } from "recoil"
-import { players, removePlayer } from "../../atoms"
+import { editingInProgress, players, removePlayer } from "../../atoms"
 import { ButtonWithIcon } from "../ButtonWithIcon"
 import { Avatar } from "./Avatar"
 
@@ -17,6 +17,7 @@ export const Row: FC<RowProps> = ({ id, callback, flash, flashEnd }) => {
     const { name, avatar } = useRecoilValue(players(id))
     const remove = useSetRecoilState(removePlayer)
     const handleRemove = useCallback(() => remove(id), [id, remove])
+    const disabled = useRecoilValue(editingInProgress)
 
     return (
         <>
@@ -32,8 +33,18 @@ export const Row: FC<RowProps> = ({ id, callback, flash, flashEnd }) => {
                     </div>
                 )}
             </div>
-            <ButtonWithIcon className="w-10" icon="edit" onClick={callback} />
-            <ButtonWithIcon className="w-10" icon="delete" onClick={handleRemove} />
+            <ButtonWithIcon
+                className="w-10"
+                icon="edit"
+                onClick={callback}
+                disabled={disabled}
+            />
+            <ButtonWithIcon
+                className="w-10"
+                icon="delete"
+                onClick={handleRemove}
+                disabled={disabled}
+            />
         </>
     )
 }

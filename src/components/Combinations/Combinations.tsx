@@ -68,17 +68,17 @@ export const Combinations: FC = () => {
                     )
                 })}
             </div>
-            <div className="sticky bottom-0 shadow-2xl backdrop-blur !p-0">
+            <div className="sticky bottom-0 shadow-2xl backdrop-blur-lg !p-0">
                 <div className={wrapClassName}>
-                    <div className="">
+                    <div>
                         {i18n('total')}
                     </div>
                     {players.map(({ id, data: { name } }) => (
-                        <div key={id} className="">
+                        <div key={id}>
                             {name}
                         </div>
                     ))}
-                    <div className="" />
+                    <div />
                 </div>
             </div>
         </>

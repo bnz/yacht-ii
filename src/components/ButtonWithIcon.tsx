@@ -27,8 +27,8 @@ export const ButtonWithIcon: FC<ButtonWithIconProps> = ({
     <button
         className={cx("bg-no-repeat bg-center", className)}
         style={{ backgroundImage: `url(${iconSVG}#${icon}${useTheme(true) ? "-white" : ""})` }}
-        {...type ? { type } : {}}
         onClick={onClick}
+        {...type ? { type } : {}}
         {...onMouseUp ? { onMouseUp } : {}}
         {...onMouseDown ? { onMouseDown } : {}}
         {...disabled ? { disabled } : {}}

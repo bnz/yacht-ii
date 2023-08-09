@@ -37,7 +37,7 @@ export const AvatarChooser: FC<AvatarChooserProps> = ({ avatar, toggle, onClick 
                     style={{ backgroundImage: `url('${icon}#${isDart ? "close-white" : "close"}')` }}
                 />
                 <h3 className="text-center font-bold py-5">
-                    {i18n("Выбирите собачку")}
+                    {i18n("chooseDog")}
                 </h3>
                 <ul className="flex flex-grow flex-wrap gap-5 justify-center">
                     {themedDogs.map((url, index) => {

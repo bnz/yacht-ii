@@ -5,6 +5,7 @@ export const eng: LanguageMap = {
   darkTheme: 'Dark theme',
   language: 'Language',
   playersHeader: "Players",
+  chooseDog: "Choose your dog",
   compactTable: 'Compact table',
   activePlayerFirst: 'Active player first',
   diceSize: 'Dice size',

@@ -2,12 +2,19 @@ import type { ChangeEvent, FC, FormEvent } from "react"
 import React, { useCallback, useEffect, useRef, useState } from "react"
 import { i18n } from "../../helpers/i18n/i18n"
 import { useRecoilValue, useSetRecoilState } from "recoil"
-import { addPlayer, addPlayerFormVisible, getAvailableAvatar, getRandomDogName } from "../../atoms"
+import {
+    addPlayer,
+    addPlayerFormVisible, editingInProgress,
+    getAvailableAvatar,
+    getRandomDogName,
+    getRandomDogNameBySex,
+} from "../../atoms"
 import { ItemWrap } from "./ItemWrap"
 import { InputWithError } from "../InputWithError"
 import { KeyboardActions } from "../../helpers/KeyboardActions"
 import { ButtonWithIcon } from "../ButtonWithIcon"
 import { Avatar } from "./Avatar"
+import { RandomNameButton } from "./RandomNameButton"
 
 interface AddPlayerFormProps {
     initial?: boolean
@@ -20,6 +27,7 @@ export const AddPlayerForm: FC<AddPlayerFormProps> = ({ initial }) => {
     const setPlayer = useSetRecoilState(addPlayer)
     const closeAddPlayerForm = useSetRecoilState(addPlayerFormVisible)
     const [avatar, setAvatar] = useState(useRecoilValue(getAvailableAvatar))
+    const setEditingInProgress = useSetRecoilState(editingInProgress)
 
     const onChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
         setName(e.currentTarget.value)
@@ -32,12 +40,16 @@ export const AddPlayerForm: FC<AddPlayerFormProps> = ({ initial }) => {
         if (trimmed !== "") {
             setPlayer({ name: trimmed, avatar })
             closeAddPlayerForm(false)
+            setEditingInProgress(false)
         } else {
             setError(i18n("required"))
         }
-    }, [setPlayer, closeAddPlayerForm, setError, name, avatar])
+    }, [setPlayer, closeAddPlayerForm, setError, name, avatar, setEditingInProgress])
 
-    const onCancel = useCallback(() => closeAddPlayerForm(false), [closeAddPlayerForm])
+    const onCancel = useCallback(() => {
+        closeAddPlayerForm(false)
+        setEditingInProgress(false)
+    }, [closeAddPlayerForm, setEditingInProgress])
 
     useEffect(() => ref.current?.focus(), [ref])
 
@@ -46,12 +58,16 @@ export const AddPlayerForm: FC<AddPlayerFormProps> = ({ initial }) => {
             <KeyboardActions actions={{ Escape: onCancel }} />
             <Avatar edit={setAvatar} avatar={avatar} />
             <form className="flex-1 flex gap-3" onSubmit={onSubmit}>
-                <InputWithError
-                    placeholder={i18n("enterName")}
-                    value={name}
-                    onChange={onChange}
-                    error={error}
-                />
+                <div className="w-full relative">
+                    <InputWithError
+                        placeholder={i18n("enterName")}
+                        value={name}
+                        onChange={onChange}
+                        error={error}
+                        className="[&>input]:pr-9"
+                    />
+                    <RandomNameButton callback={setName} />
+                </div>
                 <ButtonWithIcon type="submit" icon="add" />
                 <ButtonWithIcon
                     type="button"

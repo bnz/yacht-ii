@@ -17,3 +17,5 @@ export type Icons =
     | 'save-white'
     | 'delete'
     | 'delete-white'
+    | 'refresh'
+    | 'refresh-white'

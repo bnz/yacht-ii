@@ -1,4 +1,4 @@
-import { atom, atomFamily, DefaultValue, selector } from "recoil"
+import { atom, atomFamily, DefaultValue, GetRecoilValue, selector } from "recoil"
 import { recoilPersist } from 'recoil-persist'
 import { Combination, combinationsData } from "./components/Combinations/combinationsData"
 import { checkMatch } from "./helpers/checkMatch"
@@ -73,23 +73,44 @@ export const getAvailableAvatar = selector<AvatarEnum>({
     },
 })
 
-const dogNames = [
+const dogNamesFemale = [
     "Ася", "Боня", "Вита", "Голди", "Джес", "Ева", "Жужа", "Зара", "Ирма", "Кира", "Кики", "Лора", "Марта", "Нора", "Рада", "Соня", "Тося", "Феня", "Хася", "Чара",
+]
+
+const dogNamesMale = [
     "Макс", "Чарли", "Альф", "Лео", "Ник", "Оскар", "Рекс", "Сёма", "Том", "Чак", "Шрек", "Ярик", "Арчи", "Буч", "Веня", "Грей", "Джек", "Жорик", "Зак", "Каспер",
 ]
 
+const dogNames = [
+    ...dogNamesFemale,
+    ...dogNamesMale,
+]
+
+const getDogName = (get: GetRecoilValue, sex?: "male" | "female") => {
+    const dogs = sex ? sex === "male" ? dogNamesMale : dogNamesFemale : dogNames
+    const taken = get(playersData).map(({ data: { name } }) => name)
+    let index
+
+    do {
+        index = getRandomInt(0, dogs.length - 1)
+    } while (taken.includes(dogs[index]))
+
+    return dogs[index]
+}
+
+export const getRandomDogNameBySex = selector({
+    key: "getRandomDogNameBySex",
+    get: ({ get }) => () => getDogName(get),
+})
+
 export const getRandomDogName = selector({
     key: "getRandomDogName",
-    get({ get }) {
-        const taken = get(playersData).map(({ data: { name } }) => name)
-        let index
+    get: ({ get }) => getDogName(get),
+})
 
-        do {
-            index = getRandomInt(0, dogNames.length - 1)
-        } while (taken.includes(dogNames[index]))
-
-        return dogNames[index]
-    },
+export const editingInProgress = atom<boolean>({
+    key: "editingInProgress",
+    default: false,
 })
 
 export const addPlayer = selector<{ name: string, avatar: AvatarEnum }>({
@@ -167,6 +188,18 @@ export const playerTotals = selector({
 export const playersCount = selector({
     key: "playersCount",
     get: ({ get }) => get(playersIds).length,
+})
+
+export const resetPlayers = selector<null>({
+    key: "resetPlayers",
+    get() {
+        throw new Error("use only as setter")
+    },
+    set({ get, reset }) {
+        get(playersIds).forEach((id) => reset(players(id)))
+        reset(playersIds)
+        reset(playerMoveAtom)
+    },
 })
 
 export const addPlayerFormVisible = atom<boolean>({
@@ -256,13 +289,14 @@ export const restartGame = selector<boolean>({
     get() {
         throw new Error("use only as setter")
     },
-    set({ get, reset }) {
+    set({ get, reset, set }) {
         reset(playerMoveAtom)
         reset(dicesAtom)
         reset(dicesSelectedAtom)
         reset(gamePhase)
-        get(playersIds).forEach((id) => reset(players(id)))
-        reset(playersIds)
+        set(resetPlayers, null)
+        // get(playersIds).forEach((id) => reset(players(id)))
+        // reset(playersIds)
 
         // TODO
         // resetPlayerPoints()

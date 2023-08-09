@@ -6,7 +6,7 @@ import { ActivePlayerAvatar } from "../ActivePlayerAvatar"
 
 export const InPlay: FC = () => (
     <>
-        <div className="backdrop-blur sticky top-0 shadow-lg dark:shadow-2xl">
+        <div className="backdrop-blur-lg sticky top-0 shadow-lg dark:shadow-2xl">
             <ActivePlayerAvatar />
             <Dices />
             <DicesActions />
