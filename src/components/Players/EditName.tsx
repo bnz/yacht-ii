@@ -1,12 +1,12 @@
 import type { FC } from "react"
 import { useRecoilValue, useSetRecoilState } from "recoil"
-import { Avatar, players } from "../../atoms"
+import { AvatarEnum, players } from "../../atoms"
 import React, { ChangeEvent, FormEvent, useCallback, useState } from "react"
 import { KeyboardActions } from "../../helpers/KeyboardActions"
 import { i18n } from "../../helpers/i18n/i18n"
 import { InputWithError } from "../InputWithError"
 import { ButtonWithIcon } from "../ButtonWithIcon"
-import { AvatarChooser } from "./AvatarChooser"
+import { Avatar } from "./Avatar"
 
 interface EditNameProps {
     id: string
@@ -41,7 +41,7 @@ export const EditName: FC<EditNameProps> = ({ id, callback }) => {
 
     const onCancel = useCallback(() => callback(false), [callback])
 
-    const edit = useCallback((index: Avatar) => {
+    const edit = useCallback((index: AvatarEnum) => {
         setAvatar(index)
         setPlayer((prev) => ({
             ...prev,
@@ -54,7 +54,7 @@ export const EditName: FC<EditNameProps> = ({ id, callback }) => {
 
     return (
         <>
-            <AvatarChooser edit={edit} avatar={avatar} />
+            <Avatar edit={edit} avatar={avatar} />
             <form className="flex-1 flex gap-3" onSubmit={onSubmit}>
                 <KeyboardActions actions={{ Escape: onCancel }} />
                 <InputWithError

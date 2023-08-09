@@ -7,7 +7,7 @@ import { ItemWrap } from "./ItemWrap"
 import { InputWithError } from "../InputWithError"
 import { KeyboardActions } from "../../helpers/KeyboardActions"
 import { ButtonWithIcon } from "../ButtonWithIcon"
-import { AvatarChooser } from "./AvatarChooser"
+import { Avatar } from "./Avatar"
 
 interface AddPlayerFormProps {
     initial?: boolean
@@ -19,7 +19,6 @@ export const AddPlayerForm: FC<AddPlayerFormProps> = ({ initial }) => {
     const [error, setError] = useState<null | string>(null)
     const setPlayer = useSetRecoilState(addPlayer)
     const closeAddPlayerForm = useSetRecoilState(addPlayerFormVisible)
-
     const [avatar, setAvatar] = useState(useRecoilValue(getAvailableAvatar))
 
     const onChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
@@ -45,7 +44,7 @@ export const AddPlayerForm: FC<AddPlayerFormProps> = ({ initial }) => {
     return (
         <ItemWrap>
             <KeyboardActions actions={{ Escape: onCancel }} />
-            <AvatarChooser edit={setAvatar} avatar={avatar} />
+            <Avatar edit={setAvatar} avatar={avatar} />
             <form className="flex-1 flex gap-3" onSubmit={onSubmit}>
                 <InputWithError
                     placeholder={i18n("enterName")}

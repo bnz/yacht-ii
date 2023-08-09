@@ -25,7 +25,7 @@ export const drawerState = atom<boolean>({
     effects: [persist('drawer-state')],
 })
 
-export enum Avatar {
+export enum AvatarEnum {
     dog0,
     dog1,
     dog2,
@@ -36,7 +36,7 @@ export const players = atomFamily<PlayerData, string>({
     key: "players",
     default: {
         name: "",
-        avatar: Avatar.dog0,
+        avatar: AvatarEnum.dog0,
     },
     effects: [persist("players")],
 })
@@ -49,7 +49,7 @@ const playersIds = atom<string[]>({
 
 interface PlayerData {
     name: string
-    avatar: Avatar
+    avatar: AvatarEnum
 }
 
 export interface Player {
@@ -59,7 +59,7 @@ export interface Player {
 
 export const MAX_PLAYERS_COUNT = 4
 
-export const getAvailableAvatar = selector<Avatar>({
+export const getAvailableAvatar = selector<AvatarEnum>({
     key: "getAvailableAvatar",
     get({ get }) {
         const taken = get(playersData).map(({ data: { avatar } }) => avatar)
@@ -69,7 +69,7 @@ export const getAvailableAvatar = selector<Avatar>({
             avatar = getRandomInt(0, MAX_PLAYERS_COUNT - 1)
         } while (taken.includes(avatar) && taken.length !== MAX_PLAYERS_COUNT)
 
-        return avatar as Avatar
+        return avatar as AvatarEnum
     },
 })
 
@@ -92,7 +92,7 @@ export const getRandomDogName = selector({
     },
 })
 
-export const addPlayer = selector<{ name: string, avatar: Avatar }>({
+export const addPlayer = selector<{ name: string, avatar: AvatarEnum }>({
     key: "addPlayer",
     get() {
         throw new Error("use only as setter")

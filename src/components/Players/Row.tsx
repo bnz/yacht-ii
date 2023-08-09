@@ -4,7 +4,7 @@ import { i18n } from "../../helpers/i18n/i18n"
 import { useRecoilValue, useSetRecoilState } from "recoil"
 import { players, removePlayer } from "../../atoms"
 import { ButtonWithIcon } from "../ButtonWithIcon"
-import { AvatarChooser } from "./AvatarChooser"
+import { Avatar } from "./Avatar"
 
 interface RowProps {
     id: string
@@ -20,7 +20,7 @@ export const Row: FC<RowProps> = ({ id, callback, flash, flashEnd }) => {
 
     return (
         <>
-            <AvatarChooser avatar={avatar} />
+            <Avatar avatar={avatar} />
             <div className="flex-1 border-l border-r border-transparent relative flex items-center pl-2">
                 {name}
                 {flash && (

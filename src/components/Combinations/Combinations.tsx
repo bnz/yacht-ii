@@ -6,7 +6,7 @@ import { isMoveAvailableSelector, playersData } from "../../atoms"
 import { Fragment } from "react"
 import { Combination } from "./Combination"
 import cx from "classnames"
-import { AvatarChooser } from "../Players/AvatarChooser"
+import { Avatar } from "../Players/Avatar"
 
 const playersCols: Record<number, string> = {
     1: "grid-cols-3",
@@ -29,7 +29,7 @@ export const Combinations: FC = () => {
     const isMoveAvailable = useRecoilValue(isMoveAvailableSelector)
     const wrapClassName = cx(
         "grid [&>div]:py-6",
-        "w-2/3 mx-auto",
+        "lg:w-2/3 mx-auto",
         playersCols[players.length],
     )
 
@@ -41,7 +41,7 @@ export const Combinations: FC = () => {
                 </div>
                 {players.map(({ id, data: { name, avatar } }) => (
                     <div key={id} className="border-b flex flex-col items-center !p-0">
-                        <AvatarChooser avatar={avatar} />
+                        <Avatar avatar={avatar} />
                         <div>{name}</div>
                     </div>
                 ))}
