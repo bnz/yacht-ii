@@ -5,6 +5,7 @@ import { dicesAtom, playerMoveAtom, playerPointsAtomFamily } from "../../atoms"
 import { checkMatch } from "../../helpers/checkMatch"
 import cx from "classnames"
 import { Points } from "../Points"
+import { i18n } from "../../helpers/i18n/i18n"
 
 interface CombinationProps {
     playerId: string
@@ -33,17 +34,6 @@ export const Combination: FC<CombinationProps> = ({
         strike: active && !matched && !isBonus && !isMoveAvailable,
     })
 
-    // console.log({
-    //     type,
-    //     existingCombination,
-    //     points,
-    //     maxPoints,
-    //     save() {
-    //     },
-    //     strikeOut() {
-    //     },
-    // })
-
     switch (type) {
         case "matching":
             return (
@@ -60,11 +50,22 @@ export const Combination: FC<CombinationProps> = ({
                     {existingCombination}
                 </div>
             )
+        case "bonus": {
+            return (
+                <div>bonus</div>
+            )
+        }
+        case "strike": {
+            return (
+                <div>
+                    {i18n('button.strikeOut')}
+                </div>
+            )
+        }
+        default: {
+            return (
+                <div>{EMPTY_CELL}</div>
+            )
+        }
     }
-
-    return (
-        <>
-            {`${isMoveAvailable}`}
-        </>
-    )
 }
