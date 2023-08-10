@@ -27,9 +27,10 @@ export const useDogs = (): string[] => dogs[useTheme() as Themes]
 interface AvatarProps {
     avatar: AvatarEnum
     edit?: Dispatch<SetStateAction<AvatarEnum>> | ((index: AvatarEnum) => void)
+    className?: string
 }
 
-export const Avatar: FC<AvatarProps> = ({ avatar, edit }) => {
+export const Avatar: FC<AvatarProps> = ({ avatar, edit, className }) => {
     const isDart = useTheme(true)
     const [open, setOpen] = useState<boolean>(false)
     const toggle = useCallback(() => setOpen((prevState) => !prevState), [setOpen])
@@ -54,6 +55,7 @@ export const Avatar: FC<AvatarProps> = ({ avatar, edit }) => {
                     "relative w-10 h-full",
                     "rounded-full",
                     "bg-no-repeat bg-[length:75%] bg-center",
+                    className,
                 )}
                 style={{ backgroundImage: `url('${themedDogs[avatar]}')` }}
                 onClick={toggle}

@@ -7,55 +7,63 @@ import { Fragment } from "react"
 import { Combination } from "./Combination"
 import cx from "classnames"
 import { Avatar } from "../Players/Avatar"
+import { CombinationsHeader } from "./CombinationsHeader"
+import { CombinationsFooter } from "./CombinationsFooter"
+import { ActivePlayerAvatar } from "../ActivePlayerAvatar"
+import { Dices } from "../Dices/Dices"
+import { DicesActions } from "../Dices/DicesActions"
 
-const playersCols: Record<number, string> = {
-    1: "grid-cols-3",
-    2: "grid-cols-4",
-    3: "grid-cols-5",
-    4: "grid-cols-6",
-    5: "grid-cols-7",
+const decoratorWidth = 30
+const titleWidth = 150
+const playerColorWidth = 200
+
+export const playersColsStyle: Record<number, string> = {}
+
+for (let i = 1; i <= 4; i++) {
+    playersColsStyle[i] = [
+        titleWidth,
+        ...(new Array(i).fill(playerColorWidth)),
+        decoratorWidth,
+    ].join("px ") + "px"
 }
 
-const a: Record<number, string> = {
-    1: "col-span-3",
-    2: "col-span-4",
-    3: "col-span-5",
-    4: "col-span-6",
-    5: "col-span-7",
-}
+export const wrapClassName = cx(
+    "grid",
+    "[&>div]:py-6",
+    "lg:max-w-2/3",
+    "w-full lg:w-fit",
+    "mx-auto",
+    // "mt-6",
+    // "overflow-auto",
+    "relative",
+)
 
 export const Combinations: FC = () => {
     const players = useRecoilValue(playersData)
     const isMoveAvailable = useRecoilValue(isMoveAvailableSelector)
-    const wrapClassName = cx(
-        "grid [&>div]:py-6",
-        "lg:w-2/3 mx-auto",
-        playersCols[players.length],
-    )
 
     return (
-        <>
-            <div className={wrapClassName}>
-                <div className="border-b">
-                    {i18n('combinations')}
-                </div>
-                {players.map(({ id, data: { name, avatar } }) => (
-                    <div key={id} className="border-b flex flex-col items-center !p-0">
-                        <Avatar avatar={avatar} />
-                        <div>{name}</div>
-                    </div>
-                ))}
-                <div className="border-b" />
+        <div className="overflow-auto absolute inset-0 top-24">
+            <div className={wrapClassName} style={{
+                gridTemplateColumns: playersColsStyle[players.length],
+            }}>
+                <CombinationsHeader />
                 {combinationsData.map(({ name, title, combination }) => {
-                    const bonusClassName = cx(isBonus(combination) && "bg-gray-300 dark:bg-gray-300/10")
+                    const bonusClassName = cx(isBonus(combination),
+                        // && "bg-gray-300 dark:bg-gray-300/10 !py-2"
+                    )
 
                     return (
                         <Fragment key={name}>
-                            <div className={bonusClassName}>
+                            <div
+                                className={cx(bonusClassName, "border-r px-2 sticky left-0 bg-[var(--background-color)] z-[1]")}>
                                 {name}
+                                {/*<div className="absolute">*/}
+                                {/*    {title}*/}
+                                {/*</div>*/}
                             </div>
                             {players.map(({ id }) => (
-                                <div key={id} className={cx("text-center", bonusClassName)}>
+                                <div key={id} className={cx("text-center", bonusClassName, "")}>
                                     <Combination
                                         playerId={id}
                                         combination={combination}
@@ -63,24 +71,12 @@ export const Combinations: FC = () => {
                                     />
                                 </div>
                             ))}
-                            <div className={bonusClassName} />
+                            <div className={cx(bonusClassName, "")} />
                         </Fragment>
                     )
                 })}
+                <CombinationsFooter />
             </div>
-            <div className="sticky bottom-0 shadow-2xl backdrop-blur-lg !p-0">
-                <div className={wrapClassName}>
-                    <div>
-                        {i18n('total')}
-                    </div>
-                    {players.map(({ id, data: { name } }) => (
-                        <div key={id}>
-                            {name}
-                        </div>
-                    ))}
-                    <div />
-                </div>
-            </div>
-        </>
+        </div>
     )
 }
