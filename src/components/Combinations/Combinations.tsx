@@ -23,7 +23,7 @@ for (let i = 1; i <= 4; i++) {
     playersColsStyle[i] = [
         titleWidth,
         ...(new Array(i).fill(playerColorWidth)),
-        decoratorWidth,
+        // decoratorWidth,
     ].join("px ") + "px"
 }
 
@@ -33,8 +33,6 @@ export const wrapClassName = cx(
     "lg:max-w-2/3",
     "w-full lg:w-fit",
     "mx-auto",
-    // "mt-6",
-    // "overflow-auto",
     "relative",
 )
 
@@ -43,27 +41,25 @@ export const Combinations: FC = () => {
     const isMoveAvailable = useRecoilValue(isMoveAvailableSelector)
 
     return (
-        <div className="overflow-auto absolute inset-0 top-24">
+        <div className="w-full overflow-auto">
             <div className={wrapClassName} style={{
                 gridTemplateColumns: playersColsStyle[players.length],
             }}>
                 <CombinationsHeader />
                 {combinationsData.map(({ name, title, combination }) => {
-                    const bonusClassName = cx(isBonus(combination),
-                        // && "bg-gray-300 dark:bg-gray-300/10 !py-2"
-                    )
+                    const bonusClassName = cx(isBonus(combination) && "bg-[var(--line-color)] !py-2")
 
                     return (
                         <Fragment key={name}>
                             <div
-                                className={cx(bonusClassName, "border-r px-2 sticky left-0 bg-[var(--background-color)] z-[1]")}>
+                                className={cx(bonusClassName, "border-r border-b border-[var(--line-color)] px-2")}>
                                 {name}
                                 {/*<div className="absolute">*/}
                                 {/*    {title}*/}
                                 {/*</div>*/}
                             </div>
                             {players.map(({ id }) => (
-                                <div key={id} className={cx("text-center", bonusClassName, "")}>
+                                <div key={id} className={cx("text-center", bonusClassName, "border-b border-b-[var(--line-color)]")}>
                                     <Combination
                                         playerId={id}
                                         combination={combination}
@@ -71,7 +67,7 @@ export const Combinations: FC = () => {
                                     />
                                 </div>
                             ))}
-                            <div className={cx(bonusClassName, "")} />
+                            {/*<div className={bonusClassName} />*/}
                         </Fragment>
                     )
                 })}
