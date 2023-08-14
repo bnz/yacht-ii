@@ -1,6 +1,6 @@
 import type { FC } from "react"
 import { useRecoilValue, useSetRecoilState } from "recoil"
-import { AvatarEnum, players } from "../../atoms"
+import { AvatarEnum, players } from "../../recoil/atoms"
 import React, { ChangeEvent, FormEvent, useCallback, useState } from "react"
 import { KeyboardActions } from "../../helpers/KeyboardActions"
 import { i18n } from "../../helpers/i18n/i18n"

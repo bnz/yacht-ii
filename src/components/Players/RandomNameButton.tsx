@@ -2,7 +2,7 @@ import type { FC } from "react"
 import { ButtonWithIcon } from "../ButtonWithIcon"
 import React, { useCallback } from "react"
 import { useRecoilValue } from "recoil"
-import { getRandomDogNameBySex } from "../../atoms"
+import { getRandomDogNameBySex } from "../../recoil/atoms"
 
 interface RandomNameButtonProps {
     callback(value: string): void

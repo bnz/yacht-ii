@@ -1,5 +1,5 @@
 import type { FC } from "react"
-import { editingInProgress, playersData, startGameSelector } from "../atoms"
+import { editingInProgress, playersData, startGameSelector } from "../recoil/atoms"
 import { i18n } from "../helpers/i18n/i18n"
 import { useRecoilValue, useSetRecoilState } from "recoil"
 import { useCallback } from "react"

@@ -1,7 +1,7 @@
 import type { FC } from "react"
 import cx from "classnames"
 import { useRecoilState } from "recoil"
-import { drawerState } from "../../atoms"
+import { drawerState } from "../../recoil/atoms"
 import { useCallback } from "react"
 import { useTheme } from "../../helpers/useTheme"
 import icon from "../../icons/icon.svg"
@@ -20,7 +20,7 @@ export const MenuButton: FC = () => {
                     : isDark ? "menu-white" : "menu"}')`,
             }}
             className={cx(
-                "z-10 w-10 h-10 fixed lg:top-5 lg:left-5 bottom-5 right-5 rounded",
+                "z-10 w-10 h-10 fixed lg:top-6 lg:left-6 bottom-5 right-5 rounded",
                 "bg-no-repeat bg-center bg-cover",
             )}
         />

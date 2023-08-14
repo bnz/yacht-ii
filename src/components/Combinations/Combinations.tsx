@@ -1,19 +1,15 @@
 import type { FC } from "react"
-import { combinationsData, isBonus } from "./combinationsData"
-import { i18n } from "../../helpers/i18n/i18n"
-import { useRecoilValue } from "recoil"
-import { isMoveAvailableSelector, playersData } from "../../atoms"
 import { Fragment } from "react"
-import { Combination } from "./Combination"
+import { Combination as CombinationType, combinationsData, isBonus } from "./combinationsData"
+import { useRecoilValue } from "recoil"
+import { isMoveAvailableSelector, playersData } from "../../recoil/atoms"
 import cx from "classnames"
-import { Avatar } from "../Players/Avatar"
 import { CombinationsHeader } from "./CombinationsHeader"
 import { CombinationsFooter } from "./CombinationsFooter"
-import { ActivePlayerAvatar } from "../ActivePlayerAvatar"
-import { Dices } from "../Dices/Dices"
-import { DicesActions } from "../Dices/DicesActions"
+import { Combination } from "./Combination"
+import { CombinationName } from "./CombinationName"
 
-const decoratorWidth = 30
+const decoratorWidth = 10
 const titleWidth = 150
 const playerColorWidth = 200
 
@@ -23,17 +19,26 @@ for (let i = 1; i <= 4; i++) {
     playersColsStyle[i] = [
         titleWidth,
         ...(new Array(i).fill(playerColorWidth)),
-        // decoratorWidth,
+        decoratorWidth,
     ].join("px ") + "px"
 }
 
 export const wrapClassName = cx(
     "grid",
-    "[&>div]:py-6",
-    "lg:max-w-2/3",
-    "w-full lg:w-fit",
+    // "[&>div]:py-6",
+    "max-w-2/3",
+    "w-fit",
     "mx-auto",
     "relative",
+)
+
+export const commonBorder = cx(
+    "border-b border-[var(--line-color)]",
+)
+
+export const commonSizes = cx(
+    "h-14",
+    "flex items-center justify-center",
 )
 
 export const Combinations: FC = () => {
@@ -41,25 +46,36 @@ export const Combinations: FC = () => {
     const isMoveAvailable = useRecoilValue(isMoveAvailableSelector)
 
     return (
-        <div className="w-full overflow-auto">
+        <div className="w-full overflow-auto px-2 lg:px-0">
             <div className={wrapClassName} style={{
                 gridTemplateColumns: playersColsStyle[players.length],
             }}>
                 <CombinationsHeader />
                 {combinationsData.map(({ name, title, combination }) => {
-                    const bonusClassName = cx(isBonus(combination) && "bg-[var(--line-color)] !py-2")
+                    const bonusClassName = cx(isBonus(combination) && "bg-[var(--line-color)] border-b-0 !h-8")
+                    const isSixClassName = cx(combination === CombinationType.SIX && "border-b-0")
 
                     return (
                         <Fragment key={name}>
-                            <div
-                                className={cx(bonusClassName, "border-r border-b border-[var(--line-color)] px-2")}>
-                                {name}
-                                {/*<div className="absolute">*/}
-                                {/*    {title}*/}
-                                {/*</div>*/}
-                            </div>
+                            <CombinationName
+                                className={cx(
+                                    bonusClassName,
+                                    bonusClassName !== "" && "rounded-bl rounded-tl",
+                                    isSixClassName,
+                                )}
+                                name={name}
+                                title={title}
+                                combination={combination}
+                            />
                             {players.map(({ id }) => (
-                                <div key={id} className={cx("text-center", bonusClassName, "border-b border-b-[var(--line-color)]")}>
+                                <div key={id} className={cx(
+                                    bonusClassName,
+                                    commonBorder,
+                                    // commonSizes,
+                                    isSixClassName,
+                                    "h-14",
+                                    "flex",
+                                )}>
                                     <Combination
                                         playerId={id}
                                         combination={combination}
@@ -67,7 +83,12 @@ export const Combinations: FC = () => {
                                     />
                                 </div>
                             ))}
-                            {/*<div className={bonusClassName} />*/}
+                            <div className={cx(
+                                bonusClassName,
+                                commonBorder,
+                                bonusClassName !== "" && cx("rounded-br rounded-tr"),
+                                isSixClassName,
+                            )} />
                         </Fragment>
                     )
                 })}

@@ -1,7 +1,7 @@
 import type { FC } from "react"
 import { Drawer } from "./components/Drawer/Drawer"
 import { useRecoilValue } from "recoil"
-import { gamePhase, GamePhases } from "./atoms"
+import { gamePhase, GamePhases } from "./recoil/atoms"
 import { PreGame } from "./components/Sections/PreGame"
 import { Players } from "./components/Sections/Players"
 import { InPlay } from "./components/Sections/InPlay"

@@ -1,6 +1,6 @@
 import { checkMatch, resultsMap, Return } from './checkMatch'
 import { Combination } from "../components/Combinations/combinationsData"
-import { DicesType } from "../atoms"
+import { DicesType } from "../recoil/atoms"
 
 // @ts-ignore
 const reduce = Function.bind.call(Function.call, Array.prototype.reduce)

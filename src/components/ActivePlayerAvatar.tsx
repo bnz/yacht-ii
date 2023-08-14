@@ -1,7 +1,7 @@
 import type { FC } from "react"
 import cx from "classnames"
 import { useRecoilValue } from "recoil"
-import { playerMoveAtom, players } from "../atoms"
+import { playerMoveAtom, players } from "../recoil/atoms"
 import { useDogs } from "./Players/Avatar"
 
 export const ActivePlayerAvatar: FC = () => {
@@ -20,7 +20,7 @@ export const ActivePlayerAvatar: FC = () => {
                 "text-[var(--background-color)]"
             )}
             style={{
-                backgroundImage: `url('${dogs[avatar]}')`,
+                backgroundImage: `url('${dogs.normal[avatar]}')`,
             }}
         >
             {name}

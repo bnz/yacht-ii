@@ -1,7 +1,7 @@
 import type { FC } from "react"
 import { useCallback } from "react"
 import { useRecoilState, useRecoilValue } from "recoil"
-import { addPlayerFormVisible, editingInProgress, MAX_PLAYERS_COUNT, playersCount, playersData } from "../../atoms"
+import { addPlayerFormVisible, editingInProgress, MAX_PLAYERS_COUNT, playersCount, playersData } from "../../recoil/atoms"
 import { ButtonWithIcon } from "../ButtonWithIcon"
 
 export const AddPlayer: FC = () => {

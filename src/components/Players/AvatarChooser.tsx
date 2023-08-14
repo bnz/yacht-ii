@@ -3,7 +3,7 @@ import { Backdrop } from "../parts/Backdrop"
 import cx from "classnames"
 import icon from "../../icons/icon.svg"
 import { i18n } from "../../helpers/i18n/i18n"
-import { AvatarEnum, playersData } from "../../atoms"
+import { AvatarEnum, playersData } from "../../recoil/atoms"
 import { useDogs } from "./Avatar"
 import { useRecoilValue } from "recoil"
 import { useTheme } from "../../helpers/useTheme"
@@ -40,7 +40,7 @@ export const AvatarChooser: FC<AvatarChooserProps> = ({ avatar, toggle, onClick 
                     {i18n("chooseDog")}
                 </h3>
                 <ul className="flex flex-grow flex-wrap gap-5 justify-center">
-                    {themedDogs.map((url, index) => {
+                    {themedDogs.normal.map((url, index) => {
                         const selected = avatar === index
                         const taken = takenAvatars.includes(index)
                         const isClickable = !selected && !taken

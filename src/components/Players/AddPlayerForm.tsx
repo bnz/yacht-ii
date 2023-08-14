@@ -7,8 +7,7 @@ import {
     addPlayerFormVisible, editingInProgress,
     getAvailableAvatar,
     getRandomDogName,
-    getRandomDogNameBySex,
-} from "../../atoms"
+} from "../../recoil/atoms"
 import { ItemWrap } from "./ItemWrap"
 import { InputWithError } from "../InputWithError"
 import { KeyboardActions } from "../../helpers/KeyboardActions"

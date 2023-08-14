@@ -1,6 +1,6 @@
 import type { FC } from "react"
 import { useRecoilValue } from "recoil"
-import { addPlayerFormVisible, playersData } from "../../atoms"
+import { addPlayerFormVisible, playersData } from "../../recoil/atoms"
 import { PlayersListItem } from "./PlayersListItem"
 import React from "react"
 import { AddPlayerForm } from "./AddPlayerForm"

@@ -1,6 +1,6 @@
 import type { FC } from "react"
 import { useSetRecoilState } from "recoil"
-import { gamePhase, GamePhases, resetPlayers } from "../../atoms"
+import { gamePhase, GamePhases, resetPlayers } from "../../recoil/atoms"
 import { ButtonWithIcon } from "../ButtonWithIcon"
 import { useCallback } from "react"
 

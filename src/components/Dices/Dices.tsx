@@ -1,7 +1,7 @@
 import type { FC } from "react"
 import { Dice } from "./Dice/Dice"
 import { useRecoilValue, useSetRecoilState } from "recoil"
-import { dicesSelectedAtom, loadingAtom, selectDice, dicesAtom, isShotAvailable } from "../../atoms"
+import { dicesSelectedAtom, loadingAtom, selectDice, dicesAtom, isShotAvailable } from "../../recoil/atoms"
 import cx from "classnames"
 
 export const Dices: FC = () => {

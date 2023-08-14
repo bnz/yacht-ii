@@ -38,26 +38,26 @@ body {
         @apply outline-0 px-3 py-2 border dark:border-white/30 rounded;
     }
 
-    button[type="button"],
-    button[type="submit"] {
+    button[type="button"]:not([data-empty]),
+    button[type="submit"]:not([data-empty]) {
         @apply shadow py-2 px-5 rounded;
         @apply bg-[rgba(92,121,177,0.1)] dark:bg-[rgba(255,255,255,0.08)];
         @apply text-[rgba(0,32,51,0.8)] dark:text-[rgba(255,255,255,0.8)];
         @apply transition-colors;
     }
 
-    button[type="button"]:hover,
-    button[type="submit"]:hover {
+    button[type="button"]:not([data-empty]):hover,
+    button[type="submit"]:not([data-empty]):hover {
         @apply bg-[rgba(92,121,177,0.2)] dark:bg-[rgba(255,255,255,0.15)];
     }
 
-    button[type="button"]:not([disabled]),
-    button[type="submit"]:not([disabled]) {
+    button[type="button"]:not([data-empty]):not([disabled]),
+    button[type="submit"]:not([data-empty]):not([disabled]) {
         @apply active:shadow-inner;
     }
 
-    button[type="submit"][disabled],
-    button[type="button"][disabled] {
+    button[type="submit"][disabled]:not([data-empty]),
+    button[type="button"][disabled]:not([data-empty]) {
         @apply relative;
         @apply bg-[rgba(92,121,177,0.025)] dark:bg-[rgba(255,255,255,0.025)];
         @apply cursor-not-allowed;
@@ -65,6 +65,10 @@ body {
         @apply after:absolute after:inset-0;
         @apply after:rounded;
         @apply after:bg-white/50 dark:after:bg-black/20;
+    }
+
+    button[data-empty] {
+        @apply outline block;
     }
 
 }

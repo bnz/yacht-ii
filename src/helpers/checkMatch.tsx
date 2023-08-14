@@ -1,5 +1,5 @@
 import { Combination } from "../components/Combinations/combinationsData"
-import { DicesType } from "../atoms"
+import { DicesType } from "../recoil/atoms"
 import { uniq } from "./uniq"
 
 export type Return<T> = {

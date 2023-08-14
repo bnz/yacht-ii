@@ -1,9 +1,10 @@
 import { atom, atomFamily, DefaultValue, GetRecoilValue, selector } from "recoil"
 import { recoilPersist } from 'recoil-persist'
-import { Combination, combinationsData } from "./components/Combinations/combinationsData"
-import { checkMatch } from "./helpers/checkMatch"
-import { makeId } from "./helpers/makeId"
-import { getRandomInt } from "./helpers/random"
+import { Combination, combinationsData } from "../components/Combinations/combinationsData"
+import { checkMatch } from "../helpers/checkMatch"
+import { makeId } from "../helpers/makeId"
+import { getRandomInt } from "../helpers/random"
+import { nextTurnAtom } from "./atoms/nextTurnAtom"
 
 export enum GamePhases {
     PRE_GAME = 'preGame',
@@ -116,7 +117,7 @@ export const editingInProgress = atom<boolean>({
 export const addPlayer = selector<{ name: string, avatar: AvatarEnum }>({
     key: "addPlayer",
     get() {
-        throw new Error("use only as setter")
+        throw new Error("addPlayer: use only as setter")
     },
     set({ get, set }, props) {
         if (!(props instanceof DefaultValue)) {
@@ -131,7 +132,7 @@ export const addPlayer = selector<{ name: string, avatar: AvatarEnum }>({
 export const removePlayer = selector<string>({
     key: "removePlayer",
     get() {
-        throw new Error("use only as setter")
+        throw new Error("removePlayer: use only as setter")
     },
     set({ get, set, reset }, id) {
         if (!(id instanceof DefaultValue)) {
@@ -164,23 +165,18 @@ export const playerTotals = selector({
     key: "playerTotals",
     get({ get }) {
         const players = get(playersData)
-
-        let totals: PlayersTotals = {}
+        const totals: PlayersTotals = {}
 
         players.forEach(({ id: playerId }) => {
-            // const points = playerPoints[playerId] || {}
-            //
-            // totals[playerId] = Object.keys(points).reduce((prev, key) => {
-            //     const curr = points[key as Combination]! // this points should exists!
-            //
-            //     if (key === Combination.BONUS && Math.sign(curr) === -1) {
-            //         return prev
-            //     }
-            //
-            //     return prev + curr
-            // }, 0)
+            const points = get(playerPointsAtomFamily(playerId))
+            totals[playerId] = Object.keys(points).reduce((prev, key) => {
+                const curr = points[key as Combination]!
+                if (key === Combination.BONUS && Math.sign(curr) === -1) {
+                    return prev
+                }
+                return prev + curr
+            }, 0)
         })
-
         return totals
     },
 })
@@ -193,7 +189,7 @@ export const playersCount = selector({
 export const resetPlayers = selector<null>({
     key: "resetPlayers",
     get() {
-        throw new Error("use only as setter")
+        throw new Error("resetPlayers: use only as setter")
     },
     set({ get, reset }) {
         get(playersIds).forEach((id) => reset(players(id)))
@@ -220,7 +216,7 @@ export const dicesAtom = atom<DicesType>({
     effects: [persist("dices")],
 })
 
-type PlayerMove = [playerId: string, shot: number]
+export type PlayerMove = [playerId: string, shot: number]
 
 export const playerMoveAtom = atom<PlayerMove>({
     key: "playerMoveAtom",
@@ -231,21 +227,10 @@ export const playerMoveAtom = atom<PlayerMove>({
 export const startGameSelector = selector<boolean>({
     key: "startGameSelector",
     get() {
-        throw new Error("use only as setter")
+        throw new Error("startGameSelector: use only as setter")
     },
     set({ get, set }) {
-        const players = get(playersData)
-        const playerMove = get(playerMoveAtom)
-        let { 0: playerId } = playerMove
-
-        if (!playerId) {
-            playerId = players[0].id
-        } else {
-            const index = players.findIndex(({ id }) => id === playerId)
-            const player = players[index + 1]
-            playerId = player ? player.id : players[0].id
-        }
-        set(playerMoveAtom, [playerId, 0] as PlayerMove)
+        set(nextTurnAtom, true)
         set(gamePhase, GamePhases.IN_PLAY)
     },
 })
@@ -266,7 +251,7 @@ export const dicesSelectedAtom = atom<number[]>({
 export const selectDice = selector<number>({
     key: "selectDice",
     get() {
-        throw new Error("use only as setter")
+        throw new Error("selectDice: use only as setter")
     },
     set({ get, set }, props) {
         if (!(props instanceof DefaultValue)) {
@@ -287,7 +272,7 @@ export const selectDice = selector<number>({
 export const restartGame = selector<boolean>({
     key: "restartGame",
     get() {
-        throw new Error("use only as setter")
+        throw new Error("restartGame: use only as setter")
     },
     set({ get, reset, set }) {
         reset(playerMoveAtom)
@@ -310,18 +295,14 @@ export type Points = {
     [key in Combination]?: number
 }
 
-export interface PlayerPoints {
-    [playerId: string]: Points
-}
-
-export const playerPointsAtomFamily = atomFamily<PlayerPoints, string>({
+export const playerPointsAtomFamily = atomFamily<Points, string>({
     key: "playerPointsAtomFamily",
     default: {},
     effects: [persist("player-points")],
 })
 
 export const isMoveAvailableSelector = selector<boolean>({
-    key: "isMoveAvailable",
+    key: "isMoveAvailableSelector",
     get({ get }) {
         const [activePlayerId, shot] = get(playerMoveAtom)
         const player = get(playerPointsAtomFamily(activePlayerId))

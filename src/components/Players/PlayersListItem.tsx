@@ -4,7 +4,7 @@ import { EditName } from "./EditName"
 import { Row } from "./Row"
 import { ItemWrap } from "./ItemWrap"
 import { useSetRecoilState } from "recoil"
-import { editingInProgress } from "../../atoms"
+import { editingInProgress } from "../../recoil/atoms"
 
 interface PlayersListItemProps {
     id: string
