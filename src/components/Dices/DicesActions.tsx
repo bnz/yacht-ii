@@ -2,11 +2,15 @@ import type { FC } from "react"
 import { i18n } from "../../helpers/i18n/i18n"
 import { useCallback } from "react"
 import { useRecoilState, useRecoilValue } from "recoil"
-import { dicesAtom, dicesSelectedAtom, isShotAvailable, loadingAtom, MAX_SHOT_COUNT, playerMoveAtom } from "../../recoil/atoms"
-import casinoIcon from "../../icons/casino.svg"
-import casinoWhiteIcon from "../../icons/casino-white.svg"
+import {
+    dicesAtom,
+    dicesSelectedAtom,
+    isShotAvailable,
+    loadingAtom,
+    MAX_SHOT_COUNT,
+    playerMoveAtom,
+} from "../../recoil/atoms"
 import { rand } from "../../helpers/random"
-import { useTheme } from "../../helpers/useTheme"
 import { ButtonWithIcon } from "../ButtonWithIcon"
 import cx from "classnames"
 
@@ -21,7 +25,6 @@ export const DicesActions: FC = () => {
     const [dices, setDices] = useRecoilState(dicesAtom)
     const [[, shot], setPlayerMove] = useRecoilState(playerMoveAtom)
     const isShot = useRecoilValue(isShotAvailable)
-    const isDark = useTheme(true)
 
     const shuffle = useCallback(() => {
         delay = Date.now()
@@ -58,7 +61,8 @@ export const DicesActions: FC = () => {
     const deselectAll = useCallback(() => setDicesSelected([]), [setDicesSelected])
 
     return (
-        <div className={cx("justify-center flex gap-5 transition-all duration-300", isShot ? "h-0 overflow-hidden" : "mb-6 py-3")}>
+        <div
+            className={cx("justify-center flex gap-5 transition-all duration-300", isShot ? "h-0 overflow-hidden" : "mb-6 py-3")}>
             <ButtonWithIcon
                 onMouseUp={shuffleUp}
                 onMouseDown={shuffle}
