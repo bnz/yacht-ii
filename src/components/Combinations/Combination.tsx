@@ -18,12 +18,14 @@ interface CombinationProps {
     playerId: string
     combination: CombinationType
     isMoveAvailable: boolean
+    className: string
 }
 
 export const Combination: FC<CombinationProps> = ({
     playerId,
     combination,
     isMoveAvailable,
+    className,
 }) => {
     const dices = useRecoilValue(dicesAtom)
     const [activePlayerId] = useRecoilValue(playerMoveAtom)
@@ -48,10 +50,12 @@ export const Combination: FC<CombinationProps> = ({
         saveCombination({ playerId, combination, points })
     }, [saveCombination, playerId, combination, points])
 
+    const classes = cx(className, active && "border-l border-r bg-[var(--background-color-active)]")
+
     switch (type) {
         case "matching":
             return (
-                <button type="button" onClick={save} data-empty={true} className="w-full">
+                <button type="button" onClick={save} data-empty={true} className={classes}>
                     <Points
                         points={points}
                         maxPoints={maxPoints}
@@ -60,7 +64,7 @@ export const Combination: FC<CombinationProps> = ({
             )
         case "matched":
             return (
-                <div className="text-2xl font-thin">
+                <div className={cx(classes, "text-2xl font-thin")}>
                     {existingCombination}
                 </div>
             )
@@ -74,22 +78,22 @@ export const Combination: FC<CombinationProps> = ({
                 ? `${i18n('more')} ${combinationAsNumber * -1} ${defineWorkEnding(combinationAsNumber)}`
                 : combinationAsNumber
 
-            console.log({ bonus })
-
             return (
-                <div>{bonus}</div>
+                <div className={classes}>{bonus}</div>
             )
         }
         case "strike": {
             return (
-                <div>
+                <div className={classes}>
                     {i18n('button.strikeOut')}
                 </div>
             )
         }
         default: {
             return (
-                <div className="text-[var(--line-color)]">{EMPTY_CELL}</div>
+                <div className={cx(classes, "text-[var(--line-color)]")}>
+                    {EMPTY_CELL}
+                </div>
             )
         }
     }

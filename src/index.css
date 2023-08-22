@@ -4,15 +4,17 @@
 
 :root {
     --background-color: rgba(247, 248, 251, 1);
+    --background-color-active: rgba(255, 255, 255, 0.5);
     --text-color: rgba(0, 32, 51, 1);
-    --line-color: rgba(0, 0, 0, 0.1);
+    --line-color: rgba(0, 0, 0, 0.05);
 }
 
 @media (prefers-color-scheme: dark) {
     :root {
         --background-color: rgba(57, 57, 61, 1);
+        --background-color-active: rgba(57, 57, 57, 0.5);
         --text-color: rgba(255, 255, 255, 0.8);
-        --line-color: rgba(255, 255, 255, 0.1);
+        --line-color: rgba(255, 255, 255, 0.05);
     }
 }
 
@@ -68,7 +70,7 @@ body {
     }
 
     button[data-empty] {
-        @apply outline block;
+        @apply block;
     }
 
 }

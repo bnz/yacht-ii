@@ -157,6 +157,17 @@ export const playersData = selector({
     ),
 })
 
+export const playersDataActiveFirst = selector({
+    key: "playersDataActiveFirst",
+    get({ get }) {
+        const players = [...get(playersData)]
+        const [playerId] = get(playerMoveAtom)
+        const index = players.findIndex(({ id }) => id === playerId)
+        const nowFirst = players.splice(index, 1)
+        return [...nowFirst, ...players]
+    },
+})
+
 export type PlayersTotals = {
     [playerId: string]: number
 }

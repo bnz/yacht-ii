@@ -80,7 +80,7 @@ export const CombinationName: FC<CombinationNameProps> = ({ className, name, tit
 
     return (
         <div
-            className={cx(className, commonSizes, commonBorder, "relative border-r !justify-start cursor-pointer pl-2")}
+            className={cx(className, commonSizes, commonBorder, "relative !justify-start cursor-pointer pl-2")}
             onClick={toggle}
         >
             {name}

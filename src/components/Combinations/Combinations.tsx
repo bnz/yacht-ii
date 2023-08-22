@@ -2,7 +2,7 @@ import type { FC } from "react"
 import { Fragment } from "react"
 import { Combination as CombinationType, combinationsData, isBonus } from "./combinationsData"
 import { useRecoilValue } from "recoil"
-import { isMoveAvailableSelector, playersData } from "../../recoil/atoms"
+import { isMoveAvailableSelector, playersDataActiveFirst } from "../../recoil/atoms"
 import cx from "classnames"
 import { CombinationsHeader } from "./CombinationsHeader"
 import { CombinationsFooter } from "./CombinationsFooter"
@@ -42,7 +42,7 @@ export const commonSizes = cx(
 )
 
 export const Combinations: FC = () => {
-    const players = useRecoilValue(playersData)
+    const players = useRecoilValue(playersDataActiveFirst)
     const isMoveAvailable = useRecoilValue(isMoveAvailableSelector)
 
     return (
@@ -52,7 +52,7 @@ export const Combinations: FC = () => {
             }}>
                 <CombinationsHeader />
                 {combinationsData.map(({ name, title, combination }) => {
-                    const bonusClassName = cx(isBonus(combination) && "bg-[var(--line-color)] border-b-0 !h-8")
+                    const bonusClassName = cx(isBonus(combination) && "!bg-[var(--line-color)] border-b-0 !h-8")
                     const isSixClassName = cx(combination === CombinationType.SIX && "border-b-0")
 
                     return (
@@ -68,20 +68,21 @@ export const Combinations: FC = () => {
                                 combination={combination}
                             />
                             {players.map(({ id }) => (
-                                <div key={id} className={cx(
-                                    bonusClassName,
-                                    commonBorder,
-                                    // commonSizes,
-                                    isSixClassName,
-                                    "h-14",
-                                    "flex",
-                                )}>
-                                    <Combination
-                                        playerId={id}
-                                        combination={combination}
-                                        isMoveAvailable={isMoveAvailable}
-                                    />
-                                </div>
+                                <Combination
+                                    key={id}
+                                    playerId={id}
+                                    combination={combination}
+                                    isMoveAvailable={isMoveAvailable}
+                                    className={cx(
+                                        bonusClassName,
+                                        commonBorder,
+                                        // commonSizes,
+                                        isSixClassName,
+                                        "h-14",
+                                        "flex",
+                                        "items-center justify-center",
+                                    )}
+                                />
                             ))}
                             <div className={cx(
                                 bonusClassName,
