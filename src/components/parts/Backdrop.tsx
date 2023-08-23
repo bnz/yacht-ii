@@ -2,11 +2,13 @@ import type { FC } from "react"
 import cx from "classnames"
 
 interface BackdropProps {
-    onClick(): void
+    onClick?(): void
+    className?: string | undefined
 }
 
-export const Backdrop: FC<BackdropProps> = ({ onClick }) => (
+export const Backdrop: FC<BackdropProps> = ({ onClick, className = "bg-black/50 dark:bg-black/80" }) => (
     <div onClick={onClick} className={cx(
-        "fixed top-0 left-0 right-0 bottom-0 bg-black/50 dark:bg-black/80 z-10",
+        "fixed top-0 left-0 right-0 bottom-0 z-10",
+        className,
     )} />
 )

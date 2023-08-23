@@ -1,10 +1,10 @@
 import type { FC } from "react"
-import { i18n } from "../../helpers/i18n/i18n"
 import { Avatar } from "../Players/Avatar"
 import { useRecoilValue } from "recoil"
 import { playerMoveAtom, playersDataActiveFirst } from "../../recoil/atoms"
 import cx from "classnames"
 import { commonBorder } from "./Combinations"
+import { ToggleNamesColumnViewButton } from "./ToggleNamesColumnViewButton"
 
 export const CombinationsHeader: FC = () => {
     const [playerId] = useRecoilValue(playerMoveAtom)
@@ -12,7 +12,7 @@ export const CombinationsHeader: FC = () => {
 
     return (
         <>
-            <div className={commonBorder} />
+            <ToggleNamesColumnViewButton />
             {players.map(({ id, data: { name, avatar } }) => (
                 <div key={id} className={cx(
                     commonBorder,

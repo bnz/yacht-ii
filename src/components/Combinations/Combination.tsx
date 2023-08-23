@@ -49,22 +49,30 @@ export const Combination: FC<CombinationProps> = ({
     const save = useCallback(() => {
         saveCombination({ playerId, combination, points })
     }, [saveCombination, playerId, combination, points])
+    const strikeOut = useCallback(() => {
+        saveCombination({ playerId, combination, points: 0 })
+    }, [saveCombination, playerId, combination])
 
-    const classes = cx(className, active && "border-l border-r bg-[var(--background-color-active)]")
+    const classes = cx(className, active && "border-l border-r")
 
     switch (type) {
         case "matching":
             return (
-                <button type="button" onClick={save} data-empty={true} className={classes}>
-                    <Points
-                        points={points}
-                        maxPoints={maxPoints}
-                    />
+                <button type="button" onClick={save} data-empty={true} className={cx(classes)}>
+                    <div className={cx(
+                        "animate-pulse shadow-2xl flex justify-center items-center h-12 mx-1",
+                        "bg-blue-200 dark:bg-blue-950",
+                    )}>
+                        <Points
+                            points={points}
+                            maxPoints={maxPoints}
+                        />
+                    </div>
                 </button>
             )
         case "matched":
             return (
-                <div className={cx(classes, "text-2xl font-thin")}>
+                <div className={cx(classes, "text-2xl font-thin", active && "bg-[var(--background-color-active)]")}>
                     {existingCombination}
                 </div>
             )
@@ -84,14 +92,23 @@ export const Combination: FC<CombinationProps> = ({
         }
         case "strike": {
             return (
-                <div className={classes}>
-                    {i18n('button.strikeOut')}
-                </div>
+                <button type="button" data-empty={true} className={classes} onClick={strikeOut}>
+                    <div className={cx(
+                        "animate-pulse shadow-2xl flex justify-center items-center h-12 mx-1",
+                        "bg-red-200 dark:bg-red-950",
+                    )}>
+                        {i18n('button.strikeOut')}
+                    </div>
+                </button>
             )
         }
         default: {
             return (
-                <div className={cx(classes, "text-[var(--line-color)]")}>
+                <div className={cx(
+                    classes,
+                    "text-[var(--line-color)]",
+                    active && "bg-[var(--background-color-active)]",
+                )}>
                     {EMPTY_CELL}
                 </div>
             )

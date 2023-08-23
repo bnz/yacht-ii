@@ -5,6 +5,8 @@ import { Combination } from "./combinationsData"
 import { Dice } from "../Dices/Dice/Dice"
 import { commonBorder, commonSizes } from "./Combinations"
 import { CombinationTitle } from "./CombinationTitle"
+import { namesColumnViewAtom, NamesColumnViewEnum } from "../../recoil/atoms/namesColumnViewAtom"
+import { useRecoilValue } from "recoil"
 
 interface CombinationNameProps {
     className?: string | undefined
@@ -14,8 +16,12 @@ interface CombinationNameProps {
 }
 
 export const CombinationName: FC<CombinationNameProps> = ({ className, name, title, combination }) => {
+
+    const [title1, title2] = title.split("###")
+
     const [open, setOpen] = useState(false)
     const toggle = useCallback(() => setOpen((prev) => !prev), [setOpen])
+    const namesColumnView = useRecoilValue(namesColumnViewAtom)
 
     const dice = useMemo(() => {
         switch (combination) {
@@ -25,53 +31,73 @@ export const CombinationName: FC<CombinationNameProps> = ({ className, name, tit
             case Combination.FOUR:
             case Combination.FIVE:
             case Combination.SIX:
-                return <Dice value={combination} index={0} />
+                return (
+                    <>
+                        <Dice value={combination} index={0} />
+                        <Dice value={combination} index={0} />
+                        <Dice value={combination} index={0} />
+                        <div className={cx(
+                            "flex relative",
+                            "after:block",
+                            "after:absolute after:inset-0 after:bg-[var(--background-color-disabled)]",
+                        )}>
+                            <Dice value={combination} index={0} />
+                            <Dice value={combination} index={0} />
+                        </div>
+                    </>
+                )
             case Combination.EQUAL_3:
                 return (
-                    <div className="flex text-[10px]">
+                    <>
                         <Dice value={3} index={0} />
                         <Dice value={3} index={0} />
                         <Dice value={3} index={0} />
-                    </div>
+                    </>
                 )
             case Combination.EQUAL_4:
                 return (
-                    <div className="flex text-[10px]">
+                    <>
                         <Dice value={3} index={0} />
                         <Dice value={3} index={0} />
                         <Dice value={3} index={0} />
                         <Dice value={3} index={0} />
-                    </div>
+                    </>
                 )
             case Combination.SMALL_STRAIGHT:
                 return (
-                    <div>a</div>
+                    <>a</>
                 )
             case Combination.BIG_STRAIGHT:
                 return (
-                    <div>b</div>
+                    <>b</>
                 )
             case Combination.TWO_PAIR:
                 return (
-                    <div>c</div>
+                    <>c</>
                 )
             case Combination.FULL_HOUSE:
                 return (
-                    <div>d</div>
+                    <>d</>
                 )
             case Combination.THE_YACHT:
                 return (
-                    <div className="flex text-[10px]">
-                        <Dice value={6} index={0} />
-                        <Dice value={6} index={0} />
-                        <Dice value={6} index={0} />
-                        <Dice value={6} index={0} />
-                        <Dice value={6} index={0} />
-                    </div>
+                    <>
+                        <Dice value={3} index={0} />
+                        <Dice value={3} index={0} />
+                        <Dice value={3} index={0} />
+                        <Dice value={3} index={0} />
+                        <Dice value={3} index={0} />
+                    </>
                 )
             case Combination.CHANCE:
                 return (
-                    <div>e</div>
+                    <>
+                        <Dice value={2} index={0} />
+                        <Dice value={3} index={0} />
+                        <Dice value={4} index={0} />
+                        <Dice value={5} index={0} />
+                        <Dice value={6} index={0} />
+                    </>
                 )
             default:
                 return <></>
@@ -83,16 +109,21 @@ export const CombinationName: FC<CombinationNameProps> = ({ className, name, tit
             className={cx(className, commonSizes, commonBorder, "relative !justify-start cursor-pointer pl-2")}
             onClick={toggle}
         >
-            {name}
+            {namesColumnView === NamesColumnViewEnum.text ? name : (
+                <div className="text-sm absolute left-1/2 top-1/2 -translate-y-1/2 -translate-x-1/2 flex">
+                    {dice}
+                </div>
+            )}
             {open && (
                 <CombinationTitle onClose={toggle}>
-                    {title}
-                    {dice}
+                    <h5 className="text-2xl mb-5">{name}</h5>
+                    <p className="mb-2">{title1}</p>
+                    <p className="mb-5 font-bold text-xs">{title2}</p>
+                    <div className="flex text-2xl">
+                        {dice}
+                    </div>
                 </CombinationTitle>
             )}
-            <div className="text-sm absolute right-2 top-1/2 -translate-y-1/2">
-                {dice}
-            </div>
         </div>
     )
 }

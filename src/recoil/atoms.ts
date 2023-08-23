@@ -1,18 +1,17 @@
 import { atom, atomFamily, DefaultValue, GetRecoilValue, selector } from "recoil"
-import { recoilPersist } from 'recoil-persist'
 import { Combination, combinationsData } from "../components/Combinations/combinationsData"
 import { checkMatch } from "../helpers/checkMatch"
 import { makeId } from "../helpers/makeId"
 import { getRandomInt } from "../helpers/random"
 import { nextTurnAtom } from "./atoms/nextTurnAtom"
+import { persist } from "./persist"
+import { combinationsWrapperRefAtom } from "./atoms/combinationsWrapperRef"
 
 export enum GamePhases {
     PRE_GAME = 'preGame',
     PLAYERS_SELECTION = 'playersSelection',
     IN_PLAY = 'inPlay',
 }
-
-const persist = (key: string) => recoilPersist({ key }).persistAtom
 
 export const gamePhase = atom<GamePhases>({
     key: "gamePhase",
@@ -163,8 +162,9 @@ export const playersDataActiveFirst = selector({
         const players = [...get(playersData)]
         const [playerId] = get(playerMoveAtom)
         const index = players.findIndex(({ id }) => id === playerId)
-        const nowFirst = players.splice(index, 1)
-        return [...nowFirst, ...players]
+        const beforeArray = players.slice(0, index)
+        const arr = players.splice(index, players.length)
+        return [...arr, ...beforeArray]
     },
 })
 
@@ -291,8 +291,9 @@ export const restartGame = selector<boolean>({
         reset(dicesSelectedAtom)
         reset(gamePhase)
         set(resetPlayers, null)
-        // get(playersIds).forEach((id) => reset(players(id)))
-        // reset(playersIds)
+        get(playersIds).forEach((id) => reset(players(id)))
+        reset(playersIds)
+        reset(combinationsWrapperRefAtom)
 
         // TODO
         // resetPlayerPoints()
