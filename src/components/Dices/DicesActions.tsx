@@ -8,11 +8,12 @@ import {
     isShotAvailable,
     loadingAtom,
     MAX_SHOT_COUNT,
-    playerMoveAtom,
+
 } from "../../recoil/atoms"
 import { rand } from "../../helpers/random"
 import { ButtonWithIcon } from "../ButtonWithIcon"
 import cx from "classnames"
+import { playerMoveAtom } from "../../recoil/atoms/players/playerMove"
 
 const defaultDelay = 300
 let delay = 0

@@ -29,9 +29,10 @@ export const CombinationTitle: FC<PropsWithChildren<{ onClose: VoidFunction }>> 
             <div
                 ref={ref}
                 className={cx(
+                    "not-italic font-medium",
                     bottom ? "bottom-2" : "top-2",
                     "absolute left-2",
-                    "max-w-7xl w-72 bg-[var(--background-color)] shadow-2xl z-10 p-5 cursor-auto",
+                    "max-w-7xl w-80 bg-[var(--background-color)] shadow-2xl z-10 p-5 cursor-auto",
                     "border border-[var(--line-color)] rounded",
                 )}
             >

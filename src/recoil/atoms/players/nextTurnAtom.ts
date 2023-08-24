@@ -1,5 +1,6 @@
 import { selector } from "recoil"
-import { PlayerMove, playerMoveAtom, playersData } from "../atoms"
+import { playersData } from "../../atoms"
+import { PlayerMove, playerMoveAtom } from "./playerMove"
 
 export const nextTurnAtom = selector<boolean>({
     key: "nextTurnAtom",

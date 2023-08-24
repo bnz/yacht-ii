@@ -1,10 +1,11 @@
 import type { FC } from "react"
 import { Avatar } from "../Players/Avatar"
 import { useRecoilValue } from "recoil"
-import { playerMoveAtom, playersDataActiveFirst } from "../../recoil/atoms"
+import { playersDataActiveFirst } from "../../recoil/selectors/playersDataActiveFirst"
 import cx from "classnames"
 import { commonBorder } from "./Combinations"
 import { ToggleNamesColumnViewButton } from "./ToggleNamesColumnViewButton"
+import { playerMoveAtom } from "../../recoil/atoms/players/playerMove"
 
 export const CombinationsHeader: FC = () => {
     const [playerId] = useRecoilValue(playerMoveAtom)

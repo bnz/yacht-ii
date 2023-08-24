@@ -1,9 +1,11 @@
 import type { FC } from "react"
 import { i18n } from "../../helpers/i18n/i18n"
 import { useRecoilValue } from "recoil"
-import { playerMoveAtom, playersDataActiveFirst, playerTotals } from "../../recoil/atoms"
+import { playersDataActiveFirst } from "../../recoil/selectors/playersDataActiveFirst"
+import { playerTotalsAtom } from "../../recoil/atoms"
 import cx from "classnames"
 import { commonSizes } from "./Combinations"
+import { playerMoveAtom } from "../../recoil/atoms/players/playerMove"
 
 const common = cx(
     "border-t-2",
@@ -12,7 +14,7 @@ const common = cx(
 
 export const CombinationsFooter: FC = () => {
     const players = useRecoilValue(playersDataActiveFirst)
-    const totals = useRecoilValue(playerTotals)
+    const totals = useRecoilValue(playerTotalsAtom)
     const [playerId] = useRecoilValue(playerMoveAtom)
 
     return (

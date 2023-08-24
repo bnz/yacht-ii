@@ -3,7 +3,6 @@ import { Combination as CombinationType, EMPTY_CELL, isBonus as _isBonus } from 
 import { useRecoilValue, useSetRecoilState } from "recoil"
 import {
     dicesAtom,
-    playerMoveAtom,
     playerPointsAtomFamily,
 } from "../../recoil/atoms"
 import { saveCombinationSelector } from "../../recoil/selectors/saveCombinationSelector"
@@ -13,6 +12,8 @@ import { Points } from "../Points"
 import { i18n } from "../../helpers/i18n/i18n"
 import { defineWorkEnding } from "../../helpers/defineWorkEnding"
 import { useCallback } from "react"
+import { playerMoveAtom } from "../../recoil/atoms/players/playerMove"
+import { CombinationButton } from "./CombinationButton"
 
 interface CombinationProps {
     playerId: string
@@ -38,12 +39,23 @@ export const Combination: FC<CombinationProps> = ({
     const isBonus = _isBonus(combination)
     const matched = existingCombination !== EMPTY_CELL && !isBonus
 
+    // console.log({combination})
+
     const type = cx({
         matched,
         matching: active && !matched && points !== undefined && points > 0,
         bonus: isBonus && existingCombination !== EMPTY_CELL,
         strike: active && !matched && !isBonus && !isMoveAvailable,
     })
+
+    console.log({ combination, type })
+
+    // console.log({
+    //     active,
+    //     "!matched": !matched,
+    //     "!isBonus": !isBonus,
+    //     "!isMoveAvailable": !isMoveAvailable,
+    // })
 
     const saveCombination = useSetRecoilState(saveCombinationSelector)
     const save = useCallback(() => {
@@ -58,17 +70,16 @@ export const Combination: FC<CombinationProps> = ({
     switch (type) {
         case "matching":
             return (
-                <button type="button" onClick={save} data-empty={true} className={cx(classes)}>
-                    <div className={cx(
-                        "animate-pulse shadow-2xl flex justify-center items-center h-12 mx-1",
-                        "bg-blue-200 dark:bg-blue-950",
-                    )}>
-                        <Points
-                            points={points}
-                            maxPoints={maxPoints}
-                        />
-                    </div>
-                </button>
+                <CombinationButton
+                    onClick={save}
+                    buttonClassName={classes}
+                    innerClassName="bg-blue-200 dark:bg-blue-950"
+                >
+                    <Points
+                        points={points}
+                        maxPoints={maxPoints}
+                    />
+                </CombinationButton>
             )
         case "matched":
             return (
@@ -77,17 +88,19 @@ export const Combination: FC<CombinationProps> = ({
                 </div>
             )
         case "bonus": {
-            // const { bonus, isNegative } = renderBonus(existingCombination as number)
             const combinationAsNumber = existingCombination as number
-
             const isNegative = Math.sign(combinationAsNumber) === -1
-
             const bonus = isNegative
-                ? `${i18n('more')} ${combinationAsNumber * -1} ${defineWorkEnding(combinationAsNumber)}`
+                ? `${i18n('more')} ${combinationAsNumber * -1} ${defineWorkEnding(combinationAsNumber * -1)}`
                 : combinationAsNumber
 
             return (
-                <div className={classes}>{bonus}</div>
+                <div className={cx(
+                    classes,
+                    isNegative ? "text-[rgba(0,0,0,.4)] dark:text-[rgba(255,255,255,.25)]" : "not-italic",
+                )}>
+                    {bonus}
+                </div>
             )
         }
         case "strike": {
@@ -95,7 +108,7 @@ export const Combination: FC<CombinationProps> = ({
                 <button type="button" data-empty={true} className={classes} onClick={strikeOut}>
                     <div className={cx(
                         "animate-pulse shadow-2xl flex justify-center items-center h-12 mx-1",
-                        "bg-red-200 dark:bg-red-950",
+                        "bg-red-200 dark:bg-red-950 rounded",
                     )}>
                         {i18n('button.strikeOut')}
                     </div>

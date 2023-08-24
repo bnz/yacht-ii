@@ -3,6 +3,7 @@ import { Dices } from "../Dices/Dices"
 import { DicesActions } from "../Dices/DicesActions"
 import { Combinations } from "../Combinations/Combinations"
 import { ActivePlayerAvatar } from "../ActivePlayerAvatar"
+import { EndOfGame } from "../EndOfGame/EndOfGame"
 
 export const InPlay: FC = () => (
     <>
@@ -12,5 +13,6 @@ export const InPlay: FC = () => (
             <DicesActions />
         </div>
         <Combinations />
+        <EndOfGame />
     </>
 )

@@ -127,3 +127,5 @@ export const combinationsData: CombinationInfo[] = [
         max: Combination.SIX * 5,
     },
 ]
+
+export const MAX_POSSIBLE_POINTS = combinationsData.reduce((prev, curr) => prev + curr.max, 0)

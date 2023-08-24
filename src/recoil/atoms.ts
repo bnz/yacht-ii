@@ -3,9 +3,11 @@ import { Combination, combinationsData } from "../components/Combinations/combin
 import { checkMatch } from "../helpers/checkMatch"
 import { makeId } from "../helpers/makeId"
 import { getRandomInt } from "../helpers/random"
-import { nextTurnAtom } from "./atoms/nextTurnAtom"
+import { nextTurnAtom } from "./atoms/players/nextTurnAtom"
 import { persist } from "./persist"
 import { combinationsWrapperRefAtom } from "./atoms/combinationsWrapperRef"
+import { playerMoveAtom } from "./atoms/players/playerMove"
+import { playersIds } from "./atoms/players/playersIds"
 
 export enum GamePhases {
     PRE_GAME = 'preGame',
@@ -32,6 +34,8 @@ export enum AvatarEnum {
     dog3,
 }
 
+// {"players__\"19513ddc-1615-426d-b53c-764dea729703\"":{"name":"Тося","avatar":0},"players__\"db8c64c0-7f65-412c-8641-4f9b9fd1f50d\"":{"name":"Каспер","avatar":1}}
+
 export const players = atomFamily<PlayerData, string>({
     key: "players",
     default: {
@@ -41,13 +45,7 @@ export const players = atomFamily<PlayerData, string>({
     effects: [persist("players")],
 })
 
-const playersIds = atom<string[]>({
-    key: "playersIds",
-    default: [],
-    effects: [persist('players-ids')],
-})
-
-interface PlayerData {
+export interface PlayerData {
     name: string
     avatar: AvatarEnum
 }
@@ -146,7 +144,7 @@ export const removePlayer = selector<string>({
     },
 })
 
-export const playersData = selector({
+export const playersData = selector<Player[]>({
     key: "playersData",
     get: ({ get }) => (
         get(playersIds).map((id) => ({
@@ -156,24 +154,12 @@ export const playersData = selector({
     ),
 })
 
-export const playersDataActiveFirst = selector({
-    key: "playersDataActiveFirst",
-    get({ get }) {
-        const players = [...get(playersData)]
-        const [playerId] = get(playerMoveAtom)
-        const index = players.findIndex(({ id }) => id === playerId)
-        const beforeArray = players.slice(0, index)
-        const arr = players.splice(index, players.length)
-        return [...arr, ...beforeArray]
-    },
-})
-
 export type PlayersTotals = {
     [playerId: string]: number
 }
 
-export const playerTotals = selector({
-    key: "playerTotals",
+export const playerTotalsAtom = selector({
+    key: "playerTotalsAtom",
     get({ get }) {
         const players = get(playersData)
         const totals: PlayersTotals = {}
@@ -190,11 +176,6 @@ export const playerTotals = selector({
         })
         return totals
     },
-})
-
-export const playersCount = selector({
-    key: "playersCount",
-    get: ({ get }) => get(playersIds).length,
 })
 
 export const resetPlayers = selector<null>({
@@ -225,14 +206,6 @@ export const dicesAtom = atom<DicesType>({
     key: "dicesAtom",
     default: [-1, -1, -1, -1, -1],
     effects: [persist("dices")],
-})
-
-export type PlayerMove = [playerId: string, shot: number]
-
-export const playerMoveAtom = atom<PlayerMove>({
-    key: "playerMoveAtom",
-    default: ['', 0],
-    effects: [persist('player-move')],
 })
 
 export const startGameSelector = selector<boolean>({
@@ -291,14 +264,15 @@ export const restartGame = selector<boolean>({
         reset(dicesSelectedAtom)
         reset(gamePhase)
         set(resetPlayers, null)
-        get(playersIds).forEach((id) => reset(players(id)))
+        get(playersIds).forEach((id) => {
+            reset(players(id))
+            reset(playerPointsAtomFamily(id))
+        })
         reset(playersIds)
         reset(combinationsWrapperRefAtom)
 
         // TODO
-        // resetPlayerPoints()
         // resetHistory()
-        // unselectAllDices()
         // changeActiveTab(ActiveTab.SETTINGS)
     },
 })
@@ -306,6 +280,8 @@ export const restartGame = selector<boolean>({
 export type Points = {
     [key in Combination]?: number
 }
+
+// {"playerPointsAtomFamily__\"19513ddc-1615-426d-b53c-764dea729703\"":{"1":3,"2":6,"3":12,"4":12,"5":15,"6":24,"bonus":35,"chance":13,"twoPair":25,"theYacht":0,"equal_3":12,"equal_4":0,"smallStraight":25,"fullHouse":0,"bigStraight":0},"playerPointsAtomFamily__\"db8c64c0-7f65-412c-8641-4f9b9fd1f50d\"":{"1":3,"2":0,"3":9,"4":0,"5":15,"6":24,"chance":14,"bonus":-12,"twoPair":25,"theYacht":0,"smallStraight":25,"bigStraight":30,"equal_3":0,"fullHouse":0,"equal_4":0}}
 
 export const playerPointsAtomFamily = atomFamily<Points, string>({
     key: "playerPointsAtomFamily",

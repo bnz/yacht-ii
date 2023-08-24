@@ -1,13 +1,21 @@
 import React, { FC, PropsWithChildren } from 'react'
 import { i18n } from "../helpers/i18n/i18n"
+import cx from "classnames"
 
-const Heading: FC<PropsWithChildren<{}>> = ({ children }) => <h3>{children}</h3>
+export const Heading: FC<PropsWithChildren<{className?: string}>> = ({ children, className }) => (
+    <h3 className={cx("font-bold mt-2 mb-5", className)}>
+        {children}
+    </h3>
+)
 
-const P: FC<PropsWithChildren<{}>> = ({ children }) => <p>{children}</p>
+export const P: FC<PropsWithChildren<{ className?: string }>> = ({ children, className }) => (
+    <p className={cx("mb-3 font-thin", className)}>
+        {children}
+    </p>
+)
 
 export const Rules: FC = () => (
     <>
-        <P>{i18n('help.intro')}</P>
         <Heading>{i18n('help.gameplay.header')}</Heading>
         <P>{i18n('help.gameplay.text')}</P>
         <Heading>{i18n('help.scoring.header')}</Heading>
@@ -44,9 +52,7 @@ export const Rules: FC = () => (
         </Table>
         */}
 
-        <br />
         <P>{i18n('help.topSection.tip')}</P>
-        <br />
         <P>{i18n('help.bottomSection')}</P>
         {/*
         <Table size="small">

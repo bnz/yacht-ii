@@ -1,8 +1,9 @@
 import type { FC } from "react"
 import cx from "classnames"
 import { useRecoilValue } from "recoil"
-import { playerMoveAtom, players } from "../recoil/atoms"
+import { players } from "../recoil/atoms"
 import { useDogs } from "./Players/Avatar"
+import { playerMoveAtom } from "../recoil/atoms/players/playerMove"
 
 export const ActivePlayerAvatar: FC = () => {
     const [playerId] = useRecoilValue(playerMoveAtom)

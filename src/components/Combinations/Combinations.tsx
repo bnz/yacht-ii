@@ -2,7 +2,8 @@ import type { FC } from "react"
 import { Fragment, useEffect, useRef } from "react"
 import { Combination as CombinationType, combinationsData, isBonus } from "./combinationsData"
 import { useRecoilValue, useSetRecoilState } from "recoil"
-import { isMoveAvailableSelector, playersDataActiveFirst } from "../../recoil/atoms"
+import { playersDataActiveFirst } from "../../recoil/selectors/playersDataActiveFirst"
+import { isMoveAvailableSelector, MAX_PLAYERS_COUNT } from "../../recoil/atoms"
 import cx from "classnames"
 import { CombinationsHeader } from "./CombinationsHeader"
 import { CombinationsFooter } from "./CombinationsFooter"
@@ -11,12 +12,12 @@ import { CombinationName } from "./CombinationName"
 import { combinationsWrapperRefAtom } from "../../recoil/atoms/combinationsWrapperRef"
 
 const decoratorWidth = 10
-const titleWidth = 150
+const titleWidth = 160
 const playerColorWidth = 200
 
 export const playersColsStyle: Record<number, string> = {}
 
-for (let i = 1; i <= 4; i++) {
+for (let i = 1; i <= MAX_PLAYERS_COUNT; i++) {
     playersColsStyle[i] = [
         titleWidth,
         ...(new Array(i).fill(playerColorWidth)),
@@ -48,10 +49,6 @@ const useRefWrapper = () => {
 
     useEffect(() => {
         setWrapperRef(ref.current)
-
-        // return () => {
-        //     setWrapperRef(null)
-        // }
     }, [ref, setWrapperRef])
 
     return ref
@@ -69,7 +66,7 @@ export const Combinations: FC = () => {
             }}>
                 <CombinationsHeader />
                 {combinationsData.map(({ name, title, combination }) => {
-                    const bonusClassName = cx(isBonus(combination) && "!bg-[var(--line-color)] border-b-0 !h-8")
+                    const bonusClassName = cx(isBonus(combination) && "!bg-[var(--line-color)] italic font-thin border-b-0 !h-8")
                     const isSixClassName = cx(combination === CombinationType.SIX && "border-b-0")
 
                     return (
@@ -93,11 +90,8 @@ export const Combinations: FC = () => {
                                     className={cx(
                                         bonusClassName,
                                         commonBorder,
-                                        // commonSizes,
                                         isSixClassName,
-                                        "h-14",
-                                        "flex",
-                                        "items-center justify-center",
+                                        "h-14 flex items-center justify-center",
                                     )}
                                 />
                             ))}
@@ -112,6 +106,7 @@ export const Combinations: FC = () => {
                 })}
                 <CombinationsFooter />
             </div>
+            <div className="h-20 lg:hidden" />
         </div>
     )
 }

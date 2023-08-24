@@ -25,7 +25,9 @@ export const eng: LanguageMap = {
   points2: 'points left',
   points3: 'points left',
   points4: 'points left',
+  winner: 'Winner',
 
+  "button.returnToGame": "Return to game",
   'button.startGame': 'Start game',
   'button.restartGame': 'Restart game',
   'button.rotate': 'Rotate',
