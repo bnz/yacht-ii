@@ -4,7 +4,7 @@ import cx from "classnames"
 import { Combination } from "./combinationsData"
 import { commonBorder, commonSizes } from "./Combinations"
 import { CombinationTitle } from "./CombinationTitle"
-import { namesColumnViewAtom, NamesColumnViewEnum } from "../../recoil/atoms/namesColumnViewAtom"
+import { namesColumnViewSelector, NamesColumnViewEnum } from "../../recoil/selectors/namesColumnViewSelector"
 import { useRecoilValue } from "recoil"
 import { getDicesPreview } from "./getDicesPreview"
 
@@ -19,7 +19,7 @@ export const CombinationName: FC<CombinationNameProps> = ({ className, name, tit
     const [title1, title2] = title.split("###")
     const [open, setOpen] = useState(false)
     const toggle = useCallback(() => setOpen((prev) => !prev), [setOpen])
-    const namesColumnView = useRecoilValue(namesColumnViewAtom)
+    const namesColumnView = useRecoilValue(namesColumnViewSelector)
     const dicesPreview = useMemo(() => getDicesPreview(combination), [combination])
 
     return (

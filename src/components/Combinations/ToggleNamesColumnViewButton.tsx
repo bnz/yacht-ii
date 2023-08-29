@@ -1,6 +1,6 @@
 import type { FC } from "react"
 import { useRecoilState } from "recoil"
-import { namesColumnViewAtom, NamesColumnViewEnum } from "../../recoil/atoms/namesColumnViewAtom"
+import { namesColumnViewSelector, NamesColumnViewEnum } from "../../recoil/selectors/namesColumnViewSelector"
 import { useCallback } from "react"
 import cx from "classnames"
 import { i18n } from "../../helpers/i18n/i18n"
@@ -8,7 +8,7 @@ import { Dice } from "../Dices/Dice/Dice"
 import { commonBorder } from "./Combinations"
 
 export const ToggleNamesColumnViewButton: FC = () => {
-    const [view, setView] = useRecoilState(namesColumnViewAtom)
+    const [view, setView] = useRecoilState(namesColumnViewSelector)
     const toggle = useCallback(() => setView((currVal) => (
         currVal === NamesColumnViewEnum.text ? NamesColumnViewEnum.preview : NamesColumnViewEnum.text
     )), [setView])
