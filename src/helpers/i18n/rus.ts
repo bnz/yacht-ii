@@ -26,6 +26,8 @@ export const rus: LanguageMap = {
   points3: 'очка',
   points4: 'очков',
   winner: "Победитель",
+  text: "Названия",
+  preview: "",
 
   'button.returnToGame': "Вернуться к игре",
   'button.startGame': 'Начать игру',

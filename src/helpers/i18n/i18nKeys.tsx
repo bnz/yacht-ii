@@ -24,8 +24,9 @@ export type i18nKeys =
     | 'points3'
     | 'points4'
     | 'winner'
+    | 'text'
+    | 'preview'
     | 'button.returnToGame'
-
     | 'button.startGame'
     | 'button.restartGame'
     | 'button.rotate'
