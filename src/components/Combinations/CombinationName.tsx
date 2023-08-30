@@ -1,12 +1,14 @@
 import type { FC } from "react"
-import { useCallback, useMemo, useState } from "react"
+import { useCallback, useMemo } from "react"
 import cx from "classnames"
 import { Combination } from "./combinationsData"
 import { commonBorder, commonSizes } from "./Combinations"
 import { CombinationTitle } from "./CombinationTitle"
 import { namesColumnViewSelector, NamesColumnViewEnum } from "../../recoil/selectors/namesColumnViewSelector"
-import { useRecoilValue } from "recoil"
+import { useRecoilState, useRecoilValue } from "recoil"
 import { getDicesPreview } from "./getDicesPreview"
+import { createPortal } from "react-dom"
+import { combinationNameVisibilityAtom } from "../../recoil/atoms/combinationNameVisibilityAtom"
 
 interface CombinationNameProps {
     className?: string | undefined
@@ -17,22 +19,34 @@ interface CombinationNameProps {
 
 export const CombinationName: FC<CombinationNameProps> = ({ className, name, title, combination }) => {
     const [title1, title2] = title.split("###")
-    const [open, setOpen] = useState(false)
-    const toggle = useCallback(() => setOpen((prev) => !prev), [setOpen])
+    const [open, setOpen] = useRecoilState(combinationNameVisibilityAtom)
+    const toggle = useCallback(() => {
+        setOpen((prev) => prev === null ? combination : null)
+    }, [setOpen, combination])
     const namesColumnView = useRecoilValue(namesColumnViewSelector)
+    const isText = namesColumnView === NamesColumnViewEnum.text
     const dicesPreview = useMemo(() => getDicesPreview(combination), [combination])
 
     return (
-        <div
-            className={cx(className, commonSizes, commonBorder, "relative !justify-start cursor-pointer pl-2")}
-            onClick={toggle}
-        >
-            {namesColumnView === NamesColumnViewEnum.text ? name : (
-                <div className="text-sm flex">
+        <>
+            <div
+                className={cx(className, commonSizes, commonBorder, "relative !justify-start cursor-pointer overflow-hidden")}
+                onClick={toggle}
+            >
+                <div className={cx(
+                    "opacity-0 absolute left-0 pl-2 top-1/2 -translate-y-1/2",
+                    isText ? "animate-fadeOut" : "animate-fadeIn",
+                )}>
+                    {name}
+                </div>
+                <div className={cx(
+                    "opacity-0 pl-2 text-sm flex absolute left-0 top-1/2 -translate-y-1/2",
+                    isText ? "animate-fadeIn" : "animate-fadeOut",
+                )}>
                     {Array.isArray(dicesPreview) ? dicesPreview[0] : dicesPreview}
                 </div>
-            )}
-            {open && (
+            </div>
+            {open === combination && createPortal(
                 <CombinationTitle onClose={toggle}>
                     <h5 className="text-2xl mb-5">{name}</h5>
                     <p className={cx((title2 || dicesPreview) && "mb-5")}>{title1}</p>
@@ -44,8 +58,9 @@ export const CombinationName: FC<CombinationNameProps> = ({ className, name, tit
                     {title2 && (
                         <p className="font-bold text-xs">{title2}</p>
                     )}
-                </CombinationTitle>
+                </CombinationTitle>,
+                document.body,
             )}
-        </div>
+        </>
     )
 }

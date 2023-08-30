@@ -39,8 +39,6 @@ export const Combination: FC<CombinationProps> = ({
     const isBonus = _isBonus(combination)
     const matched = existingCombination !== EMPTY_CELL && !isBonus
 
-    // console.log({combination})
-
     const type = cx({
         matched,
         matching: active && !matched && points !== undefined && points > 0,
@@ -48,14 +46,17 @@ export const Combination: FC<CombinationProps> = ({
         strike: active && !matched && !isBonus && !isMoveAvailable,
     })
 
-    console.log({ combination, type })
-
-    // console.log({
-    //     active,
-    //     "!matched": !matched,
-    //     "!isBonus": !isBonus,
-    //     "!isMoveAvailable": !isMoveAvailable,
-    // })
+    if (combination === "theYacht") {
+        console.log({
+                active,
+                "!matched": !matched,
+                "!isBonus": !isBonus,
+                "!isMoveAvailable": !isMoveAvailable,
+            },
+            active && !matched && !isBonus && !isMoveAvailable,
+            { type },
+        )
+    }
 
     const saveCombination = useSetRecoilState(saveCombinationSelector)
     const save = useCallback(() => {

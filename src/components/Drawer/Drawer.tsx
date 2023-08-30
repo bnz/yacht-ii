@@ -8,20 +8,22 @@ import { drawerState, gamePhase, GamePhases, restartGame } from "../../recoil/at
 import { Backdrop } from "../parts/Backdrop"
 import { MenuButton } from "./MenuButton"
 import { KeyboardActions } from "../../helpers/KeyboardActions"
+import { combinationNameVisibilityAtom } from "../../recoil/atoms/combinationNameVisibilityAtom"
 
 export const Drawer: FC = () => {
     const [open, setOpen] = useRecoilState(drawerState)
     const toggle = useCallback(() => setOpen((prev) => !prev), [setOpen])
     const phase = useRecoilValue(gamePhase)
     const restart = useSetRecoilState(restartGame)
+    const combinationNameVisibility = useRecoilValue(combinationNameVisibilityAtom)
 
     return (
         <>
+            {combinationNameVisibility === null && (
+                <KeyboardActions actions={{ Escape: toggle }} />
+            )}
             {open && (
-                <>
-                    <KeyboardActions actions={{ Escape: toggle }} />
-                    <Backdrop onClick={toggle} />
-                </>
+                <Backdrop onClick={toggle} />
             )}
             <div className={cx(
                 "z-10",

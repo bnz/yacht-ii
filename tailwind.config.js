@@ -6,20 +6,25 @@ module.exports = {
             colors: {
                 "dark-bg": "#081229",
             },
-
             animation: {
-                flash: 'fadeOut 3s ease-in-out',
+                flash: 'fakeFadeOut 3s ease-in-out forwards',
+                fadeOut: 'fadeOut .25s ease-in-out forwards',
+                fadeIn: 'fadeIn .25s ease-in-out forwards',
             },
-
-            keyframes: theme => ({
-                fadeOut: {
-                    '0%': {
-                        opacity: 1,
-                    },
-                    '100%': {
-                        opacity: 1,
-                    },
+            keyframes: () => ({
+                fakeFadeOut: {
+                    '0%': {opacity: 1},
+                    '75%': {opacity: 1},
+                    '100%': {opacity: 0},
                 },
+                fadeIn: {
+                    '0%': {opacity: 1},
+                    '100%': {opacity: 0},
+                },
+                fadeOut: {
+                    '0%': {opacity: 0},
+                    '100%': {opacity: 1},
+                }
             }),
         },
     },
