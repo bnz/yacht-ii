@@ -1,0 +1,32 @@
+{
+  "files": {
+    "main.css": "/static/css/main.492511ba.css",
+    "main.js": "/static/js/main.6a8a80b7.js",
+    "static/js/787.246df7ae.chunk.js": "/static/js/787.246df7ae.chunk.js",
+    "static/media/dog3-white-disabled.svg": "/static/media/dog3-white-disabled.5aecd2f8ef5023ba4cec294425621ef8.svg",
+    "static/media/dog3-white.svg": "/static/media/dog3-white.789cb7c67df9a19612077f5fb59ba5e8.svg",
+    "static/media/dog3-black-disabled.svg": "/static/media/dog3-black-disabled.3f3c1137ebe716b3e4b1d7489d1c9ee1.svg",
+    "static/media/dog3-black.svg": "/static/media/dog3-black.e097efe8fabc5a1f3f2298bc0c87e1c9.svg",
+    "static/media/dog0-white-disabled.svg": "/static/media/dog0-white-disabled.6f47f39474d6270feadf1667cf91f2e9.svg",
+    "static/media/dog0-white.svg": "/static/media/dog0-white.92f5442e8609cbb01a3f5c22d66c52a1.svg",
+    "static/media/dog0-black-disabled.svg": "/static/media/dog0-black-disabled.4b091f4c66cbfa47113453b9cf8523c3.svg",
+    "static/media/dog0-black.svg": "/static/media/dog0-black.75819d39d33585d21192fd70b31c1ea4.svg",
+    "static/media/dog1-white-disabled.svg": "/static/media/dog1-white-disabled.09121aeedabed3e15c9eccc16fdbe25e.svg",
+    "static/media/dog1-white.svg": "/static/media/dog1-white.f98a4bc0987d9ed2846ffbd02dbaca49.svg",
+    "static/media/dog1-black-disabled.svg": "/static/media/dog1-black-disabled.8c2fc288f137bebb621dc5a408427464.svg",
+    "static/media/dog1-black.svg": "/static/media/dog1-black.93925762bd26286abb6ea0995adb5e5f.svg",
+    "static/media/icon.svg": "/static/media/icon.2a89aa4a8f0f2fadea5c5cb0831a8f1e.svg",
+    "static/media/dog2-black-disabled.svg": "/static/media/dog2-black-disabled.9a9c06c14ca284382e0fd516dc1272ac.svg",
+    "static/media/dog2-white-disabled.svg": "/static/media/dog2-white-disabled.7ab6822a60d31cc34e83158044bcb82a.svg",
+    "static/media/dog2-black.svg": "/static/media/dog2-black.fdf132c726e1f77edf0d9822ab085c52.svg",
+    "static/media/dog2-white.svg": "/static/media/dog2-white.f3a19d60b7d167ea62f4eabaaf0b97f0.svg",
+    "index.html": "/index.html",
+    "main.492511ba.css.map": "/static/css/main.492511ba.css.map",
+    "main.6a8a80b7.js.map": "/static/js/main.6a8a80b7.js.map",
+    "787.246df7ae.chunk.js.map": "/static/js/787.246df7ae.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.492511ba.css",
+    "static/js/main.6a8a80b7.js"
+  ]
+}
