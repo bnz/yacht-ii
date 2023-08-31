@@ -2,7 +2,7 @@ import { FC, PropsWithChildren, useEffect, useState } from "react"
 import { useOutsideClick } from "../../helpers/useOutsideClick"
 import { KeyboardActions } from "../../helpers/KeyboardActions"
 import cx from "classnames"
-import { Backdrop } from "../parts/Backdrop"
+import { Backdrop } from "../Backdrop"
 import { combinationsWrapperRefAtom } from "../../recoil/atoms/combinationsWrapperRef"
 import { useRecoilValue } from "recoil"
 

@@ -14,6 +14,7 @@ import { defineWorkEnding } from "../../helpers/defineWorkEnding"
 import { useCallback } from "react"
 import { playerMoveAtom } from "../../recoil/atoms/players/playerMove"
 import { CombinationButton } from "./CombinationButton"
+import { CombinationMatched } from "./CombinationMatched"
 
 interface CombinationProps {
     playerId: string
@@ -47,24 +48,25 @@ export const Combination: FC<CombinationProps> = ({
     })
 
     if (combination === "theYacht") {
-        console.log({
-                active,
-                "!matched": !matched,
-                "!isBonus": !isBonus,
-                "!isMoveAvailable": !isMoveAvailable,
-            },
-            active && !matched && !isBonus && !isMoveAvailable,
-            { type },
-        )
+        // console.log(
+        //     {
+        //         active,
+        //         "!matched": !matched,
+        //         "!isBonus": !isBonus,
+        //         "!isMoveAvailable": !isMoveAvailable,
+        //     },
+        //     active && !matched && !isBonus && !isMoveAvailable,
+        //     { type },
+        // )
     }
 
     const saveCombination = useSetRecoilState(saveCombinationSelector)
     const save = useCallback(() => {
-        saveCombination({ playerId, combination, points })
-    }, [saveCombination, playerId, combination, points])
+        saveCombination({ combination, points })
+    }, [saveCombination, combination, points])
     const strikeOut = useCallback(() => {
-        saveCombination({ playerId, combination, points: 0 })
-    }, [saveCombination, playerId, combination])
+        saveCombination({ combination, points: 0 })
+    }, [saveCombination, combination])
 
     const classes = cx(className, active && "border-l border-r")
 
@@ -84,9 +86,11 @@ export const Combination: FC<CombinationProps> = ({
             )
         case "matched":
             return (
-                <div className={cx(classes, "text-2xl font-thin", active && "bg-[var(--background-color-active)]")}>
-                    {existingCombination}
-                </div>
+                <CombinationMatched
+                    playerId={playerId}
+                    combination={combination}
+                    className={cx(classes, active && "bg-[var(--background-color-active)]")}
+                />
             )
         case "bonus": {
             const combinationAsNumber = existingCombination as number

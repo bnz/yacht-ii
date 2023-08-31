@@ -1,19 +1,19 @@
 import type { FC } from "react"
 import { i18n } from "../../helpers/i18n/i18n"
 import { useCallback } from "react"
-import { useRecoilState, useRecoilValue } from "recoil"
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil"
 import {
     dicesAtom,
     dicesSelectedAtom,
     isShotAvailable,
     loadingAtom,
     MAX_SHOT_COUNT,
-
 } from "../../recoil/atoms"
 import { rand } from "../../helpers/random"
 import { ButtonWithIcon } from "../ButtonWithIcon"
 import cx from "classnames"
 import { playerMoveAtom } from "../../recoil/atoms/players/playerMove"
+import { historyUpdateDicesSelector } from "../../recoil/selectors/historyUpdateDicesSelector"
 
 const defaultDelay = 300
 let delay = 0
@@ -26,6 +26,7 @@ export const DicesActions: FC = () => {
     const [dices, setDices] = useRecoilState(dicesAtom)
     const [[, shot], setPlayerMove] = useRecoilState(playerMoveAtom)
     const isShot = useRecoilValue(isShotAvailable)
+    const history = useSetRecoilState(historyUpdateDicesSelector)
 
     const shuffle = useCallback(() => {
         delay = Date.now()
@@ -48,22 +49,21 @@ export const DicesActions: FC = () => {
                     })
                     setDices(randDices)
                     setPlayerMove(([playerId, shot]) => [playerId, shot + 1])
-
-                    // TODO
-                    // addToHistoryThunk()
-
+                    history(true)
                     setLoading(false)
                 },
                 d < defaultDelay ? defaultDelay - d : 0,
             )
         }
-    }, [loading, setLoading, dices, setDices, dicesSelected, setPlayerMove])
+    }, [loading, setLoading, dices, setDices, dicesSelected, setPlayerMove, history])
 
     const deselectAll = useCallback(() => setDicesSelected([]), [setDicesSelected])
 
     return (
-        <div
-            className={cx("justify-center flex gap-5 transition-all duration-300", isShot ? "h-0 overflow-hidden" : "mb-6 py-3")}>
+        <div className={cx(
+            "justify-center flex gap-5 transition-all duration-300",
+            isShot ? "h-0 overflow-hidden" : "mb-6 py-3",
+        )}>
             <ButtonWithIcon
                 onMouseUp={shuffleUp}
                 onMouseDown={shuffle}

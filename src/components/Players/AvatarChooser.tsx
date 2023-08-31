@@ -1,5 +1,5 @@
 import type { FC } from "react"
-import { Backdrop } from "../parts/Backdrop"
+import { Backdrop } from "../Backdrop"
 import cx from "classnames"
 import icon from "../../icons/icon.svg"
 import { i18n } from "../../helpers/i18n/i18n"

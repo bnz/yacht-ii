@@ -1,8 +1,8 @@
 import { selector } from "recoil"
-import { playersData } from "../../atoms"
-import { PlayerMove, playerMoveAtom } from "./playerMove"
+import { playersData } from "../atoms"
+import { PlayerMove, playerMoveAtom } from "../atoms/players/playerMove"
 
-export const nextTurnAtom = selector<boolean>({
+export const nextTurnSelector = selector<boolean>({
     key: "nextTurnAtom",
     get() {
         throw new Error("nextTurnAtom: use only as setter")

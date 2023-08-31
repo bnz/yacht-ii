@@ -1,4 +1,4 @@
-import { atom, atomFamily, DefaultValue, selector } from "recoil"
+import { atomFamily, DefaultValue, selector } from "recoil"
 import { persist } from "../persist"
 import { playerMoveAtom } from "../atoms/players/playerMove"
 
@@ -7,7 +7,7 @@ export const enum NamesColumnViewEnum {
     "preview",
 }
 
-const namesColumnViewAtomFamily = atomFamily<NamesColumnViewEnum, string>({
+export const namesColumnViewAtomFamily = atomFamily<NamesColumnViewEnum, string>({
     key: "namesColumnViewAtom",
     default: NamesColumnViewEnum.text,
     effects: [persist('names-column-view')],

@@ -1,13 +1,14 @@
 import { atom, atomFamily, DefaultValue, GetRecoilValue, selector } from "recoil"
-import { Combination, combinationsData } from "../components/Combinations/combinationsData"
-import { checkMatch } from "../helpers/checkMatch"
+import { Combination } from "../components/Combinations/combinationsData"
 import { makeId } from "../helpers/makeId"
 import { getRandomInt } from "../helpers/random"
-import { nextTurnAtom } from "./atoms/players/nextTurnAtom"
+import { nextTurnSelector } from "./selectors/nextTurnSelector"
 import { persist } from "./persist"
 import { combinationsWrapperRefAtom } from "./atoms/combinationsWrapperRef"
 import { playerMoveAtom } from "./atoms/players/playerMove"
 import { playersIds } from "./atoms/players/playersIds"
+import { historyAtomFamily } from "./atoms/historyAtomFamily"
+import { namesColumnViewAtomFamily } from "./selectors/namesColumnViewSelector"
 
 export enum GamePhases {
     PRE_GAME = 'preGame',
@@ -33,8 +34,6 @@ export enum AvatarEnum {
     dog2,
     dog3,
 }
-
-// {"players__\"19513ddc-1615-426d-b53c-764dea729703\"":{"name":"Тося","avatar":0},"players__\"db8c64c0-7f65-412c-8641-4f9b9fd1f50d\"":{"name":"Каспер","avatar":1}}
 
 export const players = atomFamily<PlayerData, string>({
     key: "players",
@@ -214,7 +213,7 @@ export const startGameSelector = selector<boolean>({
         throw new Error("startGameSelector: use only as setter")
     },
     set({ get, set }) {
-        set(nextTurnAtom, true)
+        set(nextTurnSelector, true)
         set(gamePhase, GamePhases.IN_PLAY)
     },
 })
@@ -267,12 +266,13 @@ export const restartGame = selector<boolean>({
         get(playersIds).forEach((id) => {
             reset(players(id))
             reset(playerPointsAtomFamily(id))
+            reset(historyAtomFamily(id))
+            reset(namesColumnViewAtomFamily(id))
         })
         reset(playersIds)
         reset(combinationsWrapperRefAtom)
 
         // TODO
-        // resetHistory()
         // changeActiveTab(ActiveTab.SETTINGS)
     },
 })
@@ -280,8 +280,6 @@ export const restartGame = selector<boolean>({
 export type Points = {
     [key in Combination]?: number
 }
-
-// {"playerPointsAtomFamily__\"19513ddc-1615-426d-b53c-764dea729703\"":{"1":3,"2":6,"3":12,"4":12,"5":15,"6":24,"bonus":35,"chance":13,"twoPair":25,"theYacht":0,"equal_3":12,"equal_4":0,"smallStraight":25,"fullHouse":0,"bigStraight":0},"playerPointsAtomFamily__\"db8c64c0-7f65-412c-8641-4f9b9fd1f50d\"":{"1":3,"2":0,"3":9,"4":0,"5":15,"6":24,"chance":14,"bonus":-12,"twoPair":25,"theYacht":0,"smallStraight":25,"bigStraight":30,"equal_3":0,"fullHouse":0,"equal_4":0}}
 
 export const playerPointsAtomFamily = atomFamily<Points, string>({
     key: "playerPointsAtomFamily",

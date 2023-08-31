@@ -59,9 +59,9 @@ export const isMoveAvailableSelector = selector<boolean>({
         //     )
         // }
 
-        console.log(
-            "RESULT:", !(matchesCount === 0 && noMoves)
-        )
+        // console.log(
+        //     "RESULT:", !(matchesCount === 0 && noMoves)
+        // )
 
         return !(matchesCount === 0 && noMoves)
     },
