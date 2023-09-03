@@ -22,10 +22,11 @@ export interface CombinationInfo {
     name: string
     title: string
     combination: Combination
+    min?: number
     max: number
 }
 
-export const DICES_COUNT = 5
+const DICES_COUNT = 5
 
 export const EMPTY_CELL = '—'
 
@@ -40,36 +41,42 @@ export const combinationsData: CombinationInfo[] = [
         name: i18n('combination.1'),
         title: i18n('combination.1.title'),
         combination: Combination.ONE,
+        min: Combination.ONE * 3,
         max: Combination.ONE * DICES_COUNT,
     },
     {
         name: i18n('combination.2'),
         title: i18n('combination.2.title'),
         combination: Combination.TWO,
+        min: Combination.TWO * 3,
         max: Combination.TWO * DICES_COUNT,
     },
     {
         name: i18n('combination.3'),
         title: i18n('combination.3.title'),
         combination: Combination.THREE,
+        min: Combination.THREE * 3,
         max: Combination.THREE * DICES_COUNT,
     },
     {
         name: i18n('combination.4'),
         title: i18n('combination.4.title'),
         combination: Combination.FOUR,
+        min: Combination.FOUR * 3,
         max: Combination.FOUR * DICES_COUNT,
     },
     {
         name: i18n('combination.5'),
         title: i18n('combination.5.title'),
         combination: Combination.FIVE,
+        min: Combination.FIVE * 3,
         max: Combination.FIVE * DICES_COUNT,
     },
     {
         name: i18n('combination.6'),
         title: i18n('combination.6.title'),
         combination: Combination.SIX,
+        min: Combination.SIX * 3,
         max: Combination.SIX * DICES_COUNT,
     },
     {
@@ -82,12 +89,14 @@ export const combinationsData: CombinationInfo[] = [
         name: i18n('combination.threeOfAKind'),
         title: i18n('combination.threeOfAKind.title'),
         combination: Combination.EQUAL_3,
+        min: Combination.ONE * 3,
         max: Combination.SIX * 3,
     },
     {
         name: i18n('combination.equal_4'),
         title: i18n('combination.equal_4.title'),
         combination: Combination.EQUAL_4,
+        min: Combination.ONE * 4,
         max: Combination.SIX * 4,
     },
     {
@@ -124,6 +133,7 @@ export const combinationsData: CombinationInfo[] = [
         name: i18n('combination.chance'),
         title: i18n('combination.chance.title'),
         combination: Combination.CHANCE,
+        min: Combination.ONE * 5,
         max: Combination.SIX * 5,
     },
 ]

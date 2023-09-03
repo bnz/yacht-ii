@@ -2,7 +2,6 @@ import React, { FC } from 'react'
 import { DiceDot } from './DiceDot'
 import cx from "classnames"
 import { useTheme } from "../../../helpers/useTheme"
-import icon from "../../../icons/icon.svg"
 import faceIcon from "../../../icons/face.svg"
 import faceDarkIcon from "../../../icons/face-dark.svg"
 
@@ -30,7 +29,6 @@ export const Dice: FC<DiceProps> = ({ value, roll, selected, onClick, index }) =
     const isDark = useTheme(true)
 
     return (
-        // m-[0.333em]
         <div className="relative w-[2em] min-w-[2em] max-w-[2em] h-[2em] flex-wrap flex-grow" onClick={onClick}>
             <div
                 className={cx(

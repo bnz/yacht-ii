@@ -1,7 +1,7 @@
 import type { FC } from "react"
-import { Fragment, useEffect, useRef } from "react"
+import { Fragment } from "react"
 import { Combination as CombinationType, combinationsData, isBonus } from "./combinationsData"
-import { useRecoilValue, useSetRecoilState } from "recoil"
+import { useRecoilValue } from "recoil"
 import { playersDataActiveFirst } from "../../recoil/selectors/playersDataActiveFirst"
 import { MAX_PLAYERS_COUNT } from "../../recoil/atoms"
 import { isMoveAvailableSelector } from "../../recoil/selectors/isMoveAvailableSelector"
@@ -10,7 +10,6 @@ import { CombinationsHeader } from "./CombinationsHeader"
 import { CombinationsFooter } from "./CombinationsFooter"
 import { Combination } from "./Combination"
 import { CombinationName } from "./CombinationName"
-import { combinationsWrapperRefAtom } from "../../recoil/atoms/combinationsWrapperRef"
 
 const decoratorWidth = 10
 const titleWidth = 160
@@ -44,24 +43,12 @@ export const commonSizes = cx(
     "flex items-center justify-center",
 )
 
-const useRefWrapper = () => {
-    const setWrapperRef = useSetRecoilState(combinationsWrapperRefAtom)
-    const ref = useRef<null | HTMLDivElement>(null)
-
-    useEffect(() => {
-        setWrapperRef(ref.current)
-    }, [ref, setWrapperRef])
-
-    return ref
-}
-
 export const Combinations: FC = () => {
     const players = useRecoilValue(playersDataActiveFirst)
     const isMoveAvailable = useRecoilValue(isMoveAvailableSelector)
-    const ref = useRefWrapper()
 
     return (
-        <div ref={ref} className="w-full overflow-auto px-2 lg:px-0">
+        <div className="w-full overflow-auto px-2 lg:px-0">
             <div className={wrapClassName} style={{
                 gridTemplateColumns: playersColsStyle[players.length],
             }}>

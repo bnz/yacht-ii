@@ -1,11 +1,11 @@
 import type { FC } from "react"
-import { useCallback } from "react"
+import { useCallback, useMemo } from "react"
 import { Combination } from "./combinationsData"
 import cx from "classnames"
 import { useRecoilState, useRecoilValue } from "recoil"
 import { playerPointsAtomFamily } from "../../recoil/atoms"
 import { MatchedView, matchedViewAtom } from "../../recoil/atoms/matchedViewAtom"
-import { historyAtomFamily, Move } from "../../recoil/atoms/historyAtomFamily"
+import { historyAtomFamily } from "../../recoil/atoms/historyAtomFamily"
 import { Dice } from "../Dices/Dice/Dice"
 
 interface CombinationMatchedProps {
@@ -24,9 +24,12 @@ export const CombinationMatched: FC<CombinationMatchedProps> = ({ className, pla
 
     const history = useRecoilValue(historyAtomFamily(playerId))
 
-    const historyMove = history.find(({ result }) => (
-        Object.keys(result).some((key) => key === `${combination}`)
-    ))
+    const historyMove = useMemo(
+        () => history.find(({ result }) => (
+            Object.keys(result).some((key) => key === `${combination}`)
+        )),
+        [history, combination],
+    )
 
     if (!historyMove || !playerPoints[combination]) {
         return (

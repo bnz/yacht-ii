@@ -14,6 +14,7 @@ import { ButtonWithIcon } from "../ButtonWithIcon"
 import cx from "classnames"
 import { playerMoveAtom } from "../../recoil/atoms/players/playerMove"
 import { historyUpdateDicesSelector } from "../../recoil/selectors/historyUpdateDicesSelector"
+import { Dev } from "../Dev/Dev"
 
 const defaultDelay = 300
 let delay = 0
@@ -61,9 +62,11 @@ export const DicesActions: FC = () => {
 
     return (
         <div className={cx(
+            "relative",
             "justify-center flex gap-5 transition-all duration-300",
             isShot ? "h-0 overflow-hidden" : "mb-6 py-3",
         )}>
+            <Dev />
             <ButtonWithIcon
                 onMouseUp={shuffleUp}
                 onMouseDown={shuffle}

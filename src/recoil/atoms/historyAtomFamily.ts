@@ -13,6 +13,8 @@ export interface Move {
 
 export const historyAtomFamily = atomFamily<Move[], string>({
     key: "historyAtomFamily",
-    default: [],
+    default: [
+        // { tries: [], result: {}, dicesSelected: [] },
+    ],
     effects: [persist("history")],
 })

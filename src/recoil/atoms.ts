@@ -4,7 +4,6 @@ import { makeId } from "../helpers/makeId"
 import { getRandomInt } from "../helpers/random"
 import { nextTurnSelector } from "./selectors/nextTurnSelector"
 import { persist } from "./persist"
-import { combinationsWrapperRefAtom } from "./atoms/combinationsWrapperRef"
 import { playerMoveAtom } from "./atoms/players/playerMove"
 import { playersIds } from "./atoms/players/playersIds"
 import { historyAtomFamily } from "./atoms/historyAtomFamily"
@@ -270,7 +269,6 @@ export const restartGame = selector<boolean>({
             reset(namesColumnViewAtomFamily(id))
         })
         reset(playersIds)
-        reset(combinationsWrapperRefAtom)
 
         // TODO
         // changeActiveTab(ActiveTab.SETTINGS)
