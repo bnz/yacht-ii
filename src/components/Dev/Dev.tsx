@@ -5,8 +5,8 @@ import { Backdrop } from "../Backdrop"
 import cx from "classnames"
 import { Combination, combinationsData } from "../Combinations/combinationsData"
 import { saveCombinationSelector } from "../../recoil/selectors/saveCombinationSelector"
-import { useRecoilState, useSetRecoilState } from "recoil"
-import { dicesAtom } from "../../recoil/atoms"
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil"
+import { dicesAtom, playerPointsAtomFamily } from "../../recoil/atoms"
 import { playerMoveAtom } from "../../recoil/atoms/players/playerMove"
 import { historyUpdateDicesSelector } from "../../recoil/selectors/historyUpdateDicesSelector"
 
@@ -38,7 +38,7 @@ export const Dev: FC = memo(() => {
                         ),
                     )
                 } else {
-                    setDices(new Array(5).fill(Combination.ONE))
+                    setDices(new Array(5).fill(combination))
                 }
                 break
             case Combination.EQUAL_3:
@@ -147,6 +147,10 @@ interface RowProps {
 const Row: FC<RowProps> = ({ combination, isLast, name, min, max, onClick }) => {
     const [points, setPoints] = useState(min || max)
 
+    const [playerId] = useRecoilValue(playerMoveAtom)
+    const playerPoints = useRecoilValue(playerPointsAtomFamily(playerId))
+    const disabled = Object.keys(playerPoints).indexOf(`${combination}`) === -1
+
     return (
         <>
             <div className={cx("py-3 border-[var(--line-color)] pl-3", isLast)}>{name}</div>
@@ -180,7 +184,12 @@ const Row: FC<RowProps> = ({ combination, isLast, name, min, max, onClick }) => 
                     <div className="relative">max: {max}</div>
                 </label>
             </div>
-            <button className={cx("py-3 border-[var(--line-color)]", isLast)}
+            <button className={cx(
+                "py-3 border-[var(--line-color)]",
+                isLast,
+                !disabled && "text-[var(--background-color-active)]",
+            )}
+                disabled={!disabled}
                 onClick={() => {
                     onClick(combination, points, min !== undefined && points === min)
                 }}

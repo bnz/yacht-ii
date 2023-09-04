@@ -41,6 +41,7 @@ export type i18nKeys =
     | 'button.goHome'
     | 'button.strikeOut'
     | 'button.remove'
+    | 'button.showEndOfGame'
 
     | 'tab.combinations'
     | 'tab.settings'

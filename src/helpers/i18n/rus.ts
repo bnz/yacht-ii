@@ -44,6 +44,7 @@ export const rus: LanguageMap = {
   'button.goHome': 'На главную',
   'button.strikeOut': 'Вычеркнуть',
   'button.remove': "Удалить",
+  "button.showEndOfGame": "Смотреть победителей",
 
   'tab.combinations': 'Комбинации',
   'tab.settings': 'Настройки',

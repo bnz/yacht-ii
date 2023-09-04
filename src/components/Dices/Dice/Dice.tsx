@@ -29,7 +29,7 @@ export const Dice: FC<DiceProps> = ({ value, roll, selected, onClick, index }) =
     const isDark = useTheme(true)
 
     return (
-        <div className="relative w-[2em] min-w-[2em] max-w-[2em] h-[2em] flex-wrap flex-grow" onClick={onClick}>
+        <div className="relative w-[2em] min-w-[2em] max-w-[2em] h-[2em] flex-wrap flex-grow cursor-pointer" onClick={onClick}>
             <div
                 className={cx(
                     "flex flex-wrap",

@@ -9,6 +9,7 @@ import { Backdrop } from "../Backdrop"
 import { MenuButton } from "./MenuButton"
 import { KeyboardActions } from "../../helpers/KeyboardActions"
 import { combinationNameVisibilityAtom } from "../../recoil/atoms/combinationNameVisibilityAtom"
+import { endOfGameVisibilityAtom } from "../EndOfGame/EndOfGame"
 
 export const Drawer: FC = () => {
     const [open, setOpen] = useRecoilState(drawerState)
@@ -16,10 +17,15 @@ export const Drawer: FC = () => {
     const phase = useRecoilValue(gamePhase)
     const restart = useSetRecoilState(restartGame)
     const combinationNameVisibility = useRecoilValue(combinationNameVisibilityAtom)
+    const endOfGameVisibility = useRecoilValue(endOfGameVisibilityAtom)
+
+    if (phase !== GamePhases.IN_PLAY) {
+        return null
+    }
 
     return (
         <>
-            {combinationNameVisibility === null && (
+            {combinationNameVisibility === null && !endOfGameVisibility && (
                 <KeyboardActions actions={{ Escape: toggle }} />
             )}
             {open && (
@@ -42,18 +48,14 @@ export const Drawer: FC = () => {
             }}>
                 <div className="h-full -mb-20">
                     <div>change game select</div>
-                    {phase === GamePhases.IN_PLAY && (
-                        <>
-                            <button type="button" onClick={() => {
-                                restart(true)
-                                toggle()
-                            }}>
-                                {i18n('button.restartGame')}
-                            </button>
-                            <div>SettingsTabContent</div>
-                            <div>HistoryTab</div>
-                        </>
-                    )}
+                    <button type="button" onClick={() => {
+                        restart(true)
+                        toggle()
+                    }}>
+                        {i18n('button.restartGame')}
+                    </button>
+                    <div>SettingsTabContent</div>
+                    <div>HistoryTab</div>
                 </div>
                 <Footer />
             </div>

@@ -14,8 +14,8 @@ export const Dices: FC = () => {
     return (
         <div className={cx(
             "flex flex-nowrap justify-center overflow-hidden gap-[0.333em] text-3xl lg:text-4xl",
-            isShot ? "pt-3 pb-2" : "pt-8 pb-3"
-            )}>
+            isShot ? "pt-3 pb-2" : "pt-8 pb-3",
+        )}>
             {dices.map((dice, index) => {
                 const selected = dicesSelected.indexOf(index) !== -1
                 const onClick = () => {

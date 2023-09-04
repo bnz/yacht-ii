@@ -9,6 +9,12 @@ export const winnerSelector = selector({
             const players = get(playersData)
             const playerTotals = get(playerTotalsAtom)
             const playerKeys = Object.keys(playerTotals)
+
+            console.log(
+                Math.max(...playerKeys.map((key) => playerTotals[key])),
+                Math.min(...playerKeys.map((key) => playerTotals[key])),
+            )
+
             const max = Math.max(...playerKeys.map((key) => playerTotals[key]))
             const index = playerKeys.findIndex((key) => playerTotals[key] === max)
             const { data: { name, avatar } } = players[index]

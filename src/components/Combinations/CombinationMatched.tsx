@@ -41,12 +41,42 @@ export const CombinationMatched: FC<CombinationMatchedProps> = ({ className, pla
 
     let dices = [...historyMove.tries[historyMove.tries.length - 1]].sort()
 
-    switch (combination) {
-        case Combination.BIG_STRAIGHT:
-        case Combination.SMALL_STRAIGHT: {
-            dices = Array.from(new Set(dices))
+    const filterOutRestDices = (dices: number[], combination: Combination) => {
+        switch (combination) {
+            case Combination.ONE:
+            case Combination.TWO:
+            case Combination.THREE:
+            case Combination.FOUR:
+            case Combination.FIVE:
+            case Combination.SIX:
+                dices = dices.filter((dice) => dice === combination)
+                break
+            case Combination.EQUAL_3:
+            case Combination.EQUAL_4: {
+                const count = parseInt(combination.split("_")[1], 10)
+                const counts: { [k: string]: number } = {}
+                dices.forEach((x) => counts[x] = (counts[x] || 0) + 1)
+                const result = Object.keys(counts).filter((key) => counts[key] >= count)
+                dices = new Array(count).fill(result[0])
+                break
+            }
+            case Combination.BIG_STRAIGHT:
+            case Combination.SMALL_STRAIGHT:
+                dices = Array.from(new Set(dices))
+                break
+            case Combination.TWO_PAIR:
+                const counts: { [k: string]: number } = {}
+                dices.forEach((x) => counts[x] = (counts[x] || 0) + 1)
+                const result = Object.keys(counts)
+                    .filter((key) => counts[key] === 2)
+                    .map((key) => parseInt(key, 10))
+                dices = [...result, ...result].sort()
+                break
         }
+        return dices
     }
+
+    dices = filterOutRestDices(dices, combination)
 
     return (
         <div className={cx("relative", className)} onClick={toggle}>

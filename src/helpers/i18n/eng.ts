@@ -44,6 +44,7 @@ export const eng: LanguageMap = {
   'button.goHome': 'Go home',
   'button.strikeOut': 'Strike out',
   'button.remove': "Remove",
+  "button.showEndOfGame": "Show winners",
 
   'tab.combinations': 'Combinations',
   'tab.settings': 'Settings',

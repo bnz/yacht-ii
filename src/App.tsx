@@ -5,6 +5,7 @@ import { gamePhase, GamePhases } from "./recoil/atoms"
 import { PreGame } from "./components/Sections/PreGame"
 import { Players } from "./components/Sections/Players"
 import { InPlay } from "./components/Sections/InPlay"
+import { AppWrapper } from "./components/AppWrapper"
 
 const phases = {
     [GamePhases.PRE_GAME]: PreGame,
@@ -17,7 +18,9 @@ export const App: FC = () => {
 
     return (
         <>
-            <GamePhase />
+            <AppWrapper>
+                <GamePhase />
+            </AppWrapper>
             <Drawer />
         </>
     )

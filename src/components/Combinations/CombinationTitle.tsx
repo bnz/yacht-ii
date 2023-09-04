@@ -11,7 +11,7 @@ type CombinationTitleProps = PropsWithChildren<{
 export const CombinationTitle: FC<CombinationTitleProps> = ({ children, onClose }) => (
     <>
         <KeyboardActions actions={{ Escape: onClose }} />
-        <Backdrop className="bg-black/20 dark:bg-black/30" onClick={onClose} />
+        <Backdrop onClick={onClose} />
         <div
             className={cx(
                 "not-italic font-medium",

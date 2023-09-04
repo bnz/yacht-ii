@@ -10,6 +10,7 @@ module.exports = {
                 flash: 'fakeFadeOut 3s ease-in-out forwards',
                 fadeOut: 'fadeOut .25s ease-in-out forwards',
                 fadeIn: 'fadeIn .25s ease-in-out forwards',
+                button: 'spin 1s ease-in-out forwards',
             },
             keyframes: () => ({
                 fakeFadeOut: {
