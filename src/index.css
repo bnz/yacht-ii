@@ -76,4 +76,17 @@ body {
     button[data-empty] {
         @apply block;
     }
+
+    ::-webkit-scrollbar {
+        @apply w-1;
+    }
+    ::-webkit-scrollbar-track {
+        @apply bg-[var(--background-color)];
+    }
+    ::-webkit-scrollbar-thumb {
+        @apply bg-[var(--line-color)];
+    }
+    ::-webkit-scrollbar-thumb:hover {
+        @apply bg-[var(--text-color-semi)];
+    }
 }
