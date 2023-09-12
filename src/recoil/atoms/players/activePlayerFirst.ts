@@ -3,7 +3,7 @@ import { persist } from "../../persist"
 import { isMobile } from "../../../helpers/isMobile"
 
 export const activePlayerFirstAtom = atom<boolean>({
-    key: "activePlayerFirstAtom",
+    key: "active-player-first",
     default: isMobile,
     effects: [persist('active-player-first')],
 })

@@ -4,11 +4,12 @@ import cx from "classnames"
 import { Combination } from "./combinationsData"
 import { commonBorder, commonSizes } from "./Combinations"
 import { CombinationTitle } from "./CombinationTitle"
-import { NamesColumnViewEnum, namesColumnViewSelector } from "../../recoil/selectors/namesColumnViewSelector"
+import { namesColumnViewSelector } from "../../recoil/selectors/namesColumnViewSelector"
 import { useRecoilState, useRecoilValue } from "recoil"
 import { getDicesPreview } from "./getDicesPreview"
 import { createPortal } from "react-dom"
 import { combinationNameVisibilityAtom } from "../../recoil/atoms/combinationNameVisibilityAtom"
+import { NamesColumnViewEnum } from "../../recoil/atoms/namesColumnViewAtomFamily"
 
 interface CombinationNameProps {
     className?: string | undefined

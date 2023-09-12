@@ -1,7 +1,7 @@
 import type { FC } from "react"
 import { Backdrop } from "../Backdrop"
 import cx from "classnames"
-import { atom, useRecoilState, useRecoilValue, useSetRecoilState } from "recoil"
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil"
 import { i18n } from "../../helpers/i18n/i18n"
 import { MAX_POSSIBLE_POINTS } from "../Combinations/combinationsData"
 import { winnerSelector } from "../../recoil/selectors/winner"
@@ -11,11 +11,7 @@ import { useCallback } from "react"
 import { restartGame } from "../../recoil/atoms"
 import { KeyboardActions } from "../../helpers/KeyboardActions"
 import { Pyro } from "../Pyro/Pyro"
-
-export const endOfGameVisibilityAtom = atom({
-    key: "endOfGameVisibilityAtom",
-    default: true,
-})
+import { endOfGameVisibilityAtom } from "../../recoil/atoms/endOfGameVisibilityAtom"
 
 export const EndOfGame: FC = () => {
     const winner = useRecoilValue(winnerSelector)

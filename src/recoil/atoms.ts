@@ -7,7 +7,7 @@ import { persist } from "./persist"
 import { playerMoveAtom } from "./atoms/players/playerMove"
 import { playersIds } from "./atoms/players/playersIds"
 import { historyAtomFamily } from "./atoms/historyAtomFamily"
-import { namesColumnViewAtomFamily } from "./selectors/namesColumnViewSelector"
+import { namesColumnViewAtomFamily } from "./atoms/namesColumnViewAtomFamily"
 
 export enum GamePhases {
     PRE_GAME = 'preGame',
@@ -16,13 +16,13 @@ export enum GamePhases {
 }
 
 export const gamePhase = atom<GamePhases>({
-    key: "gamePhase",
+    key: "game-phase",
     default: GamePhases.PRE_GAME,
     effects: [persist("game-phase")],
 })
 
 export const drawerState = atom<boolean>({
-    key: "drawerState",
+    key: "drawer-state",
     default: false,
     effects: [persist('drawer-state')],
 })
@@ -201,7 +201,7 @@ export const loadingAtom = atom<boolean>({
 export type DicesType = number[]
 
 export const dicesAtom = atom<DicesType>({
-    key: "dicesAtom",
+    key: "dices",
     default: [-1, -1, -1, -1, -1],
     effects: [persist("dices")],
 })
@@ -225,7 +225,7 @@ export const isShotAvailable = selector({
 })
 
 export const dicesSelectedAtom = atom<number[]>({
-    key: "dicesSelectedAtom",
+    key: "dices-selected",
     default: [],
     effects: [persist('dices-selected')],
 })
@@ -280,7 +280,7 @@ export type Points = {
 }
 
 export const playerPointsAtomFamily = atomFamily<Points, string>({
-    key: "playerPointsAtomFamily",
+    key: "player-points",
     default: {},
     effects: [persist("player-points")],
 })

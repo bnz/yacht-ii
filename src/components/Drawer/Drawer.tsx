@@ -9,7 +9,7 @@ import { Backdrop } from "../Backdrop"
 import { MenuButton } from "./MenuButton"
 import { KeyboardActions } from "../../helpers/KeyboardActions"
 import { combinationNameVisibilityAtom } from "../../recoil/atoms/combinationNameVisibilityAtom"
-import { endOfGameVisibilityAtom } from "../EndOfGame/EndOfGame"
+import { endOfGameVisibilityAtom } from "../../recoil/atoms/endOfGameVisibilityAtom"
 
 export const Drawer: FC = () => {
     const [open, setOpen] = useRecoilState(drawerState)
@@ -25,7 +25,7 @@ export const Drawer: FC = () => {
 
     return (
         <>
-            {combinationNameVisibility === null && !endOfGameVisibility && (
+            {combinationNameVisibility === null && endOfGameVisibility && (
                 <KeyboardActions actions={{ Escape: toggle }} />
             )}
             {open && (

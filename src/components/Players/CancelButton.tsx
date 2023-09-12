@@ -15,7 +15,7 @@ export const CancelButton: FC = () => {
     return (
         <ButtonWithIcon
             icon="back"
-            className="!py-5 absolute left-3 top-1/2 -translate-y-1/2 !bg-transparent !shadow-none"
+            className="!py-5 absolute left-3 md:left-0 top-1/2 -translate-y-1/2 !bg-transparent !shadow-none"
             onClick={onClick}
         />
     )

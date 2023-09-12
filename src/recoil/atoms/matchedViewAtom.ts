@@ -7,7 +7,7 @@ export enum MatchedView {
 }
 
 export const matchedViewAtom = atomFamily<MatchedView, string>({
-    key: "matchedViewAtom",
+    key: "matchedView",
     default: MatchedView.points,
     effects: [persist('matched-view')],
 })

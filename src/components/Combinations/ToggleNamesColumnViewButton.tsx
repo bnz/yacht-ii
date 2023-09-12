@@ -1,6 +1,7 @@
 import type { FC } from "react"
 import { useRecoilState } from "recoil"
-import { namesColumnViewSelector, NamesColumnViewEnum } from "../../recoil/selectors/namesColumnViewSelector"
+import { namesColumnViewSelector } from "../../recoil/selectors/namesColumnViewSelector"
+import { NamesColumnViewEnum } from "../../recoil/atoms/namesColumnViewAtomFamily"
 import { useCallback } from "react"
 import cx from "classnames"
 import { i18n } from "../../helpers/i18n/i18n"

@@ -3,11 +3,12 @@ import { Dices } from "../Dices/Dices"
 import { DicesActions } from "../Dices/DicesActions"
 import { Combinations } from "../Combinations/Combinations"
 // import { ActivePlayerAvatar } from "../ActivePlayerAvatar"
-import { EndOfGame, endOfGameVisibilityAtom } from "../EndOfGame/EndOfGame"
+import { EndOfGame } from "../EndOfGame/EndOfGame"
 import { useRecoilState, useRecoilValue } from "recoil"
 import { winnerSelector } from "../../recoil/selectors/winner"
 import cx from "classnames"
 import { i18n } from "../../helpers/i18n/i18n"
+import { endOfGameVisibilityAtom } from "../../recoil/atoms/endOfGameVisibilityAtom"
 
 export const EndOfGamePlaceholder: FC = () => {
     const winner = useRecoilValue(winnerSelector)
