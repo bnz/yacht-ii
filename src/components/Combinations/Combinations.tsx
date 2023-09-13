@@ -48,7 +48,7 @@ export const Combinations: FC = () => {
     const isMoveAvailable = useRecoilValue(isMoveAvailableSelector)
 
     return (
-        <div className="w-full px-2 lg:px-0 pb-10">
+        <div className="w-full px-2 overflow-auto lg:px-0 pb-10">
             <div className={wrapClassName} style={{
                 gridTemplateColumns: playersColsStyle[players.length],
             }}>
