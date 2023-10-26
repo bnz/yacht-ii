@@ -1,14 +1,13 @@
-import type { FC } from "react"
-import { CheckMatch } from "../helpers/checkMatch"
+import type { checkMatch } from "../helpers/checkMatch"
 import { i18n } from "../helpers/i18n/i18n"
 
 interface PointsProps {
-    points: ReturnType<CheckMatch>['points'],
-    maxPoints: ReturnType<CheckMatch>['maxPoints'],
+    points: ReturnType<typeof checkMatch>['points'],
+    maxPoints: ReturnType<typeof checkMatch>['maxPoints'],
 }
 
-export const Points: FC<PointsProps> = ({ points, maxPoints }) =>
-    (points !== undefined) && (maxPoints !== undefined) && (points < maxPoints)
+export function Points({ points, maxPoints }: PointsProps) {
+    return (points !== undefined) && (maxPoints !== undefined) && (points < maxPoints)
         ? (
             <>
                 {points}
@@ -18,3 +17,4 @@ export const Points: FC<PointsProps> = ({ points, maxPoints }) =>
             </>
         )
         : <>{points}</>
+}

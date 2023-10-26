@@ -4,7 +4,9 @@ import { namesColumnViewAtomFamily, NamesColumnViewEnum } from "../atoms/namesCo
 
 export const namesColumnViewSelector = selector<NamesColumnViewEnum>({
     key: "namesColumnViewSelector",
-    get: ({ get }) => get(namesColumnViewAtomFamily(get(playerMoveAtom)[0])),
+    get({ get }) {
+        return get(namesColumnViewAtomFamily(get(playerMoveAtom)[0]))
+    },
     set({ get, set }, props) {
         if (!(props instanceof DefaultValue)) {
             set(namesColumnViewAtomFamily(get(playerMoveAtom)[0]), props)

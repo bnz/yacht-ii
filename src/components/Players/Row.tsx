@@ -1,5 +1,4 @@
-import type { FC } from "react"
-import React, { useCallback } from "react"
+import { useCallback } from "react"
 import { i18n } from "../../helpers/i18n/i18n"
 import { useRecoilValue, useSetRecoilState } from "recoil"
 import { editingInProgress, players, removePlayer } from "../../recoil/atoms"
@@ -8,15 +7,20 @@ import { Avatar } from "./Avatar"
 
 interface RowProps {
     id: string
+
     callback(): void
+
     flash?: boolean
+
     flashEnd(): void
 }
 
-export const Row: FC<RowProps> = ({ id, callback, flash, flashEnd }) => {
+export function Row({ id, callback, flash, flashEnd }: RowProps) {
     const { name, avatar } = useRecoilValue(players(id))
     const remove = useSetRecoilState(removePlayer)
-    const handleRemove = useCallback(() => remove(id), [id, remove])
+    const handleRemove = useCallback(function () {
+        remove(id)
+    }, [id, remove])
     const disabled = useRecoilValue(editingInProgress)
 
     return (

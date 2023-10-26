@@ -12,7 +12,9 @@ export const playersDataActiveFirst = selector({
         }
         const players = [...get(playersData)]
         const [playerId] = get(playerMoveAtom)
-        const index = players.findIndex(({ id }) => id === playerId)
+        const index = players.findIndex(function ({ id }) {
+            return id === playerId
+        })
         const beforeArray = players.slice(0, index)
         const arr = players.splice(index, players.length)
         return [...arr, ...beforeArray]

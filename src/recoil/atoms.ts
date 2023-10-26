@@ -58,7 +58,9 @@ export const MAX_PLAYERS_COUNT = 4
 export const getAvailableAvatar = selector<AvatarEnum>({
     key: "getAvailableAvatar",
     get({ get }) {
-        const taken = get(playersData).map(({ data: { avatar } }) => avatar)
+        const taken = get(playersData).map(function ({ data: { avatar } }) {
+            return avatar
+        })
         let avatar
 
         do {
@@ -82,9 +84,11 @@ const dogNames = [
     ...dogNamesMale,
 ]
 
-const getDogName = (get: GetRecoilValue, sex?: "male" | "female") => {
+function getDogName(get: GetRecoilValue, sex?: "male" | "female") {
     const dogs = sex ? sex === "male" ? dogNamesMale : dogNamesFemale : dogNames
-    const taken = get(playersData).map(({ data: { name } }) => name)
+    const taken = get(playersData).map(function ({ data: { name } }) {
+        return name
+    })
     let index
 
     do {
@@ -96,12 +100,18 @@ const getDogName = (get: GetRecoilValue, sex?: "male" | "female") => {
 
 export const getRandomDogNameBySex = selector({
     key: "getRandomDogNameBySex",
-    get: ({ get }) => () => getDogName(get),
+    get({ get }) {
+        return function () {
+            return getDogName(get)
+        }
+    },
 })
 
 export const getRandomDogName = selector({
     key: "getRandomDogName",
-    get: ({ get }) => getDogName(get),
+    get({ get }) {
+        return getDogName(get)
+    },
 })
 
 export const editingInProgress = atom<boolean>({
@@ -144,12 +154,14 @@ export const removePlayer = selector<string>({
 
 export const playersData = selector<Player[]>({
     key: "playersData",
-    get: ({ get }) => (
-        get(playersIds).map((id) => ({
-            id,
-            data: get(players(id)),
-        }))
-    ),
+    get({ get }) {
+        return get(playersIds).map(function (id) {
+            return {
+                id,
+                data: get(players(id)),
+            }
+        })
+    },
 })
 
 export type PlayersTotals = {
@@ -162,9 +174,9 @@ export const playerTotalsAtom = selector({
         const players = get(playersData)
         const totals: PlayersTotals = {}
 
-        players.forEach(({ id: playerId }) => {
+        players.forEach(function ({ id: playerId }) {
             const points = get(playerPointsAtomFamily(playerId))
-            totals[playerId] = Object.keys(points).reduce((prev, key) => {
+            totals[playerId] = Object.keys(points).reduce(function (prev, key) {
                 const curr = points[key as Combination]!
                 if (key === Combination.BONUS && Math.sign(curr) === -1) {
                     return prev
@@ -182,7 +194,9 @@ export const resetPlayers = selector<null>({
         throw new Error("resetPlayers: use only as setter")
     },
     set({ get, reset }) {
-        get(playersIds).forEach((id) => reset(players(id)))
+        get(playersIds).forEach(function (id) {
+            return reset(players(id))
+        })
         reset(playersIds)
         reset(playerMoveAtom)
     },
@@ -221,7 +235,9 @@ export const MAX_SHOT_COUNT = 3
 
 export const isShotAvailable = selector({
     key: "isShotAvailable",
-    get: ({ get }) => get(playerMoveAtom)[1] >= MAX_SHOT_COUNT,
+    get({ get }) {
+        return get(playerMoveAtom)[1] >= MAX_SHOT_COUNT
+    },
 })
 
 export const dicesSelectedAtom = atom<number[]>({
@@ -262,7 +278,7 @@ export const restartGame = selector<boolean>({
         reset(dicesSelectedAtom)
         reset(gamePhase)
         set(resetPlayers, null)
-        get(playersIds).forEach((id) => {
+        get(playersIds).forEach(function (id) {
             reset(players(id))
             reset(playerPointsAtomFamily(id))
             reset(historyAtomFamily(id))

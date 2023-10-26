@@ -1,12 +1,10 @@
-import type { FC } from "react"
 import { useRecoilValue } from "recoil"
 import { addPlayerFormVisible, playersData } from "../../recoil/atoms"
 import { PlayersListItem } from "./PlayersListItem"
-import React from "react"
 import { AddPlayerForm } from "./AddPlayerForm"
 import { ListWrap } from "./ListWrap"
 
-export const PlayersList: FC = () => {
+export function PlayersList() {
     const addPlayerVisible = useRecoilValue(addPlayerFormVisible)
     const players = useRecoilValue(playersData)
 
@@ -20,9 +18,9 @@ export const PlayersList: FC = () => {
 
     return (
         <ListWrap>
-            {players.map(({ id, data: { name } }) => (
-                <PlayersListItem key={id} id={id} name={name} />
-            ))}
+            {players.map(function ({ id }) {
+                return <PlayersListItem key={id} id={id} />
+            })}
             {addPlayerVisible && (
                 <AddPlayerForm />
             )}

@@ -39,8 +39,8 @@ body {
 @layer components {
 
     input[type="text"] {
-        @apply text-[var(--text-color)];
-        @apply bg-[var(--background-color)];
+        @apply text-[--text-color];
+        @apply bg-[--background-color];
         @apply outline-0 px-3 py-2 border dark:border-white/30 rounded;
     }
 
@@ -82,15 +82,15 @@ body {
     }
 
     ::-webkit-scrollbar-track {
-        @apply bg-[var(--background-color)];
+        @apply bg-[--background-color];
     }
 
     ::-webkit-scrollbar-thumb {
-        @apply bg-[var(--line-color)];
+        @apply bg-[--line-color];
     }
 
     ::-webkit-scrollbar-thumb:hover {
-        @apply bg-[var(--text-color-semi)];
+        @apply bg-[--text-color-semi];
     }
 
     table {
@@ -106,6 +106,10 @@ body {
     }
 
     table tr:not(:last-child) td {
-        @apply border-b border-[var(--line-color)];
+        @apply border-b border-[--line-color];
+    }
+
+    .object-center {
+        @apply absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2;
     }
 }

@@ -1,4 +1,3 @@
-import type { FC } from "react"
 import { Fragment } from "react"
 import { Combination as CombinationType, combinationsData, isBonus } from "./combinationsData"
 import { useRecoilValue } from "recoil"
@@ -35,7 +34,7 @@ export const wrapClassName = cx(
 )
 
 export const commonBorder = cx(
-    "border-b border-[var(--line-color)]",
+    "border-b border-[--line-color]",
 )
 
 export const commonSizes = cx(
@@ -43,7 +42,7 @@ export const commonSizes = cx(
     "flex items-center justify-center",
 )
 
-export const Combinations: FC = () => {
+export function Combinations() {
     const players = useRecoilValue(playersDataActiveFirst)
     const isMoveAvailable = useRecoilValue(isMoveAvailableSelector)
 
@@ -53,8 +52,8 @@ export const Combinations: FC = () => {
                 gridTemplateColumns: playersColsStyle[players.length],
             }}>
                 <CombinationsHeader />
-                {combinationsData.map(({ name, title, combination }) => {
-                    const bonusClassName = cx(isBonus(combination) && "!bg-[var(--line-color)] italic font-thin border-b-0 !h-8")
+                {combinationsData.map(function ({ name, title, combination }) {
+                    const bonusClassName = cx(isBonus(combination) && "!bg-[--line-color] italic font-thin border-b-0 !h-8")
                     const isSixClassName = cx(combination === CombinationType.SIX && "border-b-0")
 
                     return (
@@ -69,8 +68,8 @@ export const Combinations: FC = () => {
                                 title={title}
                                 combination={combination}
                             />
-                            {players.map(({ id }) => (
-                                <Combination
+                            {players.map(function ({ id }) {
+                                return <Combination
                                     key={id}
                                     playerId={id}
                                     combination={combination}
@@ -82,7 +81,7 @@ export const Combinations: FC = () => {
                                         "h-14 flex items-center justify-center",
                                     )}
                                 />
-                            ))}
+                            })}
                             <div className={cx(
                                 bonusClassName,
                                 commonBorder,

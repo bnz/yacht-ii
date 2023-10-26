@@ -25,9 +25,7 @@ export const resultsMap: ResultsMap = {
     [Combination.FULL_HOUSE]: { points: 30, maxPoints: 30 },
 }
 
-export type CheckMatch = (combinationType: Combination, dices: DicesType) => Return<number>
-
-export const checkMatch: CheckMatch = (combinationType, dices) => {
+export function checkMatch(combinationType: Combination, dices: DicesType): Return<number> {
     const values = Object.values(dices)
     const sequence = values.sort()
     const seq = uniq(sequence)
@@ -40,7 +38,9 @@ export const checkMatch: CheckMatch = (combinationType, dices) => {
         case Combination.FOUR:
         case Combination.FIVE:
         case Combination.SIX: {
-            const matches = sequence.filter(item => item === combinationType)
+            const matches = sequence.filter(function (item) {
+                return item === combinationType
+            })
             if (matches.length >= 3) {
                 return {
                     points: matches.length * combinationType,
@@ -55,11 +55,13 @@ export const checkMatch: CheckMatch = (combinationType, dices) => {
 
             const counts: { [k: string]: number } = {}
 
-            sequence.forEach(x => {
+            sequence.forEach(function (x) {
                 counts[x] = (counts[x] || 0) + 1
             })
 
-            const number = parseInt(Object.keys(counts).filter(key => counts[key] >= count)[0], 10)
+            const number = parseInt(Object.keys(counts).filter(function (key) {
+                return counts[key] >= count
+            })[0], 10)
 
             if (!isNaN(number)) {
                 return {
@@ -112,7 +114,9 @@ export const checkMatch: CheckMatch = (combinationType, dices) => {
         }
         case Combination.CHANCE: {
             return {
-                points: sequence.reduce((a, b) => a + b, 0),
+                points: sequence.reduce(function (a, b) {
+                    return a + b
+                }, 0),
                 maxPoints: 30,
             }
         }

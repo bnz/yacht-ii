@@ -5,8 +5,6 @@ import { eng } from './eng'
 export type Language = 'rus' | 'eng'
 export const languageDefaultState: Language = 'rus'
 
-type I18n = (key: i18nKeys | string) => string
-
 const commonSettings = JSON.parse(localStorage.getItem('common-settings') || JSON.stringify({
   language: languageDefaultState,
 }))
@@ -22,8 +20,8 @@ const languagesMap: LanguagesMap = {
   eng,
 }
 
-export const i18n: I18n = (key) => {
-  const res = languagesMap[lang][key as i18nKeys]
+export function i18n(key: i18nKeys) {
+  const res = languagesMap[lang][key]
 
   if (res === undefined) {
     return `~${key}~`

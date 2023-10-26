@@ -1,4 +1,3 @@
-import type { FC } from "react"
 import { Backdrop } from "../Backdrop"
 import cx from "classnames"
 import icon from "../../icons/icon.svg"
@@ -11,14 +10,17 @@ import { useTheme } from "../../helpers/useTheme"
 interface AvatarChooserProps {
     toggle: VoidFunction
     avatar: AvatarEnum
+
     onClick(index: AvatarEnum): void
 }
 
-export const AvatarChooser: FC<AvatarChooserProps> = ({ avatar, toggle, onClick }) => {
+export function AvatarChooser({ avatar, toggle, onClick }: AvatarChooserProps) {
     const isDart = useTheme(true)
     const themedDogs = useDogs()
     const players = useRecoilValue(playersData)
-    const takenAvatars = players.map(({ data: { avatar } }) => avatar)
+    const takenAvatars = players.map(function ({ data: { avatar } }) {
+        return avatar
+    })
 
     return (
         <>
@@ -26,8 +28,8 @@ export const AvatarChooser: FC<AvatarChooserProps> = ({ avatar, toggle, onClick 
             <div className={cx(
                 "w-[calc(100%-24px)] md:w-[800px] z-10",
                 "rounded shadow",
-                "absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2",
-                "bg-[var(--background-color)]",
+                "object-center",
+                "bg-[--background-color]",
                 "flex flex-col",
                 "pb-5",
             )}>
@@ -40,11 +42,13 @@ export const AvatarChooser: FC<AvatarChooserProps> = ({ avatar, toggle, onClick 
                     {i18n("chooseDog")}
                 </h3>
                 <ul className="flex flex-grow flex-wrap gap-5 justify-center">
-                    {themedDogs.normal.map((url, index) => {
+                    {themedDogs.normal.map(function (url, index) {
                         const selected = avatar === index
                         const taken = takenAvatars.includes(index)
                         const isClickable = !selected && !taken
-                        const player = players.find(({ data: { avatar } }) => avatar === index)
+                        const player = players.find(function ({ data: { avatar } }) {
+                            return avatar === index
+                        })
 
                         return (
                             <li key={url} className="text-center">
@@ -55,7 +59,7 @@ export const AvatarChooser: FC<AvatarChooserProps> = ({ avatar, toggle, onClick 
                                         "w-40 h-40",
                                         "rounded-full mb-2",
                                         isClickable && "cursor-pointer",
-                                        selected && "border-[var(--text-color)] dark:border-[var(--text-color)]",
+                                        selected && "border-[--text-color] dark:border-[--text-color]",
                                         taken && !selected
                                             ? cx(
                                                 "relative !border-transparent",
@@ -64,12 +68,16 @@ export const AvatarChooser: FC<AvatarChooserProps> = ({ avatar, toggle, onClick 
                                                 "after:rounded-full",
                                             )
                                             : cx(
-                                                "hover:border-[var(--text-color)]",
+                                                "hover:border-[--text-color]",
                                                 "hover:shadow-inner",
                                             ),
                                     )}
                                     style={{ backgroundImage: `url('${url}')` }}
-                                    {...isClickable ? { onClick: () => onClick(index) } : {}}
+                                    {...isClickable ? {
+                                        onClick() {
+                                            return onClick(index)
+                                        },
+                                    } : {}}
                                 />
                                 {player && player.data.name}
                             </li>

@@ -1,5 +1,4 @@
-import type { FC } from "react"
-import { Fragment, memo, useCallback, useEffect, useState } from "react"
+import { memo, useCallback, useEffect, useState } from "react"
 import { createPortal } from "react-dom"
 import { Backdrop } from "../Backdrop"
 import cx from "classnames"
@@ -10,9 +9,13 @@ import { dicesAtom, playerPointsAtomFamily } from "../../recoil/atoms"
 import { playerMoveAtom } from "../../recoil/atoms/players/playerMove"
 import { historyUpdateDicesSelector } from "../../recoil/selectors/historyUpdateDicesSelector"
 
-export const Dev: FC = memo(() => {
+export const Dev = memo(function () {
     const [open, setOpen] = useState(false)
-    const toggle = useCallback(() => setOpen((prev) => !prev), [setOpen])
+    const toggle = useCallback(function () {
+        return setOpen(function (prev) {
+            return !prev
+        })
+    }, [setOpen])
     const [visible, setVisible] = useState(false)
 
     const saveCombination = useSetRecoilState(saveCombinationSelector)
@@ -20,7 +23,7 @@ export const Dev: FC = memo(() => {
     const [, setPlayerMove] = useRecoilState(playerMoveAtom)
     const history = useSetRecoilState(historyUpdateDicesSelector)
 
-    const fakeSet = (combination: Combination, points: number, min: boolean) => {
+    function fakeSet(combination: Combination, points: number, min: boolean) {
         switch (combination) {
             case Combination.ONE:
             case Combination.TWO:
@@ -79,12 +82,14 @@ export const Dev: FC = memo(() => {
                 break
         }
 
-        setPlayerMove(([playerId, shot]) => [playerId, shot + 1])
+        setPlayerMove(function ([playerId, shot]) {
+            return [playerId, shot + 1]
+        })
         history(true)
         saveCombination({ combination, points })
     }
 
-    useEffect(() => {
+    useEffect(function () {
         if (window.location.search && window.location.search === "?dev") {
             setVisible(true)
         }
@@ -104,13 +109,13 @@ export const Dev: FC = memo(() => {
                     <Backdrop className="bg-black/20 dark:bg-black/30" onClick={toggle} />
                     <div className={cx(
                         "z-10",
-                        "bg-[var(--background-color)] shadow-2xl rounded",
+                        "bg-[--background-color] shadow-2xl rounded",
                         "fixed right-2 top-1/2 -translate-y-1/2",
                         "p-3",
                         "min-w-max",
                     )}>
                         <div className="w-full grid grid-cols-[150px_200px_50px]">
-                            {combinationsData.map(({ combination, name, min, max }, index) => {
+                            {combinationsData.map(function ({ combination, name, min, max }, index) {
                                 if (combination === Combination.BONUS) {
                                     return null
                                 }
@@ -133,7 +138,9 @@ export const Dev: FC = memo(() => {
             )}
         </>
     )
-}, () => true)
+}, function () {
+    return true
+})
 
 interface RowProps {
     combination: Combination
@@ -144,19 +151,18 @@ interface RowProps {
     onClick(combination: Combination, points: number, min: boolean): void
 }
 
-const Row: FC<RowProps> = ({ combination, isLast, name, min, max, onClick }) => {
+function Row({ combination, isLast, name, min, max, onClick }: RowProps) {
     const [points, setPoints] = useState(min || max)
-
     const [playerId] = useRecoilValue(playerMoveAtom)
     const playerPoints = useRecoilValue(playerPointsAtomFamily(playerId))
     const disabled = Object.keys(playerPoints).indexOf(`${combination}`) === -1
 
     return (
         <>
-            <div className={cx("py-3 border-[var(--line-color)] pl-3", isLast)}>{name}</div>
+            <div className={cx("py-3 border-[--line-color] pl-3", isLast)}>{name}</div>
             <div
-                className={cx("border-x flex justify-between px-3 py-1 border-[var(--line-color)]", isLast)}
-                onChange={(e) => {
+                className={cx("border-x flex justify-between px-3 py-1 border-[--line-color]", isLast)}
+                onChange={function (e) {
                     // @ts-ignore
                     setPoints(parseInt(e.target["value"], 10))
                 }}
@@ -165,32 +171,34 @@ const Row: FC<RowProps> = ({ combination, isLast, name, min, max, onClick }) => 
                     <label
                         className="flex items-center cursor-pointer relative px-2 rounded overflow-hidden w-20">
                         <input type="radio" name={`${combination}`}
-                            value={min}
-                            className="hidden peer/draft"
-                            defaultChecked />
+                               value={min}
+                               className="hidden peer/draft"
+                               defaultChecked />
                         <div
-                            className="absolute inset-0 peer-checked/draft:bg-[var(--text-color-semi)]" />
+                            className="absolute inset-0 peer-checked/draft:bg-[--text-color-semi]" />
                         <div className="relative">min: {min}</div>
                     </label>
                 )}
                 <label
                     className="flex items-center cursor-pointer relative px-2 rounded overflow-hidden w-20">
-                    <input type="radio" name={`${combination}`}
+                    <input
+                        type="radio"
+                        name={`${combination}`}
                         className="hidden peer/draft"
                         value={max}
                         defaultChecked={min === undefined} />
-                    <div
-                        className="absolute inset-0 peer-checked/draft:bg-[var(--text-color-semi)]" />
+                    <div className="absolute inset-0 peer-checked/draft:bg-[--text-color-semi]" />
                     <div className="relative">max: {max}</div>
                 </label>
             </div>
-            <button className={cx(
-                "py-3 border-[var(--line-color)]",
-                isLast,
-                !disabled && "text-[var(--background-color-active)]",
-            )}
+            <button
+                className={cx(
+                    "py-3 border-[--line-color]",
+                    isLast,
+                    !disabled && "text-[--background-color-active]",
+                )}
                 disabled={!disabled}
-                onClick={() => {
+                onClick={function () {
                     onClick(combination, points, min !== undefined && points === min)
                 }}
             >

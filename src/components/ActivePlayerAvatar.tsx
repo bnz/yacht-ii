@@ -1,11 +1,10 @@
-import type { FC } from "react"
 import cx from "classnames"
 import { useRecoilValue } from "recoil"
 import { players } from "../recoil/atoms"
 import { useDogs } from "./Players/Avatar"
 import { playerMoveAtom } from "../recoil/atoms/players/playerMove"
 
-export const ActivePlayerAvatar: FC = () => {
+export function ActivePlayerAvatar() {
     const [playerId] = useRecoilValue(playerMoveAtom)
     const { avatar, name } = useRecoilValue(players(playerId))
     const dogs = useDogs()
@@ -18,7 +17,7 @@ export const ActivePlayerAvatar: FC = () => {
                 "-z-10 w-96 h-full",
                 "border",
                 "bg-no-repeat bg-contain",
-                "text-[var(--background-color)]"
+                "text-[--background-color]",
             )}
             style={{
                 backgroundImage: `url('${dogs.normal[avatar]}')`,

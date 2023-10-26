@@ -10,10 +10,10 @@ interface Props {
     points?: number
 }
 
-const calcBonus = (points: Points): number => {
-    const bonus = Object.keys(points).reduce((prev, curr) => (
-        isNaN(parseInt(curr, 10)) ? prev : prev + points[curr as Combination]!
-    ), 0)
+function calcBonus(points: Points): number {
+    const bonus = Object.keys(points).reduce(function (prev, curr) {
+        return isNaN(parseInt(curr, 10)) ? prev : prev + points[curr as Combination]!
+    }, 0)
 
     return bonus >= BONUS_CONDITION ? BONUS_POINTS : (BONUS_CONDITION - bonus) * -1
 }

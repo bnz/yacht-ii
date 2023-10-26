@@ -29,6 +29,12 @@
               d="m7 10 5 5 5-5z"/>
         <path id="_refresh"
               d="M12 4V1L8 5l4 4V6c3.31 0 6 2.69 6 6 0 1.01-.25 1.97-.7 2.8l1.46 1.46C19.54 15.03 20 13.57 20 12c0-4.42-3.58-8-8-8zm0 14c-3.31 0-6-2.69-6-6 0-1.01.25-1.97.7-2.8L5.24 7.74C4.46 8.97 4 10.43 4 12c0 4.42 3.58 8 8 8v3l4-4-4-4v3z"/>
+
+        <path id="_spinner-p"
+              opacity="0.75"
+              fill="currentColor"
+              d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"/>
+
     </defs>
 
     <g id="add" fill="var(--dark)">
@@ -99,5 +105,12 @@
     </g>
     <g id="refresh-white" fill="var(--light)">
         <use href="#_refresh"/>
+    </g>
+
+    <g id="spinner" fill="var(--dark)">
+        <use href="#_spinner-p"/>
+    </g>
+    <g id="spinner-white" fill="var(--light)">
+        <use href="#_spinner-p"/>
     </g>
 </svg>

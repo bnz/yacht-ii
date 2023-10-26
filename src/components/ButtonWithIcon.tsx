@@ -1,4 +1,4 @@
-import type { FC, PropsWithChildren } from "react"
+import type { PropsWithChildren } from "react"
 import cx from "classnames"
 import { useTheme } from "../helpers/useTheme"
 import iconSVG from "../icons/icon.svg"
@@ -14,25 +14,20 @@ interface ButtonWithIconProps extends PropsWithChildren<{}> {
     disabled?: boolean
 }
 
-export const ButtonWithIcon: FC<ButtonWithIconProps> = ({
-    children,
-    type = "button",
-    className,
-    icon,
-    disabled,
-    onClick,
-    onMouseUp,
-    onMouseDown,
-}) => (
-    <button
-        className={cx("bg-no-repeat bg-center", className)}
-        style={{ backgroundImage: `url(${iconSVG}#${icon}${useTheme(true) ? "-white" : ""})` }}
-        onClick={onClick}
-        {...type ? { type } : {}}
-        {...onMouseUp ? { onMouseUp } : {}}
-        {...onMouseDown ? { onMouseDown } : {}}
-        {...disabled ? { disabled } : {}}
-    >
-        {children}
-    </button>
-)
+export function ButtonWithIcon({ children, type = "button", className, icon, disabled, onClick, onMouseUp, onMouseDown }: ButtonWithIconProps) {
+    const isDark = useTheme(true)
+
+    return (
+        <button
+            className={cx("bg-no-repeat bg-center", className)}
+            style={{ backgroundImage: `url(${iconSVG}#${icon}${isDark ? "-white" : ""})` }}
+            onClick={onClick}
+            {...type ? { type } : {}}
+            {...onMouseUp ? { onMouseUp } : {}}
+            {...onMouseDown ? { onMouseDown } : {}}
+            {...disabled ? { disabled } : {}}
+        >
+            {children}
+        </button>
+    )
+}

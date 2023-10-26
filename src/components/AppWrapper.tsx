@@ -1,28 +1,26 @@
-import type { FC, PropsWithChildren } from "react"
+import type { PropsWithChildren } from "react"
 import cx from "classnames"
 import { useEffect, useRef } from "react"
 import { scrolledTo } from "../recoil/atoms/scrolledTo"
 import { useSetRecoilState } from "recoil"
 
-export const AppWrapper: FC<PropsWithChildren<{}>> = ({ children }) => {
+export function AppWrapper({ children }: PropsWithChildren<{}>) {
     const ref = useRef<HTMLDivElement | null>(null)
     const scrolled = useSetRecoilState(scrolledTo)
 
-    useEffect(() => {
+    useEffect(function () {
         const curr = ref.current
 
-        const fn = (e: Event) => {
+        const fn = function (e: Event) {
             // @ts-ignore
             const top = e.target.scrollTop
             scrolled(top > 60 && top <= 570 ? "logo" : top > 570 ? "button" : null)
-
-            // console.log("fn", { top })
         }
         if (curr) {
             curr.addEventListener("scroll", fn, true)
         }
 
-        return () => {
+        return function () {
             curr?.removeEventListener("scroll", fn, true)
         }
     }, [ref, scrolled])

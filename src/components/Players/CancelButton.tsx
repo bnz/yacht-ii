@@ -1,13 +1,12 @@
-import type { FC } from "react"
 import { useSetRecoilState } from "recoil"
 import { gamePhase, GamePhases, resetPlayers } from "../../recoil/atoms"
 import { ButtonWithIcon } from "../ButtonWithIcon"
 import { useCallback } from "react"
 
-export const CancelButton: FC = () => {
+export function CancelButton() {
     const setPhase = useSetRecoilState(gamePhase)
     const playersReset = useSetRecoilState(resetPlayers)
-    const onClick = useCallback(() => {
+    const onClick = useCallback(function () {
         setPhase(GamePhases.PRE_GAME)
         playersReset(null)
     }, [setPhase, playersReset])

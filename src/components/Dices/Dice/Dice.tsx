@@ -1,4 +1,3 @@
-import React, { FC } from 'react'
 import { DiceDot } from './DiceDot'
 import cx from "classnames"
 import { useTheme } from "../../../helpers/useTheme"
@@ -19,17 +18,17 @@ interface DiceProps {
     roll?: boolean
     selected?: boolean
     index: number
-
     onClick?(): void
 }
 
 const array9 = [...window.Array(9).keys()]
 
-export const Dice: FC<DiceProps> = ({ value, roll, selected, onClick, index }) => {
+export function Dice({ value, roll, selected, onClick, index }: DiceProps) {
     const isDark = useTheme(true)
 
     return (
-        <div className="relative w-[2em] min-w-[2em] max-w-[2em] h-[2em] flex-wrap flex-grow cursor-pointer" onClick={onClick}>
+        <div className="relative w-[2em] min-w-[2em] max-w-[2em] h-[2em] flex-wrap flex-grow cursor-pointer"
+             onClick={onClick}>
             <div
                 className={cx(
                     "flex flex-wrap",
@@ -53,9 +52,11 @@ export const Dice: FC<DiceProps> = ({ value, roll, selected, onClick, index }) =
                         className="bg-no-repeat bg-center bg-contain absolute left-2 right-2 top-2 bottom-2"
                         style={{ backgroundImage: `url('${isDark ? faceDarkIcon : faceIcon}')` }}
                     />
-                ) : array9.map((i) => (
-                    <DiceDot key={i} filled={dots[value] && dots[value].indexOf(i + 1) !== -1} />
-                ))}
+                ) : array9.map(function (i) {
+                    return (
+                        <DiceDot key={i} filled={dots[value] && dots[value].indexOf(i + 1) !== -1} />
+                    )
+                })}
             </div>
         </div>
     )

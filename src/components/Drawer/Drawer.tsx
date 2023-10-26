@@ -1,4 +1,3 @@
-import type { FC } from "react"
 import { useCallback } from "react"
 import { Footer } from "../Footer"
 import cx from "classnames"
@@ -11,9 +10,13 @@ import { KeyboardActions } from "../../helpers/KeyboardActions"
 import { combinationNameVisibilityAtom } from "../../recoil/atoms/combinationNameVisibilityAtom"
 import { endOfGameVisibilityAtom } from "../../recoil/atoms/endOfGameVisibilityAtom"
 
-export const Drawer: FC = () => {
+export function Drawer() {
     const [open, setOpen] = useRecoilState(drawerState)
-    const toggle = useCallback(() => setOpen((prev) => !prev), [setOpen])
+    const toggle = useCallback(function () {
+        setOpen(function (prev) {
+            return !prev
+        })
+    }, [setOpen])
     const phase = useRecoilValue(gamePhase)
     const restart = useSetRecoilState(restartGame)
     const combinationNameVisibility = useRecoilValue(combinationNameVisibilityAtom)
@@ -48,7 +51,7 @@ export const Drawer: FC = () => {
             }}>
                 <div className="h-full -mb-20">
                     <div>change game select</div>
-                    <button type="button" onClick={() => {
+                    <button type="button" onClick={function () {
                         restart(true)
                         toggle()
                     }}>

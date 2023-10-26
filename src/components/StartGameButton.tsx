@@ -1,4 +1,3 @@
-import type { FC } from "react"
 import { editingInProgress, playersData, startGameSelector } from "../recoil/atoms"
 import { i18n } from "../helpers/i18n/i18n"
 import { useRecoilValue, useSetRecoilState } from "recoil"
@@ -6,10 +5,12 @@ import { useCallback } from "react"
 import { ButtonWithIcon } from "./ButtonWithIcon"
 import cx from "classnames"
 
-export const StartGameButton: FC = () => {
+export function StartGameButton() {
     const players = useRecoilValue(playersData)
     const startGame = useSetRecoilState(startGameSelector)
-    const onClick = useCallback(() => startGame(true), [startGame])
+    const onClick = useCallback(function () {
+        startGame(true)
+    }, [startGame])
     const inProgress = useRecoilValue(editingInProgress)
     const disabled = players.length <= 0 || inProgress
 

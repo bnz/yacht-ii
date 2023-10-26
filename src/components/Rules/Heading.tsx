@@ -1,8 +1,14 @@
-import React, { forwardRef, PropsWithChildren } from "react"
+import { forwardRef, PropsWithChildren } from "react"
 import cx from "classnames"
 
-export const Heading = forwardRef<null, PropsWithChildren<{ className?: string }>>(({ children, className }, ref) => (
-    <h3 className={cx("font-bold mt-2 mb-5", className)}>
-        {children}
-    </h3>
-))
+type HeadingProps = PropsWithChildren<{
+    className?: string
+}>
+
+export const Heading = forwardRef<null, HeadingProps>(function ({ children, className }, ref) {
+    return (
+        <h3 ref={ref} className={cx("font-bold mt-2 mb-5", className)}>
+            {children}
+        </h3>
+    )
+})

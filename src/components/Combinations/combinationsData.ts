@@ -34,7 +34,9 @@ export const BONUS_CONDITION = 63
 
 export const BONUS_POINTS = 35
 
-export const isBonus = (combination: Combination) => combination === Combination.BONUS
+export const isBonus = function (combination: Combination) {
+    return combination === Combination.BONUS
+}
 
 export const combinationsData: CombinationInfo[] = [
     {
@@ -138,4 +140,6 @@ export const combinationsData: CombinationInfo[] = [
     },
 ]
 
-export const MAX_POSSIBLE_POINTS = combinationsData.reduce((prev, curr) => prev + curr.max, 0)
+export const MAX_POSSIBLE_POINTS = combinationsData.reduce(function (prev, curr) {
+    return prev + curr.max
+}, 0)

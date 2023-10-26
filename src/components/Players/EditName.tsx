@@ -1,7 +1,6 @@
-import type { FC } from "react"
 import { useRecoilValue, useSetRecoilState } from "recoil"
 import { AvatarEnum, players } from "../../recoil/atoms"
-import React, { ChangeEvent, FormEvent, useCallback, useState } from "react"
+import { ChangeEvent, FormEvent, useCallback, useState } from "react"
 import { KeyboardActions } from "../../helpers/KeyboardActions"
 import { i18n } from "../../helpers/i18n/i18n"
 import { InputWithError } from "../InputWithError"
@@ -14,41 +13,47 @@ interface EditNameProps {
     callback(flash?: boolean): void
 }
 
-export const EditName: FC<EditNameProps> = ({ id, callback }) => {
+export function EditName({ id, callback }: EditNameProps) {
     const { name, avatar: avatarInitial } = useRecoilValue(players(id))
     const [avatar, setAvatar] = useState(avatarInitial)
     const setPlayer = useSetRecoilState(players(id))
     const [inputValue, setInputValue] = useState<string>(name)
     const [error, setError] = useState<null | string>(null)
 
-    const onInputChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
+    const onInputChange = useCallback(function (e: ChangeEvent<HTMLInputElement>) {
         setInputValue(e.currentTarget.value)
         setError(null)
     }, [setInputValue, setError])
 
-    const onSubmit = useCallback((e: FormEvent<HTMLFormElement>) => {
+    const onSubmit = useCallback(function (e: FormEvent<HTMLFormElement>) {
         e.preventDefault()
         const trimmed = inputValue.trim()
         if (trimmed !== "") {
-            setPlayer((prev) => ({
-                ...prev,
-                name: inputValue,
-                avatar,
-            }))
+            setPlayer(function (prev) {
+                return {
+                    ...prev,
+                    name: inputValue,
+                    avatar,
+                }
+            })
             callback(true)
         } else {
             setError(i18n("required"))
         }
     }, [inputValue, setPlayer, callback, setError, avatar])
 
-    const onCancel = useCallback(() => callback(false), [callback])
+    const onCancel = useCallback(function () {
+        callback(false)
+    }, [callback])
 
-    const edit = useCallback((index: AvatarEnum) => {
+    const edit = useCallback(function (index: AvatarEnum) {
         setAvatar(index)
-        setPlayer((prev) => ({
-            ...prev,
-            avatar: index,
-        }))
+        setPlayer(function (prev) {
+            return {
+                ...prev,
+                avatar: index,
+            }
+        })
         callback(true)
     }, [setAvatar, setPlayer, callback])
 

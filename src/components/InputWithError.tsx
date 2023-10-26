@@ -1,5 +1,5 @@
-import type { FC, PropsWithChildren } from "react"
-import React, { ChangeEvent, useEffect, useRef } from "react"
+import type { PropsWithChildren } from "react"
+import { ChangeEvent, useEffect, useRef } from "react"
 import { ErrorLabel } from "./ErrorLabel"
 import cx from "classnames"
 
@@ -11,10 +11,10 @@ interface InputWithErrorProps extends PropsWithChildren<{}> {
     className?: string | undefined
 }
 
-export const InputWithError: FC<InputWithErrorProps> = ({ value, onChange, placeholder, error, className }) => {
+export function InputWithError({ value, onChange, placeholder, error, className }: InputWithErrorProps) {
     const ref = useRef<HTMLInputElement | null>(null)
 
-    useEffect(() => {
+    useEffect(function () {
         ref.current?.focus()
         ref.current?.select()
     }, [ref])

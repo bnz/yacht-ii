@@ -1,1 +1,3 @@
-export const uniq = (a: number[]): number[] => [...new Set(a)]
+export function uniq(a: number[]): number[] {
+    return [...new Set(a)];
+}

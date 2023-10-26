@@ -1,9 +1,9 @@
 import { useEffect, useRef } from "react"
 
-export const useOutsideClick = <T extends HTMLDivElement>(callback: VoidFunction) => {
+export const useOutsideClick = function <T extends HTMLDivElement>(callback: VoidFunction) {
     const ref = useRef<T | null>(null)
 
-    useEffect(() => {
+    useEffect(function () {
         function handleClickOutside(event: MouseEvent) {
             // @ts-ignore
             if (ref.current && !ref.current.contains(event.target)) {
@@ -12,7 +12,7 @@ export const useOutsideClick = <T extends HTMLDivElement>(callback: VoidFunction
         }
 
         document.addEventListener("mousedown", handleClickOutside)
-        return () => {
+        return function () {
             document.removeEventListener("mousedown", handleClickOutside)
         }
     }, [ref, callback])

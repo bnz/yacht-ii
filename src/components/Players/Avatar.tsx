@@ -1,4 +1,4 @@
-import type { Dispatch, FC, SetStateAction } from "react"
+import type { Dispatch, SetStateAction } from "react"
 import { Themes, useTheme } from "../../helpers/useTheme"
 import { useCallback, useState } from "react"
 import cx from "classnames"
@@ -36,7 +36,9 @@ const dogs: Record<Themes, Record<'normal' | 'disabled', string[]>> = {
     },
 }
 
-export const useDogs = (): Record<'normal' | 'disabled', string[]> => dogs[useTheme() as Themes]
+export function useDogs(): Record<'normal' | 'disabled', string[]> {
+    return dogs[useTheme()]
+}
 
 interface AvatarProps {
     avatar: AvatarEnum
@@ -45,16 +47,22 @@ interface AvatarProps {
     disabled?: boolean
 }
 
-export const Avatar: FC<AvatarProps> = ({ avatar, edit, className, disabled }) => {
+export function Avatar({ avatar, edit, className, disabled }: AvatarProps) {
     const isDart = useTheme(true)
     const [open, setOpen] = useState<boolean>(false)
-    const toggle = useCallback(() => setOpen((prevState) => !prevState), [setOpen])
+    const toggle = useCallback(function () {
+        setOpen(function (prevState) {
+            return !prevState
+        })
+    }, [setOpen])
     const themedDogs = useDogs()
     const players = useRecoilValue(playersData)
-    const takenAvatars = players.map(({ data: { avatar } }) => avatar)
+    const takenAvatars = players.map(function ({ data: { avatar } }) {
+        return avatar
+    })
     const isMax = takenAvatars.length === MAX_PLAYERS_COUNT
     const canEdit = edit && !isMax
-    const onClick = useCallback((index: AvatarEnum) => {
+    const onClick = useCallback(function (index: AvatarEnum) {
         if (edit) {
             edit(index as AvatarEnum)
         }
@@ -66,7 +74,7 @@ export const Avatar: FC<AvatarProps> = ({ avatar, edit, className, disabled }) =
             <div
                 className={cx(
                     "border border-transparent",
-                    canEdit ? "hover:border-[var(--text-color)] cursor-pointer" : "-z-10",
+                    canEdit ? "hover:border-[--text-color] cursor-pointer" : "-z-10",
                     "relative w-10 h-full",
                     "rounded-full",
                     "bg-no-repeat bg-[length:75%] bg-center",

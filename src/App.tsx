@@ -1,24 +1,31 @@
-import type { FC } from "react"
 import { Drawer } from "./components/Drawer/Drawer"
 import { useRecoilValue } from "recoil"
 import { gamePhase, GamePhases } from "./recoil/atoms"
-import { PreGame } from "./components/Sections/PreGame"
-import { Players } from "./components/Sections/Players"
-import { InPlay } from "./components/Sections/InPlay"
+import { lazy, Suspense } from 'react'
 import { AppWrapper } from "./components/AppWrapper"
+import { Spinner } from './components/Spinner';
 
 const phases = {
-    [GamePhases.PRE_GAME]: PreGame,
-    [GamePhases.PLAYERS_SELECTION]: Players,
-    [GamePhases.IN_PLAY]: InPlay,
+    [GamePhases.PRE_GAME]: lazy(function () {
+        return import("./components/Sections/PreGame")
+    }),
+    [GamePhases.PLAYERS_SELECTION]: lazy(function () {
+        return import("./components/Sections/Players")
+    }),
+    [GamePhases.IN_PLAY]: lazy(function () {
+        return import("./components/Sections/InPlay")
+    }),
 }
 
-export const App: FC = () => {
-    const GamePhase = phases[useRecoilValue(gamePhase)]
+export function App() {
+    const GamePhase = phases[GamePhases.PRE_GAME]
 
     return (
         <>
             <AppWrapper>
+                <Suspense fallback={<Spinner />}>
+                    <GamePhase />
+                </Suspense>
                 <GamePhase />
             </AppWrapper>
             <Drawer />

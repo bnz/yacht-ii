@@ -1,12 +1,7 @@
-import { FC } from 'react'
 import { useTheme } from "../../../helpers/useTheme"
 
-interface DotProps {
-    filled?: boolean
-}
-
-export const DiceDot: FC<DotProps> = ({ filled,  }) => {
-    const isDark = useTheme() === 'dark'
+export function DiceDot({ filled }: { filled?: boolean }) {
+    const isDark = useTheme(true)
 
     return (
         <div className="flex items-center justify-center min-w-[.6em]">

@@ -14,7 +14,7 @@ export const isMoveAvailableSelector = selector<boolean>({
         let matchesCount = 0
         let noMoves = false
 
-        combinationsData.forEach(({ combination }) => {
+        combinationsData.forEach(function ({ combination }) {
             const { points } = checkMatch(combination, dices)
             const isInPlayerPoints = combination !== Combination.BONUS && playerPoints && !!playerPoints[combination]
 

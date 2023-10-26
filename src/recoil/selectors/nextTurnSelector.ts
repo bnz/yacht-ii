@@ -15,7 +15,9 @@ export const nextTurnSelector = selector<boolean>({
         if (!playerId) {
             playerId = players[0].id
         } else {
-            const index = players.findIndex(({ id }) => id === playerId)
+            const index = players.findIndex(function ({ id }) {
+                return id === playerId
+            })
             const player = players[index + 1]
             playerId = player ? player.id : players[0].id
         }

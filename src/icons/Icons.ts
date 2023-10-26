@@ -19,3 +19,5 @@ export type Icons =
     | 'delete-white'
     | 'refresh'
     | 'refresh-white'
+    | 'spinner'
+    | 'spinner-white'

@@ -1,4 +1,4 @@
-import type { FC, PropsWithChildren } from "react"
+import type { PropsWithChildren } from "react"
 import cx from "classnames"
 
 interface CombinationButtonProps {
@@ -7,18 +7,15 @@ interface CombinationButtonProps {
     innerClassName: string
 }
 
-export const CombinationButton: FC<PropsWithChildren<CombinationButtonProps>> = ({
-    onClick,
-    innerClassName,
-    buttonClassName,
-    children,
-}) => (
-    <button type="button" onClick={onClick} data-empty={true} className={buttonClassName}>
-        <div className={cx(
-            "rounded animate-pulse shadow-2xl flex justify-center items-center h-12 mx-1",
-            innerClassName,
-        )}>
-            {children}
-        </div>
-    </button>
-)
+export function CombinationButton({ onClick, innerClassName, buttonClassName, children }: PropsWithChildren<CombinationButtonProps>) {
+    return (
+        <button type="button" onClick={onClick} data-empty={true} className={buttonClassName}>
+            <div className={cx(
+                "rounded animate-pulse shadow-2xl flex justify-center items-center h-12 mx-1",
+                innerClassName,
+            )}>
+                {children}
+            </div>
+        </button>
+    )
+}

@@ -1,5 +1,5 @@
-import type { ChangeEvent, FC, FormEvent } from "react"
-import React, { useCallback, useEffect, useRef, useState } from "react"
+import type { ChangeEvent, FormEvent } from "react"
+import { useCallback, useEffect, useRef, useState } from "react"
 import { i18n } from "../../helpers/i18n/i18n"
 import { useRecoilValue, useSetRecoilState } from "recoil"
 import {
@@ -19,7 +19,7 @@ interface AddPlayerFormProps {
     initial?: boolean
 }
 
-export const AddPlayerForm: FC<AddPlayerFormProps> = ({ initial }) => {
+export function AddPlayerForm({ initial }: AddPlayerFormProps) {
     const ref = useRef<null | HTMLInputElement>(null)
     const [name, setName] = useState(useRecoilValue(getRandomDogName))
     const [error, setError] = useState<null | string>(null)
@@ -28,12 +28,12 @@ export const AddPlayerForm: FC<AddPlayerFormProps> = ({ initial }) => {
     const [avatar, setAvatar] = useState(useRecoilValue(getAvailableAvatar))
     const setEditingInProgress = useSetRecoilState(editingInProgress)
 
-    const onChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
+    const onChange = useCallback(function (e: ChangeEvent<HTMLInputElement>) {
         setName(e.currentTarget.value)
         setError(null)
     }, [setName, setError])
 
-    const onSubmit = useCallback((e: FormEvent<HTMLFormElement>) => {
+    const onSubmit = useCallback(function (e: FormEvent<HTMLFormElement>) {
         e.preventDefault()
         const trimmed = name.trim()
         if (trimmed !== "") {
@@ -45,12 +45,14 @@ export const AddPlayerForm: FC<AddPlayerFormProps> = ({ initial }) => {
         }
     }, [setPlayer, closeAddPlayerForm, setError, name, avatar, setEditingInProgress])
 
-    const onCancel = useCallback(() => {
+    const onCancel = useCallback(function () {
         closeAddPlayerForm(false)
         setEditingInProgress(false)
     }, [closeAddPlayerForm, setEditingInProgress])
 
-    useEffect(() => ref.current?.focus(), [ref])
+    useEffect(function () {
+        ref.current?.focus()
+    }, [ref])
 
     return (
         <ItemWrap>

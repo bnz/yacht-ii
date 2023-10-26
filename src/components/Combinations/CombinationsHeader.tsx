@@ -1,4 +1,3 @@
-import type { FC } from "react"
 import { Avatar } from "../Players/Avatar"
 import { useRecoilValue } from "recoil"
 import { playersDataActiveFirst } from "../../recoil/selectors/playersDataActiveFirst"
@@ -7,15 +6,15 @@ import { commonBorder } from "./Combinations"
 import { ToggleNamesColumnViewButton } from "./ToggleNamesColumnViewButton"
 import { playerMoveAtom } from "../../recoil/atoms/players/playerMove"
 
-export const CombinationsHeader: FC = () => {
+export function CombinationsHeader() {
     const [playerId] = useRecoilValue(playerMoveAtom)
     const players = useRecoilValue(playersDataActiveFirst)
 
     return (
         <>
             <ToggleNamesColumnViewButton />
-            {players.map(({ id, data: { name, avatar } }) => (
-                <div key={id} className={cx(
+            {players.map(function ({ id, data: { name, avatar } }) {
+                return <div key={id} className={cx(
                     commonBorder,
                     "flex flex-row justify-center items-center gap-3 relative",
                 )}>
@@ -24,7 +23,7 @@ export const CombinationsHeader: FC = () => {
                         {name}
                     </div>
                 </div>
-            ))}
+            })}
             <div className={commonBorder} />
         </>
     )

@@ -1,4 +1,3 @@
-import type { FC } from "react"
 import { useCallback, useState } from "react"
 import { EditName } from "./EditName"
 import { Row } from "./Row"
@@ -8,16 +7,19 @@ import { editingInProgress } from "../../recoil/atoms"
 
 interface PlayersListItemProps {
     id: string
-    name: string
 }
 
-export const PlayersListItem: FC<PlayersListItemProps> = ({ id, name }) => {
+export function PlayersListItem({ id }: PlayersListItemProps) {
     const [edit, setEdit] = useState(false)
-    const toggle = useCallback(() => setEdit((prev) => !prev), [setEdit])
+    const toggle = useCallback(function () {
+        return setEdit(function (prev) {
+            return !prev
+        })
+    }, [setEdit])
     const [flash, setFlash] = useState<boolean>(false)
     const setEditingInProgress = useSetRecoilState(editingInProgress)
 
-    const rowCallback = useCallback(() => {
+    const rowCallback = useCallback(function () {
         toggle()
         setEditingInProgress(true)
     }, [toggle, setEditingInProgress])
@@ -27,7 +29,7 @@ export const PlayersListItem: FC<PlayersListItemProps> = ({ id, name }) => {
             {edit ? (
                 <EditName
                     id={id}
-                    callback={(needFlash) => {
+                    callback={function (needFlash) {
                         if (needFlash) {
                             setFlash(true)
                         }
@@ -40,7 +42,9 @@ export const PlayersListItem: FC<PlayersListItemProps> = ({ id, name }) => {
                     id={id}
                     callback={rowCallback}
                     flash={flash}
-                    flashEnd={() => setFlash(false)}
+                    flashEnd={function () {
+                        setFlash(false)
+                    }}
                 />
             )}
         </ItemWrap>

@@ -1,4 +1,3 @@
-import type { FC } from "react"
 import { i18n } from "../../helpers/i18n/i18n"
 import { useCallback } from "react"
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil"
@@ -21,7 +20,7 @@ let delay = 0
 
 let timer: number | null = null
 
-export const DicesActions: FC = () => {
+export function DicesActions() {
     const [loading, setLoading] = useRecoilState(loadingAtom)
     const [dicesSelected, setDicesSelected] = useRecoilState(dicesSelectedAtom)
     const [dices, setDices] = useRecoilState(dicesAtom)
@@ -29,7 +28,7 @@ export const DicesActions: FC = () => {
     const isShot = useRecoilValue(isShotAvailable)
     const history = useSetRecoilState(historyUpdateDicesSelector)
 
-    const shuffle = useCallback(() => {
+    const shuffle = useCallback(function () {
         delay = Date.now()
         setLoading(true)
         if (timer !== null) {
@@ -37,19 +36,21 @@ export const DicesActions: FC = () => {
         }
     }, [setLoading])
 
-    const shuffleUp = useCallback(() => {
+    const shuffleUp = useCallback(function () {
         if (loading) {
             const d = Date.now() - delay
             timer = window.setTimeout(
-                () => {
+                function () {
                     let randDices = [...dices]
-                    dices.forEach((item, index) => {
+                    dices.forEach(function (item, index) {
                         if (dicesSelected.indexOf(index) === -1) {
                             randDices[index] = rand()
                         }
                     })
                     setDices(randDices)
-                    setPlayerMove(([playerId, shot]) => [playerId, shot + 1])
+                    setPlayerMove(function ([playerId, shot]) {
+                        return [playerId, shot + 1]
+                    })
                     history(true)
                     setLoading(false)
                 },
@@ -58,7 +59,9 @@ export const DicesActions: FC = () => {
         }
     }, [loading, setLoading, dices, setDices, dicesSelected, setPlayerMove, history])
 
-    const deselectAll = useCallback(() => setDicesSelected([]), [setDicesSelected])
+    const deselectAll = useCallback(function () {
+        setDicesSelected([])
+    }, [setDicesSelected])
 
     return (
         <div className={cx(

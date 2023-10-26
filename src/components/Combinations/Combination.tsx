@@ -1,4 +1,3 @@
-import type { FC } from "react"
 import { Combination as CombinationType, EMPTY_CELL, isBonus as _isBonus } from "./combinationsData"
 import { useRecoilValue, useSetRecoilState } from "recoil"
 import {
@@ -23,12 +22,7 @@ interface CombinationProps {
     className: string
 }
 
-export const Combination: FC<CombinationProps> = ({
-    playerId,
-    combination,
-    isMoveAvailable,
-    className,
-}) => {
+export function Combination({ playerId, combination, isMoveAvailable, className }: CombinationProps) {
     const dices = useRecoilValue(dicesAtom)
     const [activePlayerId] = useRecoilValue(playerMoveAtom)
     const { points, maxPoints } = checkMatch(combination, dices)
@@ -61,10 +55,10 @@ export const Combination: FC<CombinationProps> = ({
     }
 
     const saveCombination = useSetRecoilState(saveCombinationSelector)
-    const save = useCallback(() => {
+    const save = useCallback(function () {
         saveCombination({ combination, points })
     }, [saveCombination, combination, points])
-    const strikeOut = useCallback(() => {
+    const strikeOut = useCallback(function () {
         saveCombination({ combination, points: 0 })
     }, [saveCombination, combination])
 
@@ -89,7 +83,7 @@ export const Combination: FC<CombinationProps> = ({
                 <CombinationMatched
                     playerId={playerId}
                     combination={combination}
-                    className={cx(classes, active && "bg-[var(--background-color-active)]")}
+                    className={cx(classes, active && "bg-[--background-color-active]")}
                 />
             )
         case "bonus": {
@@ -124,8 +118,8 @@ export const Combination: FC<CombinationProps> = ({
             return (
                 <div className={cx(
                     classes,
-                    "text-[var(--line-color)]",
-                    active && "bg-[var(--background-color-active)]",
+                    "text-[--line-color]",
+                    active && "bg-[--background-color-active]",
                 )}>
                     {EMPTY_CELL}
                 </div>

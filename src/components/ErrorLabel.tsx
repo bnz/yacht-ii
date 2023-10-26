@@ -1,7 +1,6 @@
-import type { FC, PropsWithChildren } from "react"
-import React from "react"
+import type { PropsWithChildren } from "react"
 
-export const ErrorLabel: FC<PropsWithChildren<{}>> = ({ children }) => {
+export function ErrorLabel({ children }: PropsWithChildren<{}>) {
     if (!children) {
         return null
     }

@@ -1,17 +1,18 @@
-import type { FC } from "react"
 import { useCallback } from "react"
 import { useRecoilState, useRecoilValue } from "recoil"
 import { addPlayerFormVisible, editingInProgress, MAX_PLAYERS_COUNT } from "../../recoil/atoms"
 import { ButtonWithIcon } from "../ButtonWithIcon"
 import { playersCountSelector } from "../../recoil/atoms/players/playersCountSelector"
 
-export const AddPlayer: FC = () => {
+export function AddPlayer() {
     const count = useRecoilValue(playersCountSelector)
     const [open, setOpen] = useRecoilState(addPlayerFormVisible)
     const [editing, setEditingInProgress] = useRecoilState(editingInProgress)
 
-    const toggle = useCallback(() => {
-        setOpen((prev) => !prev)
+    const toggle = useCallback(function () {
+        setOpen(function (prev) {
+            return !prev
+        })
         setEditingInProgress(true)
     }, [setOpen, setEditingInProgress])
 

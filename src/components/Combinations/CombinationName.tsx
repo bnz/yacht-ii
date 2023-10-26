@@ -1,4 +1,3 @@
-import type { FC } from "react"
 import { useCallback, useMemo } from "react"
 import cx from "classnames"
 import { Combination } from "./combinationsData"
@@ -18,15 +17,19 @@ interface CombinationNameProps {
     combination: Combination
 }
 
-export const CombinationName: FC<CombinationNameProps> = ({ className, name, title, combination }) => {
+export function CombinationName({ className, name, title, combination }: CombinationNameProps) {
     const [title1, title2] = title.split("###")
     const [open, setOpen] = useRecoilState(combinationNameVisibilityAtom)
-    const toggle = useCallback(() => {
-        setOpen((prev) => prev === null ? combination : null)
+    const toggle = useCallback(function () {
+        setOpen(function (prev) {
+            return prev === null ? combination : null
+        })
     }, [setOpen, combination])
     const namesColumnView = useRecoilValue(namesColumnViewSelector)
     const isText = namesColumnView === NamesColumnViewEnum.text
-    const dicesPreview = useMemo(() => getDicesPreview(combination), [combination])
+    const dicesPreview = useMemo(function () {
+        return getDicesPreview(combination)
+    }, [combination])
 
     return (
         <>

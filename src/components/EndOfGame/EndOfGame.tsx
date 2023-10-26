@@ -1,4 +1,3 @@
-import type { FC } from "react"
 import { Backdrop } from "../Backdrop"
 import cx from "classnames"
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil"
@@ -13,10 +12,12 @@ import { KeyboardActions } from "../../helpers/KeyboardActions"
 import { Pyro } from "../Pyro/Pyro"
 import { endOfGameVisibilityAtom } from "../../recoil/atoms/endOfGameVisibilityAtom"
 
-export const EndOfGame: FC = () => {
+export function EndOfGame() {
     const winner = useRecoilValue(winnerSelector)
     const [open, setOpen] = useRecoilState(endOfGameVisibilityAtom)
-    const close = useCallback(() => setOpen(false), [setOpen])
+    const close = useCallback(function () {
+        setOpen(false)
+    }, [setOpen])
     const restart = useSetRecoilState(restartGame)
 
     if (winner === null || !open) {
@@ -49,9 +50,11 @@ export const EndOfGame: FC = () => {
                 </div>
 
                 <div className={cx(
-                    "text-center mb-7 md:mb-14 flex flex-col md:flex-row gap-3 md:gap-5 justify-center w-1/2 lg:w-full mx-auto",
+                    "text-center mb-7 md:mb-14 flex flex-col md:flex-row gap-3 md:gap-5 justify-center w-1/2 md:w-full mx-auto",
                 )}>
-                    <button type="button" onClick={() => restart(true)}>
+                    <button type="button" onClick={function () {
+                        restart(true)
+                    }}>
                         {i18n("button.goHome")}
                     </button>
                     <button type="button">

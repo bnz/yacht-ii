@@ -1,4 +1,3 @@
-import type { FC } from "react"
 import { useCallback, useMemo } from "react"
 import { Combination } from "./combinationsData"
 import cx from "classnames"
@@ -14,20 +13,26 @@ interface CombinationMatchedProps {
     combination: Combination
 }
 
-export const CombinationMatched: FC<CombinationMatchedProps> = ({ className, playerId, combination }) => {
+export function CombinationMatched({ className, playerId, combination }: CombinationMatchedProps) {
     const playerPoints = useRecoilValue(playerPointsAtomFamily(playerId))
     const [matchedView, setMatchedView] = useRecoilState(matchedViewAtom(playerId))
     const isPoints = matchedView === MatchedView.points
-    const toggle = useCallback(() => {
-        setMatchedView((prev) => prev === MatchedView.points ? MatchedView.preview : MatchedView.points)
+    const toggle = useCallback(function () {
+        setMatchedView(function (prev) {
+            return prev === MatchedView.points ? MatchedView.preview : MatchedView.points
+        })
     }, [setMatchedView])
 
     const history = useRecoilValue(historyAtomFamily(playerId))
 
     const historyMove = useMemo(
-        () => history.find(({ result }) => (
-            Object.keys(result).some((key) => key === `${combination}`)
-        )),
+        function () {
+            return history.find(function ({ result }) {
+                return Object.keys(result).some(function (key) {
+                    return key === `${combination}`
+                })
+            })
+        },
         [history, combination],
     )
 
@@ -41,7 +46,7 @@ export const CombinationMatched: FC<CombinationMatchedProps> = ({ className, pla
 
     let dices = [...historyMove.tries[historyMove.tries.length - 1]].sort()
 
-    const filterOutRestDices = (dices: number[], combination: Combination) => {
+    function filterOutRestDices(dices: number[], combination: Combination) {
         switch (combination) {
             case Combination.ONE:
             case Combination.TWO:
@@ -49,14 +54,20 @@ export const CombinationMatched: FC<CombinationMatchedProps> = ({ className, pla
             case Combination.FOUR:
             case Combination.FIVE:
             case Combination.SIX:
-                dices = dices.filter((dice) => dice === combination)
+                dices = dices.filter(function (dice) {
+                    return dice === combination
+                })
                 break
             case Combination.EQUAL_3:
             case Combination.EQUAL_4: {
                 const count = parseInt(combination.split("_")[1], 10)
                 const counts: { [k: string]: number } = {}
-                dices.forEach((x) => counts[x] = (counts[x] || 0) + 1)
-                const result = Object.keys(counts).filter((key) => counts[key] >= count)
+                dices.forEach(function (x) {
+                    return counts[x] = (counts[x] || 0) + 1
+                })
+                const result = Object.keys(counts).filter(function (key) {
+                    return counts[key] >= count
+                })
                 dices = new Array(count).fill(result[0])
                 break
             }
@@ -66,10 +77,16 @@ export const CombinationMatched: FC<CombinationMatchedProps> = ({ className, pla
                 break
             case Combination.TWO_PAIR:
                 const counts: { [k: string]: number } = {}
-                dices.forEach((x) => counts[x] = (counts[x] || 0) + 1)
+                dices.forEach(function (x) {
+                    return counts[x] = (counts[x] || 0) + 1
+                })
                 const result = Object.keys(counts)
-                    .filter((key) => counts[key] === 2)
-                    .map((key) => parseInt(key, 10))
+                    .filter(function (key) {
+                        return counts[key] === 2
+                    })
+                    .map(function (key) {
+                        return parseInt(key, 10)
+                    })
                 dices = [...result, ...result].sort()
                 break
         }
@@ -94,9 +111,9 @@ export const CombinationMatched: FC<CombinationMatchedProps> = ({ className, pla
                 "absolute",
                 isPoints ? "animate-fadeIn" : "animate-fadeOut",
             )}>
-                {dices.map((dice, index) => (
-                    <Dice key={index} value={dice} index={0} />
-                ))}
+                {dices.map(function (dice, index) {
+                    return <Dice key={index} value={dice} index={0} />
+                })}
             </div>
         </div>
     )
