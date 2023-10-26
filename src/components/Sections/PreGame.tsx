@@ -11,7 +11,8 @@ import { GameHeading } from "../GameHeading"
 import { P } from "../Rules/P"
 import { Footer } from "../Footer"
 import { scrolledTo } from "../../recoil/atoms/scrolledTo"
-import { startTransition } from 'react'
+import { ButtonWithIcon } from '../ButtonWithIcon'
+import { childPlayAtom } from '../../recoil/atoms/childPlayAtom'
 
 function Heading() {
     return (
@@ -39,6 +40,8 @@ export default function PreGame() {
     const setPhase = useSetRecoilState(gamePhase)
     const isDark = useTheme(true)
 
+    const setChild = useSetRecoilState(childPlayAtom)
+
     return (
         <>
             <Heading />
@@ -58,9 +61,7 @@ export default function PreGame() {
                     type="button"
                     className="text-xl lg:text-3xl lg:!py-5 !pr-10 !pl-16 lg:!pl-24 relative mx-auto block group"
                     onClick={function () {
-                        startTransition(function () {
-                            setPhase(GamePhases.PLAYERS_SELECTION);
-                        })
+                        setPhase(GamePhases.PLAYERS_SELECTION)
                     }}
                 >
                     <div
@@ -70,6 +71,15 @@ export default function PreGame() {
                     {i18n('button.startNewGame')}
                 </button>
             </ButtonWrapper>
+            <ButtonWithIcon
+                icon="child" className="!bg-[8px_center] !pl-10 mx-auto block mb-10"
+                onClick={function () {
+                    setChild(true)
+                    setPhase(GamePhases.PLAYERS_SELECTION)
+                }}
+            >
+                для детей
+            </ButtonWithIcon>
             <Rules />
             <Footer />
         </>

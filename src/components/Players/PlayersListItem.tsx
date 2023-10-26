@@ -4,21 +4,16 @@ import { Row } from "./Row"
 import { ItemWrap } from "./ItemWrap"
 import { useSetRecoilState } from "recoil"
 import { editingInProgress } from "../../recoil/atoms"
+import { useStateToggle } from '../../helpers/useStateToggle'
 
 interface PlayersListItemProps {
     id: string
 }
 
 export function PlayersListItem({ id }: PlayersListItemProps) {
-    const [edit, setEdit] = useState(false)
-    const toggle = useCallback(function () {
-        return setEdit(function (prev) {
-            return !prev
-        })
-    }, [setEdit])
+    const [edit, toggle] = useStateToggle()
     const [flash, setFlash] = useState<boolean>(false)
     const setEditingInProgress = useSetRecoilState(editingInProgress)
-
     const rowCallback = useCallback(function () {
         toggle()
         setEditingInProgress(true)

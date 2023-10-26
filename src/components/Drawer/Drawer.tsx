@@ -1,14 +1,14 @@
 import { useCallback } from "react"
 import { Footer } from "../Footer"
 import cx from "classnames"
-import { i18n } from "../../helpers/i18n/i18n"
-import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil"
-import { drawerState, gamePhase, GamePhases, restartGame } from "../../recoil/atoms"
+import { useRecoilState, useRecoilValue } from "recoil"
+import { drawerState, gamePhase, GamePhases } from "../../recoil/atoms"
 import { Backdrop } from "../Backdrop"
 import { MenuButton } from "./MenuButton"
 import { KeyboardActions } from "../../helpers/KeyboardActions"
 import { combinationNameVisibilityAtom } from "../../recoil/atoms/combinationNameVisibilityAtom"
 import { endOfGameVisibilityAtom } from "../../recoil/atoms/endOfGameVisibilityAtom"
+import { DrawerContent } from './DrawerContent'
 
 export function Drawer() {
     const [open, setOpen] = useRecoilState(drawerState)
@@ -18,11 +18,11 @@ export function Drawer() {
         })
     }, [setOpen])
     const phase = useRecoilValue(gamePhase)
-    const restart = useSetRecoilState(restartGame)
+
     const combinationNameVisibility = useRecoilValue(combinationNameVisibilityAtom)
     const endOfGameVisibility = useRecoilValue(endOfGameVisibilityAtom)
 
-    if (phase !== GamePhases.IN_PLAY) {
+    if (phase !== GamePhases.IN_PLAY && phase !== GamePhases.CHILD_PLAY) {
         return null
     }
 
@@ -39,26 +39,12 @@ export function Drawer() {
                 "w-80 pt-28 px-5",
                 "fixed top-0 left-0 h-full shadow-xl",
                 "transition-transform duration-100",
-                !open && "shadow-none",
-            )} style={{
-                backgroundColor: "var(--background-color)",
-                color: "var(--text-color)",
-                transform: "translateX(0)",
-                ...(!open ? {
-                    transform: "translateX(calc(320px * -1))",
-                    boxShadow: "none",
-                } : {}),
-            }}>
+                "bg-[--background-color] text-[--text-color]",
+                "translate-x-0",
+                !open && "shadow-none -translate-x-80",
+            )}>
                 <div className="h-full -mb-20">
-                    <div>change game select</div>
-                    <button type="button" onClick={function () {
-                        restart(true)
-                        toggle()
-                    }}>
-                        {i18n('button.restartGame')}
-                    </button>
-                    <div>SettingsTabContent</div>
-                    <div>HistoryTab</div>
+                    <DrawerContent />
                 </div>
                 <Footer />
             </div>

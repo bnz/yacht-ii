@@ -1,6 +1,6 @@
 import type { Dispatch, SetStateAction } from "react"
 import { Themes, useTheme } from "../../helpers/useTheme"
-import { useCallback, useState } from "react"
+import { useCallback } from "react"
 import cx from "classnames"
 import { AvatarEnum, MAX_PLAYERS_COUNT, playersData } from "../../recoil/atoms"
 
@@ -24,6 +24,7 @@ import icon from "../../icons/icon.svg"
 import { useRecoilValue } from "recoil"
 import { AvatarChooser } from "./AvatarChooser"
 import { createPortal } from "react-dom"
+import { useStateToggle } from '../../helpers/useStateToggle'
 
 const dogs: Record<Themes, Record<'normal' | 'disabled', string[]>> = {
     light: {
@@ -49,12 +50,7 @@ interface AvatarProps {
 
 export function Avatar({ avatar, edit, className, disabled }: AvatarProps) {
     const isDart = useTheme(true)
-    const [open, setOpen] = useState<boolean>(false)
-    const toggle = useCallback(function () {
-        setOpen(function (prevState) {
-            return !prevState
-        })
-    }, [setOpen])
+    const [open, toggle] = useStateToggle()
     const themedDogs = useDogs()
     const players = useRecoilValue(playersData)
     const takenAvatars = players.map(function ({ data: { avatar } }) {

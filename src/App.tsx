@@ -15,10 +15,13 @@ const phases = {
     [GamePhases.IN_PLAY]: lazy(function () {
         return import("./components/Sections/InPlay")
     }),
+    [GamePhases.CHILD_PLAY]: lazy(function () {
+        return import("./components/Sections/ChildPlay")
+    })
 }
 
 export function App() {
-    const GamePhase = phases[GamePhases.PRE_GAME]
+    const GamePhase = phases[useRecoilValue(gamePhase)]
 
     return (
         <>
@@ -26,7 +29,6 @@ export function App() {
                 <Suspense fallback={<Spinner />}>
                     <GamePhase />
                 </Suspense>
-                <GamePhase />
             </AppWrapper>
             <Drawer />
         </>

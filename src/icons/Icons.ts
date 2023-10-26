@@ -21,3 +21,5 @@ export type Icons =
     | 'refresh-white'
     | 'spinner'
     | 'spinner-white'
+    | 'child'
+    | 'child-white'

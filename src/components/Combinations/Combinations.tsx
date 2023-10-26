@@ -1,5 +1,5 @@
 import { Fragment } from "react"
-import { Combination as CombinationType, combinationsData, isBonus } from "./combinationsData"
+import { Combination as CombinationType, CombinationInfo, isBonus } from "./combinationsData"
 import { useRecoilValue } from "recoil"
 import { playersDataActiveFirst } from "../../recoil/selectors/playersDataActiveFirst"
 import { MAX_PLAYERS_COUNT } from "../../recoil/atoms"
@@ -42,7 +42,11 @@ export const commonSizes = cx(
     "flex items-center justify-center",
 )
 
-export function Combinations() {
+interface CombinationsProps {
+    combinations: CombinationInfo[]
+}
+
+export function Combinations({ combinations }: CombinationsProps) {
     const players = useRecoilValue(playersDataActiveFirst)
     const isMoveAvailable = useRecoilValue(isMoveAvailableSelector)
 
@@ -52,7 +56,7 @@ export function Combinations() {
                 gridTemplateColumns: playersColsStyle[players.length],
             }}>
                 <CombinationsHeader />
-                {combinationsData.map(function ({ name, title, combination }) {
+                {combinations.map(function ({ name, title, combination }) {
                     const bonusClassName = cx(isBonus(combination) && "!bg-[--line-color] italic font-thin border-b-0 !h-8")
                     const isSixClassName = cx(combination === CombinationType.SIX && "border-b-0")
 

@@ -1,4 +1,4 @@
-import { memo, useCallback, useEffect, useState } from "react"
+import { memo, useEffect, useState } from "react"
 import { createPortal } from "react-dom"
 import { Backdrop } from "../Backdrop"
 import cx from "classnames"
@@ -8,14 +8,10 @@ import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil"
 import { dicesAtom, playerPointsAtomFamily } from "../../recoil/atoms"
 import { playerMoveAtom } from "../../recoil/atoms/players/playerMove"
 import { historyUpdateDicesSelector } from "../../recoil/selectors/historyUpdateDicesSelector"
+import { useStateToggle } from '../../helpers/useStateToggle'
 
 export const Dev = memo(function () {
-    const [open, setOpen] = useState(false)
-    const toggle = useCallback(function () {
-        return setOpen(function (prev) {
-            return !prev
-        })
-    }, [setOpen])
+    const [open, toggle] = useStateToggle()
     const [visible, setVisible] = useState(false)
 
     const saveCombination = useSetRecoilState(saveCombinationSelector)
@@ -148,6 +144,7 @@ interface RowProps {
     name: string
     min?: number
     max: number
+
     onClick(combination: Combination, points: number, min: boolean): void
 }
 

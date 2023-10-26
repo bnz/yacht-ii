@@ -14,15 +14,17 @@ export function CombinationsHeader() {
         <>
             <ToggleNamesColumnViewButton />
             {players.map(function ({ id, data: { name, avatar } }) {
-                return <div key={id} className={cx(
-                    commonBorder,
-                    "flex flex-row justify-center items-center gap-3 relative",
-                )}>
-                    <Avatar disabled={playerId !== id} avatar={avatar} className="!w-20 !h-20" />
-                    <div className="absolute bottom-0 left-1/2 translate-x-6">
-                        {name}
+                return (
+                    <div key={id} className={cx(
+                        commonBorder,
+                        "flex flex-row justify-center items-center gap-3 relative",
+                    )}>
+                        <Avatar disabled={playerId !== id} avatar={avatar} className="!w-20 !h-20" />
+                        <div className="absolute bottom-0 left-1/2 translate-x-6">
+                            {name}
+                        </div>
                     </div>
-                </div>
+                )
             })}
             <div className={commonBorder} />
         </>

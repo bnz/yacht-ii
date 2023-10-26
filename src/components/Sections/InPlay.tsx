@@ -8,6 +8,7 @@ import { winnerSelector } from "../../recoil/selectors/winner"
 import cx from "classnames"
 import { i18n } from "../../helpers/i18n/i18n"
 import { endOfGameVisibilityAtom } from "../../recoil/atoms/endOfGameVisibilityAtom"
+import { combinationsData } from '../Combinations/combinationsData'
 
 export function EndOfGamePlaceholder() {
     const winner = useRecoilValue(winnerSelector)
@@ -41,7 +42,7 @@ export default function InPlay() {
                 <DicesActions />
                 <EndOfGamePlaceholder />
             </div>
-            <Combinations />
+            <Combinations combinations={combinationsData} />
             <EndOfGame />
         </>
     )
