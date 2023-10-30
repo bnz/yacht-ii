@@ -33,7 +33,7 @@ type Fail = {}
 const fail: Fail = {}
 
 const cm = (combination: Combination, dices: DicesType = [], result: Return<number> | Fail): void => {
-  expect(checkMatch(combination, dices)).toEqual(result)
+  expect(checkMatch(combination, dices, false)).toEqual(result)
 }
 
 

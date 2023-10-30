@@ -140,6 +140,8 @@ export const combinationsData: CombinationInfo[] = [
     },
 ]
 
+export const childCombinations: CombinationInfo[] = combinationsData.slice(0, 6)
+
 export const MAX_POSSIBLE_POINTS = combinationsData.reduce(function (prev, curr) {
     return prev + curr.max
 }, 0)

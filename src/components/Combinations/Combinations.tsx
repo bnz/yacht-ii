@@ -73,18 +73,20 @@ export function Combinations({ combinations }: CombinationsProps) {
                                 combination={combination}
                             />
                             {players.map(function ({ id }) {
-                                return <Combination
-                                    key={id}
-                                    playerId={id}
-                                    combination={combination}
-                                    isMoveAvailable={isMoveAvailable}
-                                    className={cx(
-                                        bonusClassName,
-                                        commonBorder,
-                                        isSixClassName,
-                                        "h-14 flex items-center justify-center",
-                                    )}
-                                />
+                                return (
+                                    <Combination
+                                        key={id}
+                                        playerId={id}
+                                        combination={combination}
+                                        isMoveAvailable={isMoveAvailable}
+                                        className={cx(
+                                            bonusClassName,
+                                            commonBorder,
+                                            isSixClassName,
+                                            "h-14 flex items-center justify-center",
+                                        )}
+                                    />
+                                )
                             })}
                             <div className={cx(
                                 bonusClassName,

@@ -3,6 +3,7 @@ import { playerMoveAtom } from "../atoms/players/playerMove"
 import { Combination, combinationsData } from "../../components/Combinations/combinationsData"
 import { checkMatch } from "../../helpers/checkMatch"
 import { dicesAtom, MAX_SHOT_COUNT, playerPointsAtomFamily } from "../atoms"
+import { childPlayAtom } from "../atoms/childPlayAtom"
 
 export const isMoveAvailableSelector = selector<boolean>({
     key: "isMoveAvailableSelector",
@@ -10,12 +11,13 @@ export const isMoveAvailableSelector = selector<boolean>({
         const [activePlayerId, shot] = get(playerMoveAtom)
         const playerPoints = get(playerPointsAtomFamily(activePlayerId))
         const dices = get(dicesAtom)
+        const childPlay = get(childPlayAtom)
 
         let matchesCount = 0
         let noMoves = false
 
         combinationsData.forEach(function ({ combination }) {
-            const { points } = checkMatch(combination, dices)
+            const { points } = checkMatch(combination, dices, childPlay)
             const isInPlayerPoints = combination !== Combination.BONUS && playerPoints && !!playerPoints[combination]
 
             /**

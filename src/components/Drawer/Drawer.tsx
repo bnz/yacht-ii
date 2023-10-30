@@ -37,11 +37,11 @@ export function Drawer() {
             <div className={cx(
                 "z-10",
                 "w-80 pt-28 px-5",
-                "fixed top-0 left-0 h-full shadow-xl",
+                "fixed top-0 left-0 h-full",
                 "transition-transform duration-100",
                 "bg-[--background-color] text-[--text-color]",
-                "translate-x-0",
-                !open && "shadow-none -translate-x-80",
+                "",
+                open ? "shadow-xl translate-x-0" : "shadow-none -translate-x-80",
             )}>
                 <div className="h-full -mb-20">
                     <DrawerContent />

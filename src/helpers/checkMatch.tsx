@@ -1,6 +1,7 @@
 import { Combination } from "../components/Combinations/combinationsData"
 import { DicesType } from "../recoil/atoms"
 import { uniq } from "./uniq"
+import { checkMatchTopSection } from "./checkMatchTopSection"
 
 export type Return<T> = {
     points?: T
@@ -25,30 +26,23 @@ export const resultsMap: ResultsMap = {
     [Combination.FULL_HOUSE]: { points: 30, maxPoints: 30 },
 }
 
-export function checkMatch(combinationType: Combination, dices: DicesType): Return<number> {
+export function checkMatch(combinationType: Combination, dices: DicesType, childPlay: boolean): Return<number> {
     const values = Object.values(dices)
     const sequence = values.sort()
     const seq = uniq(sequence)
     const seqString = seq.toString()
 
+    const topSection = checkMatchTopSection(combinationType, dices)
+
+    if (topSection) {
+        return topSection
+    }
+
+    if (childPlay) {
+        return {}
+    }
+
     switch (combinationType) {
-        case Combination.ONE:
-        case Combination.TWO:
-        case Combination.THREE:
-        case Combination.FOUR:
-        case Combination.FIVE:
-        case Combination.SIX: {
-            const matches = sequence.filter(function (item) {
-                return item === combinationType
-            })
-            if (matches.length >= 3) {
-                return {
-                    points: matches.length * combinationType,
-                    maxPoints: 5 * combinationType,
-                }
-            }
-            break
-        }
         case Combination.EQUAL_3:
         case Combination.EQUAL_4: {
             const count = parseInt(combinationType.split('_')[1], 10)

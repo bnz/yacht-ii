@@ -14,6 +14,7 @@ import { useCallback } from "react"
 import { playerMoveAtom } from "../../recoil/atoms/players/playerMove"
 import { CombinationButton } from "./CombinationButton"
 import { CombinationMatched } from "./CombinationMatched"
+import { childPlayAtom } from "../../recoil/atoms/childPlayAtom"
 
 interface CombinationProps {
     playerId: string
@@ -25,7 +26,8 @@ interface CombinationProps {
 export function Combination({ playerId, combination, isMoveAvailable, className }: CombinationProps) {
     const dices = useRecoilValue(dicesAtom)
     const [activePlayerId] = useRecoilValue(playerMoveAtom)
-    const { points, maxPoints } = checkMatch(combination, dices)
+    const childPlay = useRecoilValue(childPlayAtom)
+    const { points, maxPoints } = checkMatch(combination, dices, childPlay)
     const playerPoints = useRecoilValue(playerPointsAtomFamily(playerId))
     const existingCombination = (playerPoints || [])[combination] as number === undefined
         ? EMPTY_CELL
