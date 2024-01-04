@@ -2,7 +2,7 @@ import type { PropsWithChildren } from "react"
 import { gamePhase, GamePhases } from "../../recoil/atoms"
 import { i18n } from "../../helpers/i18n/i18n"
 import { Rules } from "../Rules/Rules"
-import { useRecoilValue, useSetRecoilState } from "recoil"
+import { useSetRecoilState } from "recoil"
 import { isDark } from "@signals/theme"
 import cx from "classnames"
 import logoIconWhite from "../../icons/logo-white.svg"
@@ -10,16 +10,16 @@ import logoIconBlack from "../../icons/logo-black.svg"
 import { GameHeading } from "../GameHeading"
 import { P } from "../Rules/P"
 import { Footer } from "../Footer"
-import { scrolledTo } from "../../recoil/atoms/scrolledTo"
 import { ButtonWithIcon } from '../ButtonWithIcon'
 import { childPlayAtom } from '../../recoil/atoms/childPlayAtom'
+import { scrolledTo } from "@signals/scrolledTo"
 
 function Heading() {
     return (
         <GameHeading className={cx(
             "bg-[--background-color] z-10",
             "transition-shadow",
-            useRecoilValue(scrolledTo) === "logo" ? "shadow-lg" : "shadow-none",
+            scrolledTo.value === "logo" ? "shadow-lg" : "shadow-none",
         )} />
     )
 }
@@ -29,7 +29,7 @@ function ButtonWrapper({ children }: PropsWithChildren<{}>) {
         <div className={cx(
             "sticky top-12 md:top-32 bg-[--background-color] py-5 my-5 lg:my-10",
             "transition-shadow",
-            useRecoilValue(scrolledTo) === "button" && "shadow-lg",
+            scrolledTo.value === "button" && "shadow-lg",
         )}>
             {children}
         </div>
