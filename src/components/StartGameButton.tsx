@@ -3,20 +3,19 @@ import { DefaultValue, selector, useRecoilValue, useSetRecoilState } from "recoi
 import { ButtonWithIcon } from "./ButtonWithIcon"
 import cx from "classnames"
 import { startGameButtonDisabledSelector } from '../recoil/selectors/startGameButtonDisabledSelector'
-import { childPlayAtom } from '../recoil/atoms/childPlayAtom'
 import { nextTurnSelector } from '../recoil/selectors/nextTurnSelector'
 import { GamePhases, update } from "@signals/gamePhase"
+import { childPlay } from "@signals/childPlay"
 
 const asd = selector<boolean>({
     key: "asd",
     get() {
         throw new Error("asd: use only as setter")
     },
-    set({ get, set }, props) {
+    set({ set }, props) {
         if (!(props instanceof DefaultValue)) {
-            const child = get(childPlayAtom)
             set(nextTurnSelector, true)
-            update(child ? GamePhases.CHILD_PLAY : GamePhases.IN_PLAY)
+            update(childPlay.value ? GamePhases.CHILD_PLAY : GamePhases.IN_PLAY)
         }
     },
 })

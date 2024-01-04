@@ -7,8 +7,8 @@ import { playerMoveAtom } from "./atoms/players/playerMove"
 import { playersIds } from "./atoms/players/playersIds"
 import { historyAtomFamily } from "./atoms/historyAtomFamily"
 import { namesColumnViewAtomFamily } from "./atoms/namesColumnViewAtomFamily"
-import { childPlayAtom } from './atoms/childPlayAtom'
 import { GamePhases, update } from "@signals/gamePhase"
+import { update as updateChildPlay } from "@signals/childPlay"
 
 export enum AvatarEnum {
     dog0,
@@ -249,7 +249,7 @@ export const restartGame = selector<boolean>({
         reset(dicesAtom)
         reset(dicesSelectedAtom)
         update(GamePhases.PRE_GAME)
-        reset(childPlayAtom)
+        updateChildPlay(false)
         set(resetPlayers, null)
         get(playersIds).forEach(function (id) {
             reset(players(id))

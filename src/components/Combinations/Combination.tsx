@@ -14,7 +14,7 @@ import { useCallback } from "react"
 import { playerMoveAtom } from "../../recoil/atoms/players/playerMove"
 import { CombinationButton } from "./CombinationButton"
 import { CombinationMatched } from "./CombinationMatched"
-import { childPlayAtom } from "../../recoil/atoms/childPlayAtom"
+import { childPlay } from "@signals/childPlay"
 
 interface CombinationProps {
     playerId: string
@@ -26,8 +26,7 @@ interface CombinationProps {
 export function Combination({ playerId, combination, isMoveAvailable, className }: CombinationProps) {
     const dices = useRecoilValue(dicesAtom)
     const [activePlayerId] = useRecoilValue(playerMoveAtom)
-    const childPlay = useRecoilValue(childPlayAtom)
-    const { points, maxPoints } = checkMatch(combination, dices, childPlay)
+    const { points, maxPoints } = checkMatch(combination, dices, childPlay.value)
     const playerPoints = useRecoilValue(playerPointsAtomFamily(playerId))
     const existingCombination = (playerPoints || [])[combination] as number === undefined
         ? EMPTY_CELL
@@ -42,19 +41,6 @@ export function Combination({ playerId, combination, isMoveAvailable, className 
         bonus: isBonus && existingCombination !== EMPTY_CELL,
         strike: active && !matched && !isBonus && !isMoveAvailable,
     })
-
-    if (combination === "theYacht") {
-        // console.log(
-        //     {
-        //         active,
-        //         "!matched": !matched,
-        //         "!isBonus": !isBonus,
-        //         "!isMoveAvailable": !isMoveAvailable,
-        //     },
-        //     active && !matched && !isBonus && !isMoveAvailable,
-        //     { type },
-        // )
-    }
 
     const saveCombination = useSetRecoilState(saveCombinationSelector)
     const save = useCallback(function () {

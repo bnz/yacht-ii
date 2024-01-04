@@ -1,7 +1,6 @@
 import type { PropsWithChildren } from "react"
 import { i18n } from "@helpers/i18n"
 import { Rules } from "../Rules/Rules"
-import { useSetRecoilState } from "recoil"
 import { isDark } from "@signals/theme"
 import cx from "classnames"
 import logoIconWhite from "../../icons/logo-white.svg"
@@ -10,9 +9,10 @@ import { GameHeading } from "../GameHeading"
 import { P } from "../Rules/P"
 import { Footer } from "../Footer"
 import { ButtonWithIcon } from '../ButtonWithIcon'
-import { childPlayAtom } from '../../recoil/atoms/childPlayAtom'
 import { scrolledTo } from "@signals/scrolledTo"
 import { GamePhases, update } from "@signals/gamePhase"
+import { update as updateChildPlay } from "@signals/childPlay"
+import { useCallback } from "react"
 
 function Heading() {
     return (
@@ -37,7 +37,15 @@ function ButtonWrapper({ children }: PropsWithChildren<{}>) {
 }
 
 export default function PreGame() {
-    const setChild = useSetRecoilState(childPlayAtom)
+
+    const startNewGame = useCallback(function () {
+        update(GamePhases.PLAYERS_SELECTION)
+    }, [])
+
+    const startNewChildGame = useCallback(function () {
+        updateChildPlay(true)
+        update(GamePhases.PLAYERS_SELECTION)
+    }, [])
 
     return (
         <>
@@ -57,9 +65,7 @@ export default function PreGame() {
                 <button
                     type="button"
                     className="text-xl lg:text-3xl lg:!py-5 !pr-10 !pl-16 lg:!pl-24 relative mx-auto block group"
-                    onClick={function () {
-                        update(GamePhases.PLAYERS_SELECTION)
-                    }}
+                    onClick={startNewGame}
                 >
                     <div
                         className="w-8 h-8 lg:w-12 lg:h-12 bg-no-repeat bg-contain absolute left-3 lg:left-7 top-2 lg:top-3 group-hover:animate-spin"
@@ -70,10 +76,7 @@ export default function PreGame() {
             </ButtonWrapper>
             <ButtonWithIcon
                 icon="child" className="!bg-[8px_center] !pl-10 mx-auto block mb-10"
-                onClick={function () {
-                    setChild(true)
-                    update(GamePhases.PLAYERS_SELECTION)
-                }}
+                onClick={startNewChildGame}
             >
                 для детей
             </ButtonWithIcon>
