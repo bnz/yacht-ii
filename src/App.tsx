@@ -1,9 +1,9 @@
-import { Drawer } from "./components/Drawer/Drawer"
 import { gamePhase, GamePhases } from "@signals/gamePhase"
 import { lazy, Suspense } from 'react'
-import { AppWrapper } from "./components/AppWrapper"
-import { Spinner } from './components/Spinner';
+import { AppWrapper } from "@components/AppWrapper"
+import { Spinner } from '@components/Spinner';
 import { useSignals } from "@preact/signals-react/runtime"
+import { DrawerVisibilityResolver } from "@components/Drawer/DrawerVisibilityResolver"
 
 const phases = {
     [GamePhases.PRE_GAME]: lazy(function () {
@@ -32,7 +32,7 @@ export function App() {
                     <GamePhase />
                 </Suspense>
             </AppWrapper>
-            <Drawer />
+            <DrawerVisibilityResolver />
         </>
     )
 }

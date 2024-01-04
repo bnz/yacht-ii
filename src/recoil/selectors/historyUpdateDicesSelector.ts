@@ -2,6 +2,7 @@ import { selector } from "recoil"
 import { dicesAtom, dicesSelectedAtom } from "../atoms"
 import { playerMoveAtom } from "../atoms/players/playerMove"
 import { historyAtomFamily, Move } from "../atoms/historyAtomFamily"
+import { activePlayerId } from "@signals/players/activePlayerId"
 
 export const historyUpdateDicesSelector = selector<boolean>({
     key: "historyUpdateDicesSelector",
@@ -12,8 +13,7 @@ export const historyUpdateDicesSelector = selector<boolean>({
         const dicesSelected = get(dicesSelectedAtom)
         const dices = get(dicesAtom)
         const [, shot] = get(playerMoveAtom)
-        const [playerId] = get(playerMoveAtom)
-        const history: Move[] = JSON.parse(JSON.stringify(get(historyAtomFamily(playerId))))
+        const history: Move[] = JSON.parse(JSON.stringify(get(historyAtomFamily(activePlayerId.value))))
 
         if (shot === 1) {
             history.push({
@@ -27,6 +27,6 @@ export const historyUpdateDicesSelector = selector<boolean>({
             history[lastElementIndex].dicesSelected.push(dicesSelected)
         }
 
-        set(historyAtomFamily(playerId), history)
+        set(historyAtomFamily(activePlayerId.value), history)
     },
 })

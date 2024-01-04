@@ -1,11 +1,11 @@
 import { Backdrop } from "../Backdrop"
 import cx from "classnames"
-import icon from "../../icons/icon.svg"
+import icon from "@icons/icon.svg"
 import { i18n } from "@helpers/i18n"
-import { AvatarEnum, playersData } from "../../recoil/atoms"
-import { getDogs } from "./Avatar"
-import { useRecoilValue } from "recoil"
+import { AvatarEnum } from "../../recoil/atoms"
 import { isDark } from "@signals/theme"
+import { getDogs } from "@helpers/getDogs"
+import { playersData } from "@signals/players/playersData"
 
 interface AvatarChooserProps {
     toggle: VoidFunction
@@ -16,8 +16,8 @@ interface AvatarChooserProps {
 
 export function AvatarChooser({ avatar, toggle, onClick }: AvatarChooserProps) {
     const themedDogs = getDogs()
-    const players = useRecoilValue(playersData)
-    const takenAvatars = players.map(function ({ data: { avatar } }) {
+    // FIXME takenAvatars
+    const takenAvatars = playersData.value.map(function ({ data: { avatar } }) {
         return avatar
     })
 
@@ -45,7 +45,7 @@ export function AvatarChooser({ avatar, toggle, onClick }: AvatarChooserProps) {
                         const selected = avatar === index
                         const taken = takenAvatars.includes(index)
                         const isClickable = !selected && !taken
-                        const player = players.find(function ({ data: { avatar } }) {
+                        const player = playersData.value.find(function ({ data: { avatar } }) {
                             return avatar === index
                         })
 

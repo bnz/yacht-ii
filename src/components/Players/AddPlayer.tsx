@@ -1,11 +1,10 @@
 import { useCallback } from "react"
-import { useRecoilState, useRecoilValue } from "recoil"
+import { useRecoilState } from "recoil"
 import { addPlayerFormVisible, editingInProgress, MAX_PLAYERS_COUNT } from "../../recoil/atoms"
 import { ButtonWithIcon } from "../ButtonWithIcon"
-import { playersCountSelector } from "../../recoil/atoms/players/playersCountSelector"
+import { playersCount } from "@signals/players/playersCount"
 
 export function AddPlayer() {
-    const count = useRecoilValue(playersCountSelector)
     const [open, setOpen] = useRecoilState(addPlayerFormVisible)
     const [editing, setEditingInProgress] = useRecoilState(editingInProgress)
 
@@ -16,7 +15,7 @@ export function AddPlayer() {
         setEditingInProgress(true)
     }, [setOpen, setEditingInProgress])
 
-    const disabled = count === 0 || open || count >= MAX_PLAYERS_COUNT || editing
+    const disabled = playersCount.value === 0 || open || playersCount.value >= MAX_PLAYERS_COUNT || editing
 
     return (
         <ButtonWithIcon

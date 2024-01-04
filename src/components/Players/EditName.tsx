@@ -1,12 +1,13 @@
-import { useRecoilValue, useSetRecoilState } from "recoil"
-import { AvatarEnum, players } from "../../recoil/atoms"
+import { AvatarEnum } from "../../recoil/atoms"
 import { ChangeEvent, FormEvent, useCallback, useState } from "react"
-import { KeyboardActions } from "../../helpers/KeyboardActions"
+import { KeyboardActions } from "@helpers/KeyboardActions"
 import { i18n } from "@helpers/i18n"
 import { InputWithError } from "../InputWithError"
 import { ButtonWithIcon } from "../ButtonWithIcon"
 import { Avatar } from "./Avatar"
 import { RandomNameButton } from "./RandomNameButton"
+import { players } from "@signals/players/players"
+import { updatePlayerById } from "@signals/players/updaters/updatePlayerById"
 
 interface EditNameProps {
     id: string
@@ -14,9 +15,8 @@ interface EditNameProps {
 }
 
 export function EditName({ id, callback }: EditNameProps) {
-    const { name, avatar: avatarInitial } = useRecoilValue(players(id))
+    const { name, avatar: avatarInitial } = players.value[id]
     const [avatar, setAvatar] = useState(avatarInitial)
-    const setPlayer = useSetRecoilState(players(id))
     const [inputValue, setInputValue] = useState<string>(name)
     const [error, setError] = useState<null | string>(null)
 
@@ -29,39 +29,31 @@ export function EditName({ id, callback }: EditNameProps) {
         e.preventDefault()
         const trimmed = inputValue.trim()
         if (trimmed !== "") {
-            setPlayer(function (prev) {
-                return {
-                    ...prev,
-                    name: inputValue,
-                    avatar,
-                }
-            })
+            updatePlayerById(id, { name: inputValue, avatar })
             callback(true)
         } else {
             setError(i18n("required"))
         }
-    }, [inputValue, setPlayer, callback, setError, avatar])
+    }, [id, inputValue, callback, setError, avatar])
 
     const onCancel = useCallback(function () {
         callback(false)
     }, [callback])
 
-    const edit = useCallback(function (index: AvatarEnum) {
+    const editAvatar = useCallback(function (index: AvatarEnum) {
         setAvatar(index)
-        setPlayer(function (prev) {
-            return {
-                ...prev,
-                avatar: index,
-            }
+        updatePlayerById(function (players) {
+            players[id] = { ...players[id], avatar: index }
+            return players
         })
         callback(true)
-    }, [setAvatar, setPlayer, callback])
+    }, [setAvatar, id, callback])
 
     const disabled = inputValue === name && avatar === avatarInitial
 
     return (
         <>
-            <Avatar edit={edit} avatar={avatar} />
+            <Avatar edit={editAvatar} avatar={avatar} />
             <form className="flex-1 flex gap-3" onSubmit={onSubmit}>
                 <KeyboardActions actions={{ Escape: onCancel }} />
                 <div className="w-full relative">

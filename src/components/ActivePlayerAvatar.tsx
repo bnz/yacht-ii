@@ -1,13 +1,9 @@
 import cx from "classnames"
-import { useRecoilValue } from "recoil"
-import { players } from "../recoil/atoms"
-import { getDogs } from "./Players/Avatar"
-import { playerMoveAtom } from "../recoil/atoms/players/playerMove"
+import { getDogs } from "@helpers/getDogs"
+import { activePlayer } from "@signals/players/activePlayer"
 
 export function ActivePlayerAvatar() {
-    const [playerId] = useRecoilValue(playerMoveAtom)
-    const { avatar, name } = useRecoilValue(players(playerId))
-    const dogs = getDogs()
+    const { avatar, name } = activePlayer.value
 
     return (
         <div
@@ -20,7 +16,7 @@ export function ActivePlayerAvatar() {
                 "text-[--background-color]",
             )}
             style={{
-                backgroundImage: `url('${dogs.normal[avatar]}')`,
+                backgroundImage: `url('${getDogs().normal[avatar]}')`,
             }}
         >
             {name}

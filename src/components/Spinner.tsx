@@ -1,4 +1,4 @@
-import icon from "../icons/icon.svg"
+import icon from "@icons/icon.svg"
 import { isDark } from "@signals/theme"
 
 export function Spinner() {

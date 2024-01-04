@@ -5,8 +5,11 @@ import { StartGameButton } from "../StartGameButton"
 import { CancelButton } from "../Players/CancelButton"
 import { GameHeading } from "../GameHeading"
 import { Footer } from "../Footer"
+import { useSignals } from "@preact/signals-react/runtime"
 
 export default function Players() {
+    useSignals()
+    
     return (
         <div className="md:w-2/3 lg:w-1/2 mx-auto text-center">
             <GameHeading />

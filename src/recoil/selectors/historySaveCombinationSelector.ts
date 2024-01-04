@@ -1,7 +1,7 @@
 import { DefaultValue, selector } from "recoil"
-import { Combination } from "../../components/Combinations/combinationsData"
-import { playerMoveAtom } from "../atoms/players/playerMove"
+import { Combination } from "@components/Combinations/combinationsData"
 import { historyAtomFamily, Move } from "../atoms/historyAtomFamily"
+import { activePlayerId } from "@signals/players/activePlayerId"
 
 export const historySaveCombinationSelector = selector<{ combination: Combination, points?: number }>({
     key: "historySaveCombinationSelector",
@@ -11,11 +11,10 @@ export const historySaveCombinationSelector = selector<{ combination: Combinatio
     set({ get, set, reset }, props) {
         if (!(props instanceof DefaultValue)) {
             const { combination, points } = props
-            const [playerId] = get(playerMoveAtom)
-            const history: Move[] = JSON.parse(JSON.stringify(get(historyAtomFamily(playerId))))
+            const history: Move[] = JSON.parse(JSON.stringify(get(historyAtomFamily(activePlayerId.value))))
             const lastElementIndex = history.length - 1
             history[lastElementIndex].result[combination] = points
-            set(historyAtomFamily(playerId), history)
+            set(historyAtomFamily(activePlayerId.value), history)
         }
     },
 })

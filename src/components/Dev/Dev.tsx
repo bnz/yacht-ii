@@ -8,7 +8,8 @@ import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil"
 import { dicesAtom, playerPointsAtomFamily } from "../../recoil/atoms"
 import { playerMoveAtom } from "../../recoil/atoms/players/playerMove"
 import { historyUpdateDicesSelector } from "../../recoil/selectors/historyUpdateDicesSelector"
-import { useStateToggle } from '../../helpers/useStateToggle'
+import { useStateToggle } from '@helpers/useStateToggle'
+import { activePlayerId } from "@signals/players/activePlayerId"
 
 export const Dev = memo(function () {
     const [open, toggle] = useStateToggle()
@@ -150,8 +151,7 @@ interface RowProps {
 
 function Row({ combination, isLast, name, min, max, onClick }: RowProps) {
     const [points, setPoints] = useState(min || max)
-    const [playerId] = useRecoilValue(playerMoveAtom)
-    const playerPoints = useRecoilValue(playerPointsAtomFamily(playerId))
+    const playerPoints = useRecoilValue(playerPointsAtomFamily(activePlayerId.value))
     const disabled = Object.keys(playerPoints).indexOf(`${combination}`) === -1
 
     return (

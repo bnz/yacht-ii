@@ -4,14 +4,13 @@ import { playersDataActiveFirst } from "../../recoil/selectors/playersDataActive
 import { playerTotalsAtom } from "../../recoil/atoms"
 import cx from "classnames"
 import { commonSizes } from "./Combinations"
-import { playerMoveAtom } from "../../recoil/atoms/players/playerMove"
+import { activePlayerId } from "@signals/players/activePlayerId"
 
 const common = "border-t-2 border-[--line-color]"
 
 export function CombinationsFooter() {
     const players = useRecoilValue(playersDataActiveFirst)
     const totals = useRecoilValue(playerTotalsAtom)
-    const [playerId] = useRecoilValue(playerMoveAtom)
 
     return (
         <>
@@ -22,7 +21,7 @@ export function CombinationsFooter() {
                 return (
                     <div key={id} className={cx(
                         common, commonSizes, "text-center text-2xl font-bold",
-                        playerId === id
+                        activePlayerId.value === id
                             ? "border-l border-r bg-[--background-color-active]"
                             : "",
                     )}>

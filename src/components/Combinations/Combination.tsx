@@ -1,20 +1,17 @@
 import { Combination as CombinationType, EMPTY_CELL, isBonus as _isBonus } from "./combinationsData"
 import { useRecoilValue, useSetRecoilState } from "recoil"
-import {
-    dicesAtom,
-    playerPointsAtomFamily,
-} from "../../recoil/atoms"
+import { dicesAtom, playerPointsAtomFamily } from "../../recoil/atoms"
 import { saveCombinationSelector } from "../../recoil/selectors/saveCombinationSelector"
-import { checkMatch } from "../../helpers/checkMatch"
+import { checkMatch } from "@helpers/checkMatch"
 import cx from "classnames"
 import { Points } from "../Points"
 import { i18n } from "@helpers/i18n"
-import { defineWorkEnding } from "../../helpers/defineWorkEnding"
+import { defineWorkEnding } from "@helpers/defineWorkEnding"
 import { useCallback } from "react"
-import { playerMoveAtom } from "../../recoil/atoms/players/playerMove"
 import { CombinationButton } from "./CombinationButton"
 import { CombinationMatched } from "./CombinationMatched"
 import { childPlay } from "@signals/childPlay"
+import { activePlayerId } from "@signals/players/activePlayerId"
 
 interface CombinationProps {
     playerId: string
@@ -25,13 +22,12 @@ interface CombinationProps {
 
 export function Combination({ playerId, combination, isMoveAvailable, className }: CombinationProps) {
     const dices = useRecoilValue(dicesAtom)
-    const [activePlayerId] = useRecoilValue(playerMoveAtom)
     const { points, maxPoints } = checkMatch(combination, dices, childPlay.value)
     const playerPoints = useRecoilValue(playerPointsAtomFamily(playerId))
     const existingCombination = (playerPoints || [])[combination] as number === undefined
         ? EMPTY_CELL
         : (playerPoints || [])[combination] as number
-    const active = activePlayerId === playerId
+    const active = activePlayerId.value === playerId
     const isBonus = _isBonus(combination)
     const matched = existingCombination !== EMPTY_CELL && !isBonus
 

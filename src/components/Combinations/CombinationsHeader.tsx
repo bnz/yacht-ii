@@ -4,10 +4,9 @@ import { playersDataActiveFirst } from "../../recoil/selectors/playersDataActive
 import cx from "classnames"
 import { commonBorder } from "./Combinations"
 import { ToggleNamesColumnViewButton } from "./ToggleNamesColumnViewButton"
-import { playerMoveAtom } from "../../recoil/atoms/players/playerMove"
+import { activePlayerId } from "@signals/players/activePlayerId"
 
 export function CombinationsHeader() {
-    const [playerId] = useRecoilValue(playerMoveAtom)
     const players = useRecoilValue(playersDataActiveFirst)
 
     return (
@@ -19,7 +18,7 @@ export function CombinationsHeader() {
                         commonBorder,
                         "flex flex-row justify-center items-center gap-3 relative",
                     )}>
-                        <Avatar disabled={playerId !== id} avatar={avatar} className="!w-20 !h-20" />
+                        <Avatar disabled={activePlayerId.value !== id} avatar={avatar} className="!w-20 !h-20" />
                         <div className="absolute bottom-0 left-1/2 translate-x-6">
                             {name}
                         </div>

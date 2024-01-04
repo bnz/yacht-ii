@@ -1,19 +1,17 @@
 import { selector } from "recoil"
-import { activePlayerFirstAtom } from "../atoms/players/activePlayerFirst"
-import { playersData } from "../atoms"
-import { playerMoveAtom } from "../atoms/players/playerMove"
+import { playersData } from "@signals/players/playersData"
+import { activePlayerFirst } from "@signals/players/activePlayerFirst"
+import { activePlayerId } from "@signals/players/activePlayerId"
 
 export const playersDataActiveFirst = selector({
     key: "playersDataActiveFirst",
-    get({ get }) {
-        const activePlayerFirst = get(activePlayerFirstAtom)
-        if (!activePlayerFirst) {
-            return get(playersData)
+    get() {
+        if (!activePlayerFirst.value) {
+            return playersData.value
         }
-        const players = [...get(playersData)]
-        const [playerId] = get(playerMoveAtom)
+        const players = [...playersData.value]
         const index = players.findIndex(function ({ id }) {
-            return id === playerId
+            return id === activePlayerId.value
         })
         const beforeArray = players.slice(0, index)
         const arr = players.splice(index, players.length)

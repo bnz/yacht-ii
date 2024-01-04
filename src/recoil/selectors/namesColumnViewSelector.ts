@@ -1,15 +1,15 @@
 import { DefaultValue, selector } from "recoil"
-import { playerMoveAtom } from "../atoms/players/playerMove"
 import { namesColumnViewAtomFamily, NamesColumnViewEnum } from "../atoms/namesColumnViewAtomFamily"
+import { activePlayerId } from "@signals/players/activePlayerId"
 
 export const namesColumnViewSelector = selector<NamesColumnViewEnum>({
     key: "namesColumnViewSelector",
     get({ get }) {
-        return get(namesColumnViewAtomFamily(get(playerMoveAtom)[0]))
+        return get(namesColumnViewAtomFamily(activePlayerId.value))
     },
     set({ get, set }, props) {
         if (!(props instanceof DefaultValue)) {
-            set(namesColumnViewAtomFamily(get(playerMoveAtom)[0]), props)
+            set(namesColumnViewAtomFamily(activePlayerId.value), props)
         }
     },
 })

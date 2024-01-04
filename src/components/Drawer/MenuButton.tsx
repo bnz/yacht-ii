@@ -1,6 +1,6 @@
 import cx from "classnames"
 import { isDark } from "@signals/theme"
-import icon from "../../icons/icon.svg"
+import icon from "@icons/icon.svg"
 import { drawer, toggle } from "@signals/drawer"
 
 export function MenuButton() {

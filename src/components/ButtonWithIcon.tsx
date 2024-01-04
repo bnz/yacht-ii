@@ -1,8 +1,8 @@
 import type { PropsWithChildren } from "react"
 import cx from "classnames"
 import { isDark } from "@signals/theme"
-import iconSVG from "../icons/icon.svg"
-import { Icons } from "../icons/Icons"
+import iconSVG from "@icons/icon.svg"
+import { Icons } from "@icons/Icons"
 
 interface ButtonWithIconProps extends PropsWithChildren<{}> {
     type?: "button" | "submit"

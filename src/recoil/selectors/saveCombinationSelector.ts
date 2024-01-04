@@ -1,9 +1,9 @@
 import { DefaultValue, selector } from "recoil"
 import { dicesAtom, dicesSelectedAtom, playerPointsAtomFamily, Points } from "../atoms"
-import { BONUS_CONDITION, BONUS_POINTS, Combination } from "../../components/Combinations/combinationsData"
-import { nextTurnSelector } from "./nextTurnSelector"
-import { playerMoveAtom } from "../atoms/players/playerMove"
+import { BONUS_CONDITION, BONUS_POINTS, Combination } from "@components/Combinations/combinationsData"
 import { historySaveCombinationSelector } from "./historySaveCombinationSelector"
+import { activePlayerId } from "@signals/players/activePlayerId"
+import { nextTurn } from "@signals/players/updaters/nextTurn"
 
 interface Props {
     combination: Combination
@@ -25,14 +25,13 @@ export const saveCombinationSelector = selector<Props>({
     },
     set({ get, set, reset }, props) {
         if (!(props instanceof DefaultValue)) {
-            const [playerId] = get(playerMoveAtom)
             const { combination, points } = props
-            const playerPoints = { ...get(playerPointsAtomFamily(playerId)) }
+            const playerPoints = { ...get(playerPointsAtomFamily(activePlayerId.value)) }
 
             playerPoints[combination] = points
             playerPoints[Combination.BONUS] = calcBonus(playerPoints)
-            set(playerPointsAtomFamily(playerId), playerPoints)
-            set(nextTurnSelector, true)
+            set(playerPointsAtomFamily(activePlayerId.value), playerPoints)
+            nextTurn()
             set(historySaveCombinationSelector, { combination, points })
             reset(dicesAtom)
             reset(dicesSelectedAtom)

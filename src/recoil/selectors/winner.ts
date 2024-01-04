@@ -1,12 +1,13 @@
 import { selector } from "recoil"
 import { isEndOfGameSelector } from "./isEndOfGame"
-import { playersData, playerTotalsAtom } from "../atoms"
+import { playerTotalsAtom } from "../atoms"
+import { playersData } from "@signals/players/playersData"
 
 export const winnerSelector = selector({
     key: "winnerSelector",
     get({ get }) {
         if (get(isEndOfGameSelector)) {
-            const players = get(playersData)
+            const players = playersData.value
             const playerTotals = get(playerTotalsAtom)
             const playerKeys = Object.keys(playerTotals)
             const max = Math.max(...playerKeys.map(function (key) {

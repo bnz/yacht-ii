@@ -1,14 +1,15 @@
 import { atom, atomFamily, DefaultValue, GetRecoilValue, selector } from "recoil"
-import { Combination } from "../components/Combinations/combinationsData"
-import { makeId } from "@helpers/makeId"
+import { Combination } from "@components/Combinations/combinationsData"
 import { getRandomInt } from "@helpers/random"
 import { persist } from "./persist"
 import { playerMoveAtom } from "./atoms/players/playerMove"
-import { playersIds } from "./atoms/players/playersIds"
 import { historyAtomFamily } from "./atoms/historyAtomFamily"
 import { namesColumnViewAtomFamily } from "./atoms/namesColumnViewAtomFamily"
 import { GamePhases, update } from "@signals/gamePhase"
 import { update as updateChildPlay } from "@signals/childPlay"
+import { playersIds, update as updatePlayersIds } from "@signals/players/playersIds"
+import { playersData } from "@signals/players/playersData"
+import { update as updatePlayers } from "@signals/players/players"
 
 export enum AvatarEnum {
     dog0,
@@ -17,31 +18,13 @@ export enum AvatarEnum {
     dog3,
 }
 
-export const players = atomFamily<PlayerData, string>({
-    key: "players",
-    default: {
-        name: "",
-        avatar: AvatarEnum.dog0,
-    },
-    effects: [persist("players")],
-})
-
-export interface PlayerData {
-    name: string
-    avatar: AvatarEnum
-}
-
-export interface Player {
-    id: string
-    data: PlayerData
-}
-
 export const MAX_PLAYERS_COUNT = 4
 
 export const getAvailableAvatar = selector<AvatarEnum>({
     key: "getAvailableAvatar",
-    get({ get }) {
-        const taken = get(playersData).map(function ({ data: { avatar } }) {
+    get() {
+        // FIXME takenAvatars
+        const taken = playersData.value.map(function ({ data: { avatar } }) {
             return avatar
         })
         let avatar
@@ -67,84 +50,38 @@ const dogNames = [
     ...dogNamesMale,
 ]
 
-function getDogName(get: GetRecoilValue, sex?: "male" | "female") {
-    const dogs = sex ? sex === "male" ? dogNamesMale : dogNamesFemale : dogNames
-    const taken = get(playersData).map(function ({ data: { name } }) {
+function getDogName() {
+    const taken = playersData.value.map(function ({ data: { name } }) {
         return name
     })
     let index
 
     do {
-        index = getRandomInt(0, dogs.length - 1)
-    } while (taken.includes(dogs[index]))
+        index = getRandomInt(0, dogNames.length - 1)
+    } while (taken.includes(dogNames[index]))
 
-    return dogs[index]
+    return dogNames[index]
 }
 
 export const getRandomDogNameBySex = selector({
     key: "getRandomDogNameBySex",
-    get({ get }) {
+    get() {
         return function () {
-            return getDogName(get)
+            return getDogName()
         }
     },
 })
 
 export const getRandomDogName = selector({
     key: "getRandomDogName",
-    get({ get }) {
-        return getDogName(get)
+    get() {
+        return getDogName()
     },
 })
 
 export const editingInProgress = atom<boolean>({
     key: "editingInProgress",
     default: false,
-})
-
-export const addPlayer = selector<{ name: string, avatar: AvatarEnum }>({
-    key: "addPlayer",
-    get() {
-        throw new Error("addPlayer: use only as setter")
-    },
-    set({ get, set }, props) {
-        if (!(props instanceof DefaultValue)) {
-            const id = makeId()
-            const { name, avatar } = props
-            set(playersIds, [...get(playersIds), id])
-            set(players(id), { name, avatar })
-        }
-    },
-})
-
-export const removePlayer = selector<string>({
-    key: "removePlayer",
-    get() {
-        throw new Error("removePlayer: use only as setter")
-    },
-    set({ get, set, reset }, id) {
-        if (!(id instanceof DefaultValue)) {
-            const playersArray = [...get(playersIds)]
-            const index = playersArray.indexOf(id)
-            if (index !== -1) {
-                playersArray.splice(index, 1)
-                set(playersIds, playersArray)
-            }
-            reset(players(id))
-        }
-    },
-})
-
-export const playersData = selector<Player[]>({
-    key: "playersData",
-    get({ get }) {
-        return get(playersIds).map(function (id) {
-            return {
-                id,
-                data: get(players(id)),
-            }
-        })
-    },
 })
 
 export type PlayersTotals = {
@@ -154,10 +91,9 @@ export type PlayersTotals = {
 export const playerTotalsAtom = selector({
     key: "playerTotalsAtom",
     get({ get }) {
-        const players = get(playersData)
         const totals: PlayersTotals = {}
 
-        players.forEach(function ({ id: playerId }) {
+        playersData.value.forEach(function ({ id: playerId }) {
             const points = get(playerPointsAtomFamily(playerId))
             totals[playerId] = Object.keys(points).reduce(function (prev, key) {
                 const curr = points[key as Combination]!
@@ -176,11 +112,9 @@ export const resetPlayers = selector<null>({
     get() {
         throw new Error("resetPlayers: use only as setter")
     },
-    set({ get, reset }) {
-        get(playersIds).forEach(function (id) {
-            return reset(players(id))
-        })
-        reset(playersIds)
+    set({ reset }) {
+        updatePlayers({})
+        updatePlayersIds([])
         reset(playerMoveAtom)
     },
 })
@@ -244,20 +178,20 @@ export const restartGame = selector<boolean>({
     get() {
         throw new Error("restartGame: use only as setter")
     },
-    set({ get, reset, set }) {
+    set({ reset, set }) {
         reset(playerMoveAtom)
         reset(dicesAtom)
         reset(dicesSelectedAtom)
         update(GamePhases.PRE_GAME)
         updateChildPlay(false)
         set(resetPlayers, null)
-        get(playersIds).forEach(function (id) {
-            reset(players(id))
+        playersIds.value.forEach(function (id) {
             reset(playerPointsAtomFamily(id))
             reset(historyAtomFamily(id))
             reset(namesColumnViewAtomFamily(id))
         })
-        reset(playersIds)
+        updatePlayers({})
+        updatePlayersIds([])
 
         // TODO
         // changeActiveTab(ActiveTab.SETTINGS)
