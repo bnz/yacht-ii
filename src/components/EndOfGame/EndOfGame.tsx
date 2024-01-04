@@ -1,7 +1,7 @@
 import { Backdrop } from "../Backdrop"
 import cx from "classnames"
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil"
-import { i18n } from "../../helpers/i18n/i18n"
+import { i18n } from "@helpers/i18n"
 import { MAX_POSSIBLE_POINTS } from "../Combinations/combinationsData"
 import { winnerSelector } from "../../recoil/selectors/winner"
 import { Avatar } from "../Players/Avatar"

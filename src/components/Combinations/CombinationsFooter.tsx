@@ -1,4 +1,4 @@
-import { i18n } from "../../helpers/i18n/i18n"
+import { i18n } from "@helpers/i18n"
 import { useRecoilValue } from "recoil"
 import { playersDataActiveFirst } from "../../recoil/selectors/playersDataActiveFirst"
 import { playerTotalsAtom } from "../../recoil/atoms"

@@ -1,5 +1,5 @@
 import type { checkMatch } from "../helpers/checkMatch"
-import { i18n } from "../helpers/i18n/i18n"
+import { i18n } from "@helpers/i18n"
 
 interface PointsProps {
     points: ReturnType<typeof checkMatch>['points'],

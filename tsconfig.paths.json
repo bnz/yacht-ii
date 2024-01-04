@@ -4,6 +4,9 @@
     "paths": {
       "@signals/*": [
         "src/signals/*"
+      ],
+      "@helpers/*": [
+        "src/helpers/*"
       ]
     }
   }

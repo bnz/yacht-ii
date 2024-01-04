@@ -1,7 +1,7 @@
 import { Backdrop } from "../Backdrop"
 import cx from "classnames"
 import icon from "../../icons/icon.svg"
-import { i18n } from "../../helpers/i18n/i18n"
+import { i18n } from "@helpers/i18n"
 import { AvatarEnum, playersData } from "../../recoil/atoms"
 import { getDogs } from "./Avatar"
 import { useRecoilValue } from "recoil"

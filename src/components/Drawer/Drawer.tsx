@@ -1,10 +1,10 @@
 import { Footer } from "../Footer"
 import cx from "classnames"
 import { useRecoilValue } from "recoil"
-import { gamePhase, GamePhases } from "../../recoil/atoms"
+import { isInPlay } from "@signals/gamePhase"
 import { Backdrop } from "../Backdrop"
 import { MenuButton } from "./MenuButton"
-import { KeyboardActions } from "../../helpers/KeyboardActions"
+import { KeyboardActions } from "@helpers/KeyboardActions"
 import { combinationNameVisibilityAtom } from "../../recoil/atoms/combinationNameVisibilityAtom"
 import { endOfGameVisibilityAtom } from "../../recoil/atoms/endOfGameVisibilityAtom"
 import { DrawerContent } from './DrawerContent'
@@ -13,12 +13,10 @@ import { drawer, toggle } from "@signals/drawer"
 export function Drawer() {
     const open = drawer.value
 
-    const phase = useRecoilValue(gamePhase)
-
     const combinationNameVisibility = useRecoilValue(combinationNameVisibilityAtom)
     const endOfGameVisibility = useRecoilValue(endOfGameVisibilityAtom)
 
-    if (phase !== GamePhases.IN_PLAY && phase !== GamePhases.CHILD_PLAY) {
+    if (!isInPlay.value) {
         return null
     }
 
@@ -36,7 +34,6 @@ export function Drawer() {
                 "fixed top-0 left-0 h-full",
                 "transition-transform duration-100",
                 "bg-[--background-color] text-[--text-color]",
-                "",
                 open ? "shadow-xl translate-x-0" : "shadow-none -translate-x-80",
             )}>
                 <div className="h-full -mb-20">

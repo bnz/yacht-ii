@@ -8,7 +8,7 @@ import { saveCombinationSelector } from "../../recoil/selectors/saveCombinationS
 import { checkMatch } from "../../helpers/checkMatch"
 import cx from "classnames"
 import { Points } from "../Points"
-import { i18n } from "../../helpers/i18n/i18n"
+import { i18n } from "@helpers/i18n"
 import { defineWorkEnding } from "../../helpers/defineWorkEnding"
 import { useCallback } from "react"
 import { playerMoveAtom } from "../../recoil/atoms/players/playerMove"

@@ -1,33 +1,14 @@
 import { atom, atomFamily, DefaultValue, GetRecoilValue, selector } from "recoil"
 import { Combination } from "../components/Combinations/combinationsData"
-import { makeId } from "../helpers/makeId"
-import { getRandomInt } from "../helpers/random"
-import { nextTurnSelector } from "./selectors/nextTurnSelector"
+import { makeId } from "@helpers/makeId"
+import { getRandomInt } from "@helpers/random"
 import { persist } from "./persist"
 import { playerMoveAtom } from "./atoms/players/playerMove"
 import { playersIds } from "./atoms/players/playersIds"
 import { historyAtomFamily } from "./atoms/historyAtomFamily"
 import { namesColumnViewAtomFamily } from "./atoms/namesColumnViewAtomFamily"
 import { childPlayAtom } from './atoms/childPlayAtom'
-
-export enum GamePhases {
-    PRE_GAME = 'preGame',
-    PLAYERS_SELECTION = 'playersSelection',
-    IN_PLAY = 'inPlay',
-    CHILD_PLAY = 'childPlay',
-}
-
-export const gamePhase = atom<GamePhases>({
-    key: "game-phase",
-    default: GamePhases.PRE_GAME,
-    effects: [persist("game-phase")],
-})
-
-export const drawerState = atom<boolean>({
-    key: "drawer-state",
-    default: false,
-    effects: [persist('drawer-state')],
-})
+import { GamePhases, update } from "@signals/gamePhase"
 
 export enum AvatarEnum {
     dog0,
@@ -222,17 +203,6 @@ export const dicesAtom = atom<DicesType>({
     effects: [persist("dices")],
 })
 
-export const startGameSelector = selector<boolean>({
-    key: "startGameSelector",
-    get() {
-        throw new Error("startGameSelector: use only as setter")
-    },
-    set({ get, set }) {
-        set(nextTurnSelector, true)
-        set(gamePhase, GamePhases.IN_PLAY)
-    },
-})
-
 export const MAX_SHOT_COUNT = 3
 
 export const isShotAvailable = selector({
@@ -278,7 +248,7 @@ export const restartGame = selector<boolean>({
         reset(playerMoveAtom)
         reset(dicesAtom)
         reset(dicesSelectedAtom)
-        reset(gamePhase)
+        update(GamePhases.PRE_GAME)
         reset(childPlayAtom)
         set(resetPlayers, null)
         get(playersIds).forEach(function (id) {

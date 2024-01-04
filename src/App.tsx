@@ -1,6 +1,5 @@
 import { Drawer } from "./components/Drawer/Drawer"
-import { useRecoilValue } from "recoil"
-import { gamePhase, GamePhases } from "./recoil/atoms"
+import { gamePhase, GamePhases } from "@signals/gamePhase"
 import { lazy, Suspense } from 'react'
 import { AppWrapper } from "./components/AppWrapper"
 import { Spinner } from './components/Spinner';
@@ -24,7 +23,7 @@ const phases = {
 export function App() {
     useSignals()
 
-    const GamePhase = phases[useRecoilValue(gamePhase)]
+    const GamePhase = phases[gamePhase.value]
 
     return (
         <>

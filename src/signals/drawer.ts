@@ -1,18 +1,7 @@
 import { effect, signal } from "@preact/signals-react"
+import { restoreState, saveState } from "@helpers/localStorage"
 
-let defaultState = false
-
-try {
-    const data = localStorage.getItem("drawer-state")
-
-    if (data !== null) {
-        defaultState = JSON.parse(data)
-    }
-} catch (e) {
-    console.log(e)
-}
-
-export const drawer = signal<boolean>(defaultState)
+export const drawer = signal(restoreState<boolean>("drawer-state", false))
 
 export function toggle(): void {
     drawer.value = !drawer.value
@@ -23,9 +12,5 @@ export function update(value: boolean) {
 }
 
 effect(function () {
-    try {
-        localStorage.setItem("drawer-state", JSON.stringify(drawer.value))
-    } catch (e) {
-        console.error(e)
-    }
+    saveState("drawer-state", drawer.value)
 })

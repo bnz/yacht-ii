@@ -1,11 +1,11 @@
-import { gamePhase, GamePhases } from "../recoil/atoms"
-import { i18n } from "../helpers/i18n/i18n"
+import { i18n } from "@helpers/i18n"
 import { DefaultValue, selector, useRecoilValue, useSetRecoilState } from "recoil"
 import { ButtonWithIcon } from "./ButtonWithIcon"
 import cx from "classnames"
 import { startGameButtonDisabledSelector } from '../recoil/selectors/startGameButtonDisabledSelector'
 import { childPlayAtom } from '../recoil/atoms/childPlayAtom'
 import { nextTurnSelector } from '../recoil/selectors/nextTurnSelector'
+import { GamePhases, update } from "@signals/gamePhase"
 
 const asd = selector<boolean>({
     key: "asd",
@@ -16,7 +16,7 @@ const asd = selector<boolean>({
         if (!(props instanceof DefaultValue)) {
             const child = get(childPlayAtom)
             set(nextTurnSelector, true)
-            set(gamePhase, child ? GamePhases.CHILD_PLAY : GamePhases.IN_PLAY)
+            update(child ? GamePhases.CHILD_PLAY : GamePhases.IN_PLAY)
         }
     },
 })

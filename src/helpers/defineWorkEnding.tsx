@@ -1,5 +1,5 @@
 import { inArray } from './inArray'
-import { i18n } from './i18n/i18n'
+import { i18n } from './i18n'
 
 function calc(n: number) {
     return function (...sequence: number[]): boolean {

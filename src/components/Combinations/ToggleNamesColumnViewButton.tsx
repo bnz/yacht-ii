@@ -3,7 +3,7 @@ import { namesColumnViewSelector } from "../../recoil/selectors/namesColumnViewS
 import { NamesColumnViewEnum } from "../../recoil/atoms/namesColumnViewAtomFamily"
 import { useCallback } from "react"
 import cx from "classnames"
-import { i18n } from "../../helpers/i18n/i18n"
+import { i18n } from "@helpers/i18n"
 import { Dice } from "../Dices/Dice/Dice"
 import { commonBorder } from "./Combinations"
 

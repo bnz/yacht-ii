@@ -1,5 +1,5 @@
 import { useCallback } from "react"
-import { i18n } from "../../helpers/i18n/i18n"
+import { i18n } from "@helpers/i18n"
 import { useRecoilValue, useSetRecoilState } from "recoil"
 import { editingInProgress, players, removePlayer } from "../../recoil/atoms"
 import { ButtonWithIcon } from "../ButtonWithIcon"

@@ -1,4 +1,4 @@
-import { LanguageMap } from './i18n'
+import { LanguageMap } from './index'
 
 export const rus: LanguageMap = {
   yacht: 'Яхта',

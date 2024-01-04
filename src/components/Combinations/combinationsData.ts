@@ -1,4 +1,4 @@
-import { i18n } from "../../helpers/i18n/i18n"
+import { i18n } from "@helpers/i18n"
 
 export enum Combination {
     ONE = 1,

@@ -1,15 +1,15 @@
 import { useSetRecoilState } from "recoil"
-import { gamePhase, GamePhases, resetPlayers } from "../../recoil/atoms"
+import { resetPlayers } from "../../recoil/atoms"
 import { ButtonWithIcon } from "../ButtonWithIcon"
 import { useCallback } from "react"
+import { GamePhases, update } from "@signals/gamePhase"
 
 export function CancelButton() {
-    const setPhase = useSetRecoilState(gamePhase)
     const playersReset = useSetRecoilState(resetPlayers)
     const onClick = useCallback(function () {
-        setPhase(GamePhases.PRE_GAME)
+        update(GamePhases.PRE_GAME)
         playersReset(null)
-    }, [setPhase, playersReset])
+    }, [playersReset])
 
     return (
         <ButtonWithIcon

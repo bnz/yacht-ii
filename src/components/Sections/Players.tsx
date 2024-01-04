@@ -1,4 +1,4 @@
-import { i18n } from "../../helpers/i18n/i18n"
+import { i18n } from "@helpers/i18n"
 import { PlayersList } from "../Players/PlayersList"
 import { AddPlayer } from "../Players/AddPlayer"
 import { StartGameButton } from "../StartGameButton"

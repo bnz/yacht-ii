@@ -5,7 +5,7 @@ import { Combinations } from "../Combinations/Combinations"
 import { EndOfGame } from "../EndOfGame/EndOfGame"
 import { useRecoilState, useRecoilValue } from "recoil"
 import { winnerSelector } from "../../recoil/selectors/winner"
-import { i18n } from "../../helpers/i18n/i18n"
+import { i18n } from "@helpers/i18n"
 import { endOfGameVisibilityAtom } from "../../recoil/atoms/endOfGameVisibilityAtom"
 import { combinationsData } from '../Combinations/combinationsData'
 import { DicesWrapper } from "../Dices/DicesWrapper"

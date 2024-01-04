@@ -1,6 +1,5 @@
 import type { PropsWithChildren } from "react"
-import { gamePhase, GamePhases } from "../../recoil/atoms"
-import { i18n } from "../../helpers/i18n/i18n"
+import { i18n } from "@helpers/i18n"
 import { Rules } from "../Rules/Rules"
 import { useSetRecoilState } from "recoil"
 import { isDark } from "@signals/theme"
@@ -13,6 +12,7 @@ import { Footer } from "../Footer"
 import { ButtonWithIcon } from '../ButtonWithIcon'
 import { childPlayAtom } from '../../recoil/atoms/childPlayAtom'
 import { scrolledTo } from "@signals/scrolledTo"
+import { GamePhases, update } from "@signals/gamePhase"
 
 function Heading() {
     return (
@@ -37,8 +37,6 @@ function ButtonWrapper({ children }: PropsWithChildren<{}>) {
 }
 
 export default function PreGame() {
-    const setPhase = useSetRecoilState(gamePhase)
-
     const setChild = useSetRecoilState(childPlayAtom)
 
     return (
@@ -60,7 +58,7 @@ export default function PreGame() {
                     type="button"
                     className="text-xl lg:text-3xl lg:!py-5 !pr-10 !pl-16 lg:!pl-24 relative mx-auto block group"
                     onClick={function () {
-                        setPhase(GamePhases.PLAYERS_SELECTION)
+                        update(GamePhases.PLAYERS_SELECTION)
                     }}
                 >
                     <div
@@ -74,7 +72,7 @@ export default function PreGame() {
                 icon="child" className="!bg-[8px_center] !pl-10 mx-auto block mb-10"
                 onClick={function () {
                     setChild(true)
-                    setPhase(GamePhases.PLAYERS_SELECTION)
+                    update(GamePhases.PLAYERS_SELECTION)
                 }}
             >
                 для детей
