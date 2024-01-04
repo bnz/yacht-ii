@@ -1,8 +1,7 @@
 import { computed } from "@preact/signals-react"
-import { playerMove } from "@signals/players/playerMove"
 import { PlayerData, players } from "@signals/players/players"
+import { activePlayerId } from "@signals/players/activePlayerId"
 
 export const activePlayer = computed<PlayerData>(function () {
-    const [playerId] = playerMove.value
-    return players.value[playerId]
+    return players.value[activePlayerId.value]
 })

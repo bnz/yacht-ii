@@ -6,6 +6,7 @@ import { AvatarEnum } from "../../recoil/atoms"
 import { isDark } from "@signals/theme"
 import { getDogs } from "@helpers/getDogs"
 import { playersData } from "@signals/players/playersData"
+import { takenAvatars } from "@signals/players/takenAvatars"
 
 interface AvatarChooserProps {
     toggle: VoidFunction
@@ -15,12 +16,6 @@ interface AvatarChooserProps {
 }
 
 export function AvatarChooser({ avatar, toggle, onClick }: AvatarChooserProps) {
-    const themedDogs = getDogs()
-    // FIXME takenAvatars
-    const takenAvatars = playersData.value.map(function ({ data: { avatar } }) {
-        return avatar
-    })
-
     return (
         <>
             <Backdrop onClick={toggle} />
@@ -35,15 +30,15 @@ export function AvatarChooser({ avatar, toggle, onClick }: AvatarChooserProps) {
                 <button
                     onClick={toggle}
                     className="absolute right-0 top-0 w-8 h-8 bg-no-repeat bg-center"
-                    style={{ backgroundImage: `url('${icon}#${isDark.value ? "close-white" : "close"}')` }}
+                    style={{ backgroundImage: `url('${icon}#close${isDark.value ? "-white" : ""}')` }}
                 />
                 <h3 className="text-center font-bold py-5">
                     {i18n("chooseDog")}
                 </h3>
                 <ul className="flex flex-grow flex-wrap gap-5 justify-center">
-                    {themedDogs.normal.map(function (url, index) {
+                    {getDogs().normal.map(function (url, index) {
                         const selected = avatar === index
-                        const taken = takenAvatars.includes(index)
+                        const taken = takenAvatars.value.includes(index)
                         const isClickable = !selected && !taken
                         const player = playersData.value.find(function ({ data: { avatar } }) {
                             return avatar === index

@@ -3,10 +3,20 @@ import { restoreState, saveState } from "@helpers/localStorage"
 
 export type PlayerMove = [playerId: string, shot: number]
 
-export const playerMove = signal<PlayerMove>(restoreState("player-move-", ["", 0]))
+const defaultValue: PlayerMove = ["", 0]
 
-export function update(value: PlayerMove) {
-    playerMove.value = value
+export const playerMove = signal<PlayerMove>(restoreState("player-move-", defaultValue))
+
+type Callback = (value: PlayerMove) => PlayerMove
+
+export function updatePlayerMove(value: PlayerMove): void
+export function updatePlayerMove(value: Callback): void
+export function updatePlayerMove(value: PlayerMove | Callback): void {
+    playerMove.value = typeof value === "function" ? value(playerMove.value) : value
+}
+
+export function resetPlayerMove() {
+    playerMove.value = defaultValue
 }
 
 effect(function () {

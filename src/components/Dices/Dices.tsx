@@ -1,25 +1,25 @@
 import { Dice } from "./Dice/Dice"
 import { useRecoilValue, useSetRecoilState } from "recoil"
-import { dicesSelectedAtom, loadingAtom, selectDice, dicesAtom, isShotAvailable } from "../../recoil/atoms"
+import { dicesSelectedAtom, selectDice, dicesAtom } from "../../recoil/atoms"
 import cx from "classnames"
+import { isShotAvailable } from "@signals/players/isShotAvailable"
+import { loading } from "@signals/loading"
 
 export function Dices() {
-    const loading = useRecoilValue(loadingAtom)
     const dicesSelected = useRecoilValue(dicesSelectedAtom)
     const doSelectDice = useSetRecoilState(selectDice)
     const dices = useRecoilValue(dicesAtom)
-    const isShot = useRecoilValue(isShotAvailable)
 
     return (
         <div className={cx(
             "flex flex-nowrap justify-center overflow-hidden gap-[0.333em] text-3xl lg:text-4xl",
-            isShot ? "pt-3 pb-2" : "pt-8 pb-3",
+            isShotAvailable.value ? "pt-3 pb-2" : "pt-8 pb-3",
         )}>
             {dices.map(function (dice, index) {
                 const selected = dicesSelected.indexOf(index) !== -1
 
                 function onClick() {
-                    if (!isShot && dice !== -1) {
+                    if (!isShotAvailable.value && dice !== -1) {
                         doSelectDice(index)
                     }
                 }
@@ -30,7 +30,7 @@ export function Dices() {
                         index={index}
                         value={dice}
                         selected={selected}
-                        roll={!selected && loading}
+                        roll={!selected && loading.value}
                         onClick={onClick}
                     />
                 )

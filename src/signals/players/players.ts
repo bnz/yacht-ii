@@ -11,7 +11,7 @@ export type Players = Record<string, PlayerData>
 
 export const players = signal(restoreState<Players>("players-", {}))
 
-export function update(value: Players): void {
+export function updatePlayers(value: Players): void {
     players.value = value
 }
 

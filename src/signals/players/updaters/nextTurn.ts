@@ -1,6 +1,6 @@
 import { playersData } from "@signals/players/playersData"
 import { activePlayerId } from "@signals/players/activePlayerId"
-import { update } from "@signals/players/playerMove"
+import { updatePlayerMove } from "@signals/players/playerMove"
 
 export function nextTurn() {
     const players = playersData.value
@@ -15,5 +15,5 @@ export function nextTurn() {
         const player = players[index + 1]
         playerId = player ? player.id : players[0].id
     }
-    update([playerId, 0])
+    updatePlayerMove([playerId, 0])
 }

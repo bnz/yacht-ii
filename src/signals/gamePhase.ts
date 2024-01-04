@@ -10,7 +10,7 @@ export enum GamePhases {
 
 export const gamePhase = signal(restoreState<GamePhases>("game-phase-", GamePhases.PRE_GAME))
 
-export function update(value: GamePhases) {
+export function updateGamePhase(value: GamePhases) {
     gamePhase.value = value
 }
 

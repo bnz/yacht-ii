@@ -1,4 +1,4 @@
-import { PlayerData, Players, players, update } from "@signals/players/players"
+import { PlayerData, Players, players, updatePlayers } from "@signals/players/players"
 
 type Callback = (players: Players) => Players
 
@@ -9,9 +9,9 @@ export function updatePlayerById(...args: [id: string | Callback, data?: PlayerD
     const [arg, data] = args
 
     if (typeof arg === "function") {
-        update(arg(allPlayers))
+        updatePlayers(arg(allPlayers))
     } else if (data) {
         allPlayers[arg] = data
-        update(allPlayers)
+        updatePlayers(allPlayers)
     }
 }

@@ -1,15 +1,16 @@
-import { atom, atomFamily, DefaultValue, GetRecoilValue, selector } from "recoil"
+import { atom, atomFamily, DefaultValue, selector } from "recoil"
 import { Combination } from "@components/Combinations/combinationsData"
 import { getRandomInt } from "@helpers/random"
 import { persist } from "./persist"
-import { playerMoveAtom } from "./atoms/players/playerMove"
 import { historyAtomFamily } from "./atoms/historyAtomFamily"
 import { namesColumnViewAtomFamily } from "./atoms/namesColumnViewAtomFamily"
-import { GamePhases, update } from "@signals/gamePhase"
-import { update as updateChildPlay } from "@signals/childPlay"
-import { playersIds, update as updatePlayersIds } from "@signals/players/playersIds"
+import { GamePhases, updateGamePhase } from "@signals/gamePhase"
+import { updateChildPlay } from "@signals/childPlay"
+import { playersIds, updatePlayersIds } from "@signals/players/playersIds"
 import { playersData } from "@signals/players/playersData"
-import { update as updatePlayers } from "@signals/players/players"
+import { updatePlayers } from "@signals/players/players"
+import { resetPlayers } from "@signals/players/resetPlayers"
+import { resetPlayerMove } from "@signals/players/playerMove"
 
 export enum AvatarEnum {
     dog0,
@@ -19,23 +20,6 @@ export enum AvatarEnum {
 }
 
 export const MAX_PLAYERS_COUNT = 4
-
-export const getAvailableAvatar = selector<AvatarEnum>({
-    key: "getAvailableAvatar",
-    get() {
-        // FIXME takenAvatars
-        const taken = playersData.value.map(function ({ data: { avatar } }) {
-            return avatar
-        })
-        let avatar
-
-        do {
-            avatar = getRandomInt(0, MAX_PLAYERS_COUNT - 1)
-        } while (taken.includes(avatar) && taken.length !== MAX_PLAYERS_COUNT)
-
-        return avatar as AvatarEnum
-    },
-})
 
 const dogNamesFemale = [
     "Ася", "Боня", "Вита", "Голди", "Джес", "Ева", "Жужа", "Зара", "Ирма", "Кира", "Кики", "Лора", "Марта", "Нора", "Рада", "Соня", "Тося", "Феня", "Хася", "Чара",
@@ -50,7 +34,7 @@ const dogNames = [
     ...dogNamesMale,
 ]
 
-function getDogName() {
+export function getDogName() {
     const taken = playersData.value.map(function ({ data: { name } }) {
         return name
     })
@@ -62,27 +46,6 @@ function getDogName() {
 
     return dogNames[index]
 }
-
-export const getRandomDogNameBySex = selector({
-    key: "getRandomDogNameBySex",
-    get() {
-        return function () {
-            return getDogName()
-        }
-    },
-})
-
-export const getRandomDogName = selector({
-    key: "getRandomDogName",
-    get() {
-        return getDogName()
-    },
-})
-
-export const editingInProgress = atom<boolean>({
-    key: "editingInProgress",
-    default: false,
-})
 
 export type PlayersTotals = {
     [playerId: string]: number
@@ -107,28 +70,6 @@ export const playerTotalsAtom = selector({
     },
 })
 
-export const resetPlayers = selector<null>({
-    key: "resetPlayers",
-    get() {
-        throw new Error("resetPlayers: use only as setter")
-    },
-    set({ reset }) {
-        updatePlayers({})
-        updatePlayersIds([])
-        reset(playerMoveAtom)
-    },
-})
-
-export const addPlayerFormVisible = atom<boolean>({
-    key: "addPlayerFormVisible",
-    default: false,
-})
-
-export const loadingAtom = atom<boolean>({
-    key: "loadingAtom",
-    default: false,
-})
-
 export type DicesType = number[]
 
 export const dicesAtom = atom<DicesType>({
@@ -138,13 +79,6 @@ export const dicesAtom = atom<DicesType>({
 })
 
 export const MAX_SHOT_COUNT = 3
-
-export const isShotAvailable = selector({
-    key: "isShotAvailable",
-    get({ get }) {
-        return get(playerMoveAtom)[1] >= MAX_SHOT_COUNT
-    },
-})
 
 export const dicesSelectedAtom = atom<number[]>({
     key: "dices-selected",
@@ -178,13 +112,13 @@ export const restartGame = selector<boolean>({
     get() {
         throw new Error("restartGame: use only as setter")
     },
-    set({ reset, set }) {
-        reset(playerMoveAtom)
+    set({ reset }) {
         reset(dicesAtom)
         reset(dicesSelectedAtom)
-        update(GamePhases.PRE_GAME)
+        resetPlayerMove()
+        updateGamePhase(GamePhases.PRE_GAME)
         updateChildPlay(false)
-        set(resetPlayers, null)
+        resetPlayers()
         playersIds.value.forEach(function (id) {
             reset(playerPointsAtomFamily(id))
             reset(historyAtomFamily(id))

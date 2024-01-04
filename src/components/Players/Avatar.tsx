@@ -7,7 +7,7 @@ import { AvatarChooser } from "./AvatarChooser"
 import { createPortal } from "react-dom"
 import { useStateToggle } from '@helpers/useStateToggle'
 import { isDark } from "@signals/theme"
-import { playersData } from "@signals/players/playersData"
+import { takenAvatars } from "@signals/players/takenAvatars"
 import { getDogs } from "@helpers/getDogs"
 
 interface AvatarProps {
@@ -20,11 +20,7 @@ interface AvatarProps {
 export function Avatar({ avatar, edit, className, disabled }: AvatarProps) {
     const [open, toggle] = useStateToggle()
     const themedDogs = getDogs()
-    // FIXME takenAvatars
-    const takenAvatars = playersData.value.map(function ({ data: { avatar } }) {
-        return avatar
-    })
-    const isMax = takenAvatars.length === MAX_PLAYERS_COUNT
+    const isMax = takenAvatars.value.length === MAX_PLAYERS_COUNT
     const canEdit = edit && !isMax
     const onClick = useCallback(function (index: AvatarEnum) {
         if (edit) {

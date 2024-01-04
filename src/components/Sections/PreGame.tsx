@@ -10,8 +10,8 @@ import { P } from "../Rules/P"
 import { Footer } from "../Footer"
 import { ButtonWithIcon } from '../ButtonWithIcon'
 import { scrolledTo } from "@signals/scrolledTo"
-import { GamePhases, update } from "@signals/gamePhase"
-import { update as updateChildPlay } from "@signals/childPlay"
+import { GamePhases, updateGamePhase } from "@signals/gamePhase"
+import { updateChildPlay as updateChildPlay } from "@signals/childPlay"
 import { useCallback } from "react"
 
 function Heading() {
@@ -39,12 +39,12 @@ function ButtonWrapper({ children }: PropsWithChildren<{}>) {
 export default function PreGame() {
 
     const startNewGame = useCallback(function () {
-        update(GamePhases.PLAYERS_SELECTION)
+        updateGamePhase(GamePhases.PLAYERS_SELECTION)
     }, [])
 
     const startNewChildGame = useCallback(function () {
         updateChildPlay(true)
-        update(GamePhases.PLAYERS_SELECTION)
+        updateGamePhase(GamePhases.PLAYERS_SELECTION)
     }, [])
 
     return (

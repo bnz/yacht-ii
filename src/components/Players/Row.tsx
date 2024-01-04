@@ -1,11 +1,10 @@
 import { useCallback } from "react"
 import { i18n } from "@helpers/i18n"
-import { useRecoilValue } from "recoil"
-import { editingInProgress } from "../../recoil/atoms"
 import { ButtonWithIcon } from "../ButtonWithIcon"
 import { Avatar } from "./Avatar"
 import { players } from "@signals/players/players"
 import { removePlayer } from "@signals/players/updaters/removePlayer"
+import { editingInProgress } from "@signals/editingInProgress"
 
 interface RowProps {
     id: string
@@ -22,7 +21,7 @@ export function Row({ id, callback, flash, flashEnd }: RowProps) {
     const handleRemove = useCallback(function () {
         removePlayer(id)
     }, [id])
-    const disabled = useRecoilValue(editingInProgress)
+    const disabled = editingInProgress.value
 
     return (
         <>

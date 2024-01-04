@@ -1,15 +1,15 @@
 import { selector } from "recoil"
-import { playerMoveAtom } from "../atoms/players/playerMove"
 import { Combination, combinationsData } from "@components/Combinations/combinationsData"
 import { checkMatch } from "@helpers/checkMatch"
 import { dicesAtom, MAX_SHOT_COUNT, playerPointsAtomFamily } from "../atoms"
 import { childPlay } from "@signals/childPlay"
+import { activePlayerId } from "@signals/players/activePlayerId"
+import { activePlayerShot } from "@signals/players/activePlayerShot"
 
 export const isMoveAvailableSelector = selector<boolean>({
     key: "isMoveAvailableSelector",
     get({ get }) {
-        const [activePlayerId, shot] = get(playerMoveAtom)
-        const playerPoints = get(playerPointsAtomFamily(activePlayerId))
+        const playerPoints = get(playerPointsAtomFamily(activePlayerId.value))
         const dices = get(dicesAtom)
 
         let matchesCount = 0
@@ -29,7 +29,7 @@ export const isMoveAvailableSelector = selector<boolean>({
             /**
              * If no matches, no more shots and player already have this combination
              */
-            if (points === undefined && shot === MAX_SHOT_COUNT) {
+            if (points === undefined && activePlayerShot.value === MAX_SHOT_COUNT) {
                 noMoves = true
             }
         })

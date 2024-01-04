@@ -3,7 +3,7 @@ import { restoreState, saveState } from "@helpers/localStorage"
 
 export const childPlay = signal(restoreState<boolean>("child-play", false))
 
-export function update(value: boolean) {
+export function updateChildPlay(value: boolean) {
     childPlay.value = value
 }
 

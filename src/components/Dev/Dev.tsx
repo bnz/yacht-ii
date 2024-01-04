@@ -4,12 +4,12 @@ import { Backdrop } from "../Backdrop"
 import cx from "classnames"
 import { Combination, combinationsData } from "../Combinations/combinationsData"
 import { saveCombinationSelector } from "../../recoil/selectors/saveCombinationSelector"
-import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil"
+import { useRecoilValue, useSetRecoilState } from "recoil"
 import { dicesAtom, playerPointsAtomFamily } from "../../recoil/atoms"
-import { playerMoveAtom } from "../../recoil/atoms/players/playerMove"
 import { historyUpdateDicesSelector } from "../../recoil/selectors/historyUpdateDicesSelector"
 import { useStateToggle } from '@helpers/useStateToggle'
 import { activePlayerId } from "@signals/players/activePlayerId"
+import { updatePlayerMove } from "@signals/players/playerMove"
 
 export const Dev = memo(function () {
     const [open, toggle] = useStateToggle()
@@ -17,7 +17,6 @@ export const Dev = memo(function () {
 
     const saveCombination = useSetRecoilState(saveCombinationSelector)
     const setDices = useSetRecoilState(dicesAtom)
-    const [, setPlayerMove] = useRecoilState(playerMoveAtom)
     const history = useSetRecoilState(historyUpdateDicesSelector)
 
     function fakeSet(combination: Combination, points: number, min: boolean) {
@@ -79,7 +78,7 @@ export const Dev = memo(function () {
                 break
         }
 
-        setPlayerMove(function ([playerId, shot]) {
+        updatePlayerMove(function ([playerId, shot]) {
             return [playerId, shot + 1]
         })
         history(true)
@@ -168,9 +167,9 @@ function Row({ combination, isLast, name, min, max, onClick }: RowProps) {
                     <label
                         className="flex items-center cursor-pointer relative px-2 rounded overflow-hidden w-20">
                         <input type="radio" name={`${combination}`}
-                               value={min}
-                               className="hidden peer/draft"
-                               defaultChecked />
+                            value={min}
+                            className="hidden peer/draft"
+                            defaultChecked />
                         <div
                             className="absolute inset-0 peer-checked/draft:bg-[--text-color-semi]" />
                         <div className="relative">min: {min}</div>

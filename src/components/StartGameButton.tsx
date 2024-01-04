@@ -3,7 +3,7 @@ import { useRecoilValue } from "recoil"
 import { ButtonWithIcon } from "./ButtonWithIcon"
 import cx from "classnames"
 import { startGameButtonDisabledSelector } from '../recoil/selectors/startGameButtonDisabledSelector'
-import { GamePhases, update } from "@signals/gamePhase"
+import { GamePhases, updateGamePhase } from "@signals/gamePhase"
 import { childPlay } from "@signals/childPlay"
 import { nextTurn } from "@signals/players/updaters/nextTurn"
 
@@ -16,7 +16,7 @@ export function StartGameButton() {
             disabled={disabled}
             onClick={function () {
                 nextTurn()
-                update(childPlay.value ? GamePhases.CHILD_PLAY : GamePhases.IN_PLAY)
+                updateGamePhase(childPlay.value ? GamePhases.CHILD_PLAY : GamePhases.IN_PLAY)
             }}
             className={cx(
                 "my-10 text-3xl !py-5 !pl-24 !pr-10 inline-block mx-auto",
