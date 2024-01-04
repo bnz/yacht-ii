@@ -1,7 +1,6 @@
-import { gamePhase, GamePhases, startGameSelector } from "../recoil/atoms"
+import { gamePhase, GamePhases } from "../recoil/atoms"
 import { i18n } from "../helpers/i18n/i18n"
 import { DefaultValue, selector, useRecoilValue, useSetRecoilState } from "recoil"
-import { useCallback } from "react"
 import { ButtonWithIcon } from "./ButtonWithIcon"
 import cx from "classnames"
 import { startGameButtonDisabledSelector } from '../recoil/selectors/startGameButtonDisabledSelector'

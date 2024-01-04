@@ -1,13 +1,13 @@
 import cx from "classnames"
 import { useRecoilValue } from "recoil"
 import { players } from "../recoil/atoms"
-import { useDogs } from "./Players/Avatar"
+import { getDogs } from "./Players/Avatar"
 import { playerMoveAtom } from "../recoil/atoms/players/playerMove"
 
 export function ActivePlayerAvatar() {
     const [playerId] = useRecoilValue(playerMoveAtom)
     const { avatar, name } = useRecoilValue(players(playerId))
-    const dogs = useDogs()
+    const dogs = getDogs()
 
     return (
         <div

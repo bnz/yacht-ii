@@ -1,21 +1,15 @@
 import cx from "classnames"
-import { useRecoilState } from "recoil"
-import { drawerState } from "../../recoil/atoms"
-import { useCallback } from "react"
-import { useTheme } from "../../helpers/useTheme"
+import { isDark } from "@signals/theme"
 import icon from "../../icons/icon.svg"
+import { drawer, toggle } from "@signals/drawer"
 
 export function MenuButton() {
-    const [open, setOpen] = useRecoilState(drawerState)
-    const toggle = useCallback(function () {
-        setOpen(function (prev) {
-            return !prev
-        })
-    }, [setOpen])
-    const isDark = useTheme(true)
-    const bgImage = `url('${icon}#${open
-        ? isDark ? "close-white" : "close"
-        : isDark ? "menu-white" : "menu"}')`
+    const open = drawer.value
+    const bgImage = `url('${icon}#${
+        open
+            ? isDark.value ? "close-white" : "close"
+            : isDark.value ? "menu-white" : "menu"
+    }')`
 
     return (
         <button

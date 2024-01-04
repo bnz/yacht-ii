@@ -4,14 +4,12 @@ import reportWebVitals from './reportWebVitals'
 import "./index.css"
 import { App } from "./App"
 import { RecoilRoot } from "recoil"
-import { InitThemeChangeWatch } from "./helpers/useTheme"
 
 createRoot(
     document.getElementById('root') as HTMLElement,
 ).render(
     <StrictMode>
         <RecoilRoot>
-            <InitThemeChangeWatch />
             <App />
         </RecoilRoot>
     </StrictMode>,

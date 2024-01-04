@@ -1,5 +1,4 @@
 import type { Dispatch, SetStateAction } from "react"
-import { Themes, useTheme } from "../../helpers/useTheme"
 import { useCallback } from "react"
 import cx from "classnames"
 import { AvatarEnum, MAX_PLAYERS_COUNT, playersData } from "../../recoil/atoms"
@@ -25,6 +24,7 @@ import { useRecoilValue } from "recoil"
 import { AvatarChooser } from "./AvatarChooser"
 import { createPortal } from "react-dom"
 import { useStateToggle } from '../../helpers/useStateToggle'
+import { isDark, theme, Themes } from "@signals/theme"
 
 const dogs: Record<Themes, Record<'normal' | 'disabled', string[]>> = {
     light: {
@@ -37,8 +37,8 @@ const dogs: Record<Themes, Record<'normal' | 'disabled', string[]>> = {
     },
 }
 
-export function useDogs(): Record<'normal' | 'disabled', string[]> {
-    return dogs[useTheme()]
+export function getDogs(): Record<'normal' | 'disabled', string[]> {
+    return dogs[theme.value]
 }
 
 interface AvatarProps {
@@ -49,9 +49,8 @@ interface AvatarProps {
 }
 
 export function Avatar({ avatar, edit, className, disabled }: AvatarProps) {
-    const isDart = useTheme(true)
     const [open, toggle] = useStateToggle()
-    const themedDogs = useDogs()
+    const themedDogs = getDogs()
     const players = useRecoilValue(playersData)
     const takenAvatars = players.map(function ({ data: { avatar } }) {
         return avatar
@@ -82,7 +81,7 @@ export function Avatar({ avatar, edit, className, disabled }: AvatarProps) {
                 {canEdit && (
                     <div
                         className="w-4 h-4 absolute -bottom-1.5 -right-1.5 bg-no-repeat bg-cover"
-                        style={{ backgroundImage: `url('${icon}#${isDart ? "down-white" : "down"}')` }}
+                        style={{ backgroundImage: `url('${icon}#${isDark.value ? "down-white" : "down"}')` }}
                     />
                 )}
             </div>

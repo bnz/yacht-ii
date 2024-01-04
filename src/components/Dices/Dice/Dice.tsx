@@ -1,6 +1,6 @@
 import { DiceDot } from './DiceDot'
 import cx from "classnames"
-import { useTheme } from "../../../helpers/useTheme"
+import { isDark } from "@signals/theme"
 import faceIcon from "../../../icons/face.svg"
 import faceDarkIcon from "../../../icons/face-dark.svg"
 
@@ -24,8 +24,6 @@ interface DiceProps {
 const array9 = [...window.Array(9).keys()]
 
 export function Dice({ value, roll, selected, onClick, index }: DiceProps) {
-    const isDark = useTheme(true)
-
     return (
         <div className="relative w-[2em] min-w-[2em] max-w-[2em] h-[2em] flex-wrap flex-grow cursor-pointer"
              onClick={onClick}>
@@ -41,7 +39,7 @@ export function Dice({ value, roll, selected, onClick, index }: DiceProps) {
                     // transform: "translateX(-50%)",
                     transform: roll ? `rotate(${359 * (index % 2 === 1 ? 1 : -1)}deg)` : 'none',
                     boxShadow: selected
-                        ? isDark
+                        ? isDark.value
                             ? `rgba(255, 255, 255, 0.5) 0 0 0 2px`
                             : '0 0 .2em rgba(0, 0, 0, 1)'
                         : '0 0 .1em rgba(0, 0, 0, .4)',
@@ -50,7 +48,7 @@ export function Dice({ value, roll, selected, onClick, index }: DiceProps) {
                 {roll ? (
                     <div
                         className="bg-no-repeat bg-center bg-contain absolute left-2 right-2 top-2 bottom-2"
-                        style={{ backgroundImage: `url('${isDark ? faceDarkIcon : faceIcon}')` }}
+                        style={{ backgroundImage: `url('${isDark.value ? faceDarkIcon : faceIcon}')` }}
                     />
                 ) : array9.map(function (i) {
                     return (

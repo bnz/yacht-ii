@@ -1,22 +1,18 @@
-import { useCallback } from "react"
 import { Footer } from "../Footer"
 import cx from "classnames"
-import { useRecoilState, useRecoilValue } from "recoil"
-import { drawerState, gamePhase, GamePhases } from "../../recoil/atoms"
+import { useRecoilValue } from "recoil"
+import { gamePhase, GamePhases } from "../../recoil/atoms"
 import { Backdrop } from "../Backdrop"
 import { MenuButton } from "./MenuButton"
 import { KeyboardActions } from "../../helpers/KeyboardActions"
 import { combinationNameVisibilityAtom } from "../../recoil/atoms/combinationNameVisibilityAtom"
 import { endOfGameVisibilityAtom } from "../../recoil/atoms/endOfGameVisibilityAtom"
 import { DrawerContent } from './DrawerContent'
+import { drawer, toggle } from "@signals/drawer"
 
 export function Drawer() {
-    const [open, setOpen] = useRecoilState(drawerState)
-    const toggle = useCallback(function () {
-        setOpen(function (prev) {
-            return !prev
-        })
-    }, [setOpen])
+    const open = drawer.value
+
     const phase = useRecoilValue(gamePhase)
 
     const combinationNameVisibility = useRecoilValue(combinationNameVisibilityAtom)

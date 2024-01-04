@@ -3,9 +3,9 @@ import cx from "classnames"
 import icon from "../../icons/icon.svg"
 import { i18n } from "../../helpers/i18n/i18n"
 import { AvatarEnum, playersData } from "../../recoil/atoms"
-import { useDogs } from "./Avatar"
+import { getDogs } from "./Avatar"
 import { useRecoilValue } from "recoil"
-import { useTheme } from "../../helpers/useTheme"
+import { isDark } from "@signals/theme"
 
 interface AvatarChooserProps {
     toggle: VoidFunction
@@ -15,8 +15,7 @@ interface AvatarChooserProps {
 }
 
 export function AvatarChooser({ avatar, toggle, onClick }: AvatarChooserProps) {
-    const isDart = useTheme(true)
-    const themedDogs = useDogs()
+    const themedDogs = getDogs()
     const players = useRecoilValue(playersData)
     const takenAvatars = players.map(function ({ data: { avatar } }) {
         return avatar
@@ -36,7 +35,7 @@ export function AvatarChooser({ avatar, toggle, onClick }: AvatarChooserProps) {
                 <button
                     onClick={toggle}
                     className="absolute right-0 top-0 w-8 h-8 bg-no-repeat bg-center"
-                    style={{ backgroundImage: `url('${icon}#${isDart ? "close-white" : "close"}')` }}
+                    style={{ backgroundImage: `url('${icon}#${isDark.value ? "close-white" : "close"}')` }}
                 />
                 <h3 className="text-center font-bold py-5">
                     {i18n("chooseDog")}

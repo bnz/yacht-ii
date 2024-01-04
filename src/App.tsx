@@ -4,6 +4,7 @@ import { gamePhase, GamePhases } from "./recoil/atoms"
 import { lazy, Suspense } from 'react'
 import { AppWrapper } from "./components/AppWrapper"
 import { Spinner } from './components/Spinner';
+import { useSignals } from "@preact/signals-react/runtime"
 
 const phases = {
     [GamePhases.PRE_GAME]: lazy(function () {
@@ -21,6 +22,8 @@ const phases = {
 }
 
 export function App() {
+    useSignals()
+
     const GamePhase = phases[useRecoilValue(gamePhase)]
 
     return (

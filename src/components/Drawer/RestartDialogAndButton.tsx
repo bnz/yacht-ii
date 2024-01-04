@@ -1,20 +1,20 @@
 import { i18n } from '../../helpers/i18n/i18n'
 import { useSetRecoilState } from 'recoil'
-import { drawerState, restartGame } from '../../recoil/atoms'
+import { restartGame } from '../../recoil/atoms'
 import { useCallback } from 'react'
 import { createPortal } from 'react-dom'
 import { Backdrop } from '../Backdrop'
 import { useStateToggle } from '../../helpers/useStateToggle'
 import { KeyboardActions } from '../../helpers/KeyboardActions'
+import { update } from "@signals/drawer"
 
 function useRestart() {
     const restart = useSetRecoilState(restartGame)
-    const closeDrawer = useSetRecoilState(drawerState)
 
     return useCallback(function () {
         restart(true)
-        closeDrawer(false)
-    }, [closeDrawer, restart])
+        update(false)
+    }, [restart])
 }
 
 export function RestartDialogAndButton() {

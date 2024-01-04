@@ -1,6 +1,6 @@
 import type { PropsWithChildren } from "react"
 import cx from "classnames"
-import { useTheme } from "../helpers/useTheme"
+import { isDark } from "@signals/theme"
 import iconSVG from "../icons/icon.svg"
 import { Icons } from "../icons/Icons"
 
@@ -15,12 +15,10 @@ interface ButtonWithIconProps extends PropsWithChildren<{}> {
 }
 
 export function ButtonWithIcon({ children, type = "button", className, icon, disabled, onClick, onMouseUp, onMouseDown }: ButtonWithIconProps) {
-    const isDark = useTheme(true)
-
     return (
         <button
             className={cx("bg-no-repeat bg-center", className)}
-            style={{ backgroundImage: `url(${iconSVG}#${icon}${isDark ? "-white" : ""})` }}
+            style={{ backgroundImage: `url(${iconSVG}#${icon}${isDark.value ? "-white" : ""})` }}
             onClick={onClick}
             {...type ? { type } : {}}
             {...onMouseUp ? { onMouseUp } : {}}

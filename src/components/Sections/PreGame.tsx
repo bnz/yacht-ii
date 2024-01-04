@@ -3,7 +3,7 @@ import { gamePhase, GamePhases } from "../../recoil/atoms"
 import { i18n } from "../../helpers/i18n/i18n"
 import { Rules } from "../Rules/Rules"
 import { useRecoilValue, useSetRecoilState } from "recoil"
-import { useTheme } from "../../helpers/useTheme"
+import { isDark } from "@signals/theme"
 import cx from "classnames"
 import logoIconWhite from "../../icons/logo-white.svg"
 import logoIconBlack from "../../icons/logo-black.svg"
@@ -38,7 +38,6 @@ function ButtonWrapper({ children }: PropsWithChildren<{}>) {
 
 export default function PreGame() {
     const setPhase = useSetRecoilState(gamePhase)
-    const isDark = useTheme(true)
 
     const setChild = useSetRecoilState(childPlayAtom)
 
@@ -51,7 +50,7 @@ export default function PreGame() {
                     "mx-auto my-5 lg:my-10",
                     "bg-no-repeat bg-contain",
                 )}
-                style={{ backgroundImage: `url('${isDark ? logoIconWhite : logoIconBlack}')` }}
+                style={{ backgroundImage: `url('${isDark.value ? logoIconWhite : logoIconBlack}')` }}
             />
             <P className="text-2xl px-5 mx-auto text-center w-full md:w-2/3">
                 {i18n('help.intro')}
@@ -66,7 +65,7 @@ export default function PreGame() {
                 >
                     <div
                         className="w-8 h-8 lg:w-12 lg:h-12 bg-no-repeat bg-contain absolute left-3 lg:left-7 top-2 lg:top-3 group-hover:animate-spin"
-                        style={{ backgroundImage: `url('${isDark ? logoIconWhite : logoIconBlack}')` }}
+                        style={{ backgroundImage: `url('${isDark.value ? logoIconWhite : logoIconBlack}')` }}
                     />
                     {i18n('button.startNewGame')}
                 </button>
