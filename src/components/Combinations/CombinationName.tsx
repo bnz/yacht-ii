@@ -3,12 +3,12 @@ import cx from "classnames"
 import { Combination } from "./combinationsData"
 import { commonBorder, commonSizes } from "./Combinations"
 import { CombinationTitle } from "./CombinationTitle"
-import { namesColumnViewSelector } from "../../recoil/selectors/namesColumnViewSelector"
-import { useRecoilState, useRecoilValue } from "recoil"
+import { useRecoilState } from "recoil"
 import { getDicesPreview } from "./getDicesPreview"
 import { createPortal } from "react-dom"
 import { combinationNameVisibilityAtom } from "../../recoil/atoms/combinationNameVisibilityAtom"
-import { NamesColumnViewEnum } from "../../recoil/atoms/namesColumnViewAtomFamily"
+import { activePlayerNamesColumnView } from "@signals/activePlayerNamesColumnView"
+import { NamesColumnViewEnum } from "@signals/namesColumnView"
 
 interface CombinationNameProps {
     className?: string | undefined
@@ -25,8 +25,7 @@ export function CombinationName({ className, name, title, combination }: Combina
             return prev === null ? combination : null
         })
     }, [setOpen, combination])
-    const namesColumnView = useRecoilValue(namesColumnViewSelector)
-    const isText = namesColumnView === NamesColumnViewEnum.text
+    const isText = activePlayerNamesColumnView.value === NamesColumnViewEnum.text
     const dicesPreview = useMemo(function () {
         return getDicesPreview(combination)
     }, [combination])

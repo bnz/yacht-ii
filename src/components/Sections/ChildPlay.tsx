@@ -4,8 +4,11 @@ import { DicesWrapper } from "../Dices/DicesWrapper"
 import { Dices } from "../Dices/Dices"
 import { DicesActions } from "../Dices/DicesActions"
 import { EndOfGame } from "../EndOfGame/EndOfGame"
+import { useSignals } from "@preact/signals-react/runtime"
 
 export default function ChildPlay() {
+    useSignals()
+
     return (
         <>
             <DicesWrapper>

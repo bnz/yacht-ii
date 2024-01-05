@@ -3,7 +3,6 @@ import { Combination } from "@components/Combinations/combinationsData"
 import { getRandomInt } from "@helpers/random"
 import { persist } from "./persist"
 import { historyAtomFamily } from "./atoms/historyAtomFamily"
-import { namesColumnViewAtomFamily } from "./atoms/namesColumnViewAtomFamily"
 import { GamePhases, updateGamePhase } from "@signals/gamePhase"
 import { updateChildPlay } from "@signals/childPlay"
 import { playersIds, updatePlayersIds } from "@signals/players/playersIds"
@@ -11,6 +10,7 @@ import { playersData } from "@signals/players/playersData"
 import { updatePlayers } from "@signals/players/players"
 import { resetPlayers } from "@signals/players/resetPlayers"
 import { resetPlayerMove } from "@signals/players/playerMove"
+import { resetNamesColumnView } from "@signals/namesColumnView"
 
 export enum AvatarEnum {
     dog0,
@@ -122,8 +122,8 @@ export const restartGame = selector<boolean>({
         playersIds.value.forEach(function (id) {
             reset(playerPointsAtomFamily(id))
             reset(historyAtomFamily(id))
-            reset(namesColumnViewAtomFamily(id))
         })
+        resetNamesColumnView()
         updatePlayers({})
         updatePlayersIds([])
 

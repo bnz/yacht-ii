@@ -1,4 +1,4 @@
-import { playersIds, updatePlayersIds as updatePlayersIds } from "@signals/players/playersIds"
+import { playersIds, updatePlayersIds } from "@signals/players/playersIds"
 import { Players, players, updatePlayers } from "@signals/players/players"
 
 export function removePlayer(id: string): void {

@@ -1,25 +1,14 @@
-import { useRecoilState } from "recoil"
-import { namesColumnViewSelector } from "../../recoil/selectors/namesColumnViewSelector"
-import { NamesColumnViewEnum } from "../../recoil/atoms/namesColumnViewAtomFamily"
-import { useCallback } from "react"
 import cx from "classnames"
 import { i18n } from "@helpers/i18n"
 import { Dice } from "../Dices/Dice/Dice"
 import { commonBorder } from "./Combinations"
+import { activePlayerNamesColumnView } from "@signals/activePlayerNamesColumnView"
+import { NamesColumnViewEnum, toggleActivePlayerNamesColumnView } from "@signals/namesColumnView"
 
 export function ToggleNamesColumnViewButton() {
-    const [view, setView] = useRecoilState(namesColumnViewSelector)
-    const toggle = useCallback(function () {
-        setView(function (currVal) {
-            return currVal === NamesColumnViewEnum.text
-                ? NamesColumnViewEnum.preview
-                : NamesColumnViewEnum.text
-        })
-    }, [setView])
-
     return (
         <div className={cx("flex items-center justify-center text-3xl", commonBorder)}>
-            <button type="button" data-empty={true} onClick={toggle} className={cx(
+            <button type="button" data-empty={true} onClick={toggleActivePlayerNamesColumnView} className={cx(
                 "border border-[--line-color] rounded-full w-full h-[1em] relative",
                 "shadow-inner",
                 "hover:shadow",
@@ -27,7 +16,7 @@ export function ToggleNamesColumnViewButton() {
                 "before:block before:bg-[--line-color] before:w-[calc(50%-.05em)] before:rounded-full",
                 "before:absolute before:left-[0.05em] before:top-[.05em] before:bottom-[.05em]",
                 "before:transition-all before:duration-300",
-                view === NamesColumnViewEnum.preview && cx(
+                activePlayerNamesColumnView.value === NamesColumnViewEnum.preview && cx(
                     "before:translate-x-full",
                     "[&>span:first-child]:text-[--text-color-semi]",
                 ),
@@ -40,7 +29,7 @@ export function ToggleNamesColumnViewButton() {
                 </span>
                 <span className={cx(
                     "right-0 text-[.3em] pt-[.2em] flex gap-[.25em] relative",
-                    view === NamesColumnViewEnum.text && cx(
+                    activePlayerNamesColumnView.value === NamesColumnViewEnum.text && cx(
                         "after:absolute after:inset-0 after:rounded-full",
                         "after:bg-[--background-color-disabled]",
                     ),

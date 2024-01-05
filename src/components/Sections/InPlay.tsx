@@ -9,6 +9,7 @@ import { i18n } from "@helpers/i18n"
 import { endOfGameVisibilityAtom } from "../../recoil/atoms/endOfGameVisibilityAtom"
 import { combinationsData } from '../Combinations/combinationsData'
 import { DicesWrapper } from "../Dices/DicesWrapper"
+import { useSignals } from "@preact/signals-react/runtime"
 
 export function EndOfGamePlaceholder() {
     const winner = useRecoilValue(winnerSelector)
@@ -30,6 +31,8 @@ export function EndOfGamePlaceholder() {
 }
 
 export default function InPlay() {
+    useSignals()
+
     return (
         <>
             <DicesWrapper>

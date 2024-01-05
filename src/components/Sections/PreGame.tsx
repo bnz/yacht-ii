@@ -11,7 +11,7 @@ import { Footer } from "../Footer"
 import { ButtonWithIcon } from '../ButtonWithIcon'
 import { scrolledTo } from "@signals/scrolledTo"
 import { GamePhases, updateGamePhase } from "@signals/gamePhase"
-import { updateChildPlay as updateChildPlay } from "@signals/childPlay"
+import { updateChildPlay } from "@signals/childPlay"
 import { useCallback } from "react"
 
 function Heading() {
