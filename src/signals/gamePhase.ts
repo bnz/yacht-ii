@@ -1,5 +1,5 @@
 import { computed, effect, signal } from "@preact/signals-react"
-import { restoreState, saveState } from "@helpers/localStorage"
+import { restoreState, saveState, storageKeys } from "@helpers/localStorage"
 
 export enum GamePhases {
     PRE_GAME = 'preGame',
@@ -8,7 +8,7 @@ export enum GamePhases {
     CHILD_PLAY = 'childPlay',
 }
 
-export const gamePhase = signal(restoreState<GamePhases>("game-phase-", GamePhases.PRE_GAME))
+export const gamePhase = signal(restoreState<GamePhases>(storageKeys.gamePhase, GamePhases.PRE_GAME))
 
 export function updateGamePhase(value: GamePhases) {
     gamePhase.value = value
@@ -19,5 +19,5 @@ export const isInPlay = computed(function () {
 })
 
 effect(function () {
-    saveState("game-phase-", gamePhase.value)
+    saveState(storageKeys.gamePhase, gamePhase.value)
 })

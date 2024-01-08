@@ -1,7 +1,11 @@
 import { effect, signal } from "@preact/signals-react"
-import { restoreState, saveState } from "@helpers/localStorage"
+import { restoreState, saveState, storageKeys } from "@helpers/localStorage"
 
-export const drawer = signal(restoreState<boolean>("drawer-state", false))
+export const drawer = signal(restoreState<boolean>(storageKeys.drawer, false))
+
+effect(function () {
+    saveState(storageKeys.drawer, drawer.value)
+})
 
 export function toggle(): void {
     drawer.value = !drawer.value
@@ -10,7 +14,3 @@ export function toggle(): void {
 export function update(value: boolean) {
     drawer.value = value
 }
-
-effect(function () {
-    saveState("drawer-state", drawer.value)
-})

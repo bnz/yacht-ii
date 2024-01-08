@@ -3,12 +3,11 @@ import cx from "classnames"
 import { Combination } from "./combinationsData"
 import { commonBorder, commonSizes } from "./Combinations"
 import { CombinationTitle } from "./CombinationTitle"
-import { useRecoilState } from "recoil"
 import { getDicesPreview } from "./getDicesPreview"
 import { createPortal } from "react-dom"
-import { combinationNameVisibilityAtom } from "../../recoil/atoms/combinationNameVisibilityAtom"
 import { activePlayerNamesColumnView } from "@signals/activePlayerNamesColumnView"
 import { NamesColumnViewEnum } from "@signals/namesColumnView"
+import { combinationDescDialogVisibility, updateDialogVisibility } from "@signals/combinationDescDialogVisibility"
 
 interface CombinationNameProps {
     className?: string | undefined
@@ -19,12 +18,11 @@ interface CombinationNameProps {
 
 export function CombinationName({ className, name, title, combination }: CombinationNameProps) {
     const [title1, title2] = title.split("###")
-    const [open, setOpen] = useRecoilState(combinationNameVisibilityAtom)
     const toggle = useCallback(function () {
-        setOpen(function (prev) {
-            return prev === null ? combination : null
+        updateDialogVisibility(function (value) {
+            return value === null ? combination : null
         })
-    }, [setOpen, combination])
+    }, [combination])
     const isText = activePlayerNamesColumnView.value === NamesColumnViewEnum.text
     const dicesPreview = useMemo(function () {
         return getDicesPreview(combination)
@@ -57,7 +55,7 @@ export function CombinationName({ className, name, title, combination }: Combina
                     </>
                 )}
             </div>
-            {open === combination && createPortal(
+            {combinationDescDialogVisibility.value === combination && createPortal(
                 <CombinationTitle onClose={toggle}>
                     <h5 className="text-2xl mb-5">{name}</h5>
                     <p className={cx("font-thin", (title2 || dicesPreview) && "mb-5")}>{title1}</p>

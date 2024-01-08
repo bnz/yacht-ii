@@ -19,3 +19,14 @@ export function saveState<T>(key: string, value: T): void {
         console.error(e)
     }
 }
+
+export const storageKeys: Record<string, string> = {
+    gamePhase: "game-phase-signal-huji",
+    childPlay: "child-play-signal-huji",
+    combinationNameVariant: "combination-name-variant-signal-huji",
+    playerMove: "player-move-signal-huji",
+    players: "players-signal-huji",
+    playersIds: "players-ids-signal-huji",
+    namesColumnView: "names-column-view-signal-huji",
+    drawer: "drawer-state-signal-huji",
+}

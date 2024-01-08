@@ -1,12 +1,12 @@
 import { effect, signal } from "@preact/signals-react"
-import { restoreState, saveState } from "@helpers/localStorage"
+import { restoreState, saveState, storageKeys } from "@helpers/localStorage"
 
-export const childPlay = signal(restoreState<boolean>("child-play", false))
+export const childPlay = signal(restoreState<boolean>(storageKeys.childPlay, false))
 
 export function updateChildPlay(value: boolean) {
     childPlay.value = value
 }
 
 effect(function () {
-    saveState("child-play", childPlay.value)
+    saveState(storageKeys.childPlay, childPlay.value)
 })

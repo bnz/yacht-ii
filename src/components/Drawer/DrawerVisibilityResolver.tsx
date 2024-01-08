@@ -6,9 +6,9 @@ const LazyDrawer = lazy(function () {
 })
 
 export function DrawerVisibilityResolver() {
-    return isInPlay.value && (
+    return isInPlay.value ? (
         <Suspense>
             <LazyDrawer />
         </Suspense>
-    )
+    ) : null
 }

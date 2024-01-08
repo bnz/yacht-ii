@@ -1,8 +1,9 @@
 import { getRandomInt } from "@helpers/random"
 import { takenAvatars } from "@signals/players/takenAvatars"
-import { AvatarEnum, MAX_PLAYERS_COUNT } from "../../../recoil/atoms"
+import { AvatarEnum, MAX_PLAYERS_COUNT } from "../../recoil/atoms"
+import { computed } from "@preact/signals-react"
 
-export function getAvailableAvatar() {
+export const availableAvatar = computed(function () {
     let avatar
 
     do {
@@ -10,4 +11,4 @@ export function getAvailableAvatar() {
     } while (takenAvatars.value.includes(avatar) && takenAvatars.value.length !== MAX_PLAYERS_COUNT)
 
     return avatar as AvatarEnum
-}
+})

@@ -9,7 +9,7 @@ import { ButtonWithIcon } from "../ButtonWithIcon"
 import { Avatar } from "./Avatar"
 import { RandomNameButton } from "./RandomNameButton"
 import { addPlayer } from "@signals/players/updaters/addPlayer"
-import { getAvailableAvatar } from "@signals/players/helpers/getAvailableAvatar"
+import { availableAvatar } from "@signals/players/availableAvatar"
 import { updateEditingInProgress } from "@signals/editingInProgress"
 import { updateAddPlayerFormVisible } from "@signals/addPlayerFormVisible"
 
@@ -21,7 +21,7 @@ export function AddPlayerForm({ initial }: AddPlayerFormProps) {
     const ref = useRef<null | HTMLInputElement>(null)
     const [name, setName] = useState(getDogName())
     const [error, setError] = useState<null | string>(null)
-    const [avatar, setAvatar] = useState(getAvailableAvatar())
+    const [avatar, setAvatar] = useState(availableAvatar.value)
 
     const onChange = useCallback(function (e: ChangeEvent<HTMLInputElement>) {
         setName(e.currentTarget.value)

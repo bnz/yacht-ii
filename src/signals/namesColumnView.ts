@@ -1,5 +1,5 @@
 import { effect, signal } from "@preact/signals-react"
-import { restoreState, saveState } from "@helpers/localStorage"
+import { restoreState, saveState, storageKeys } from "@helpers/localStorage"
 import { activePlayerId } from "@signals/players/activePlayerId"
 
 export const enum NamesColumnViewEnum {
@@ -9,7 +9,11 @@ export const enum NamesColumnViewEnum {
 
 type NamesColumnView = Record<string, NamesColumnViewEnum>
 
-export const namesColumnView = signal<NamesColumnView>(restoreState<NamesColumnView>("names-column-view-", {}))
+export const namesColumnView = signal<NamesColumnView>(restoreState<NamesColumnView>(storageKeys.namesColumnView, {}))
+
+effect(function () {
+    saveState(storageKeys.namesColumnView, namesColumnView.value)
+})
 
 export function resetNamesColumnView() {
     namesColumnView.value = {}
@@ -30,7 +34,3 @@ export function toggleActivePlayerNamesColumnView(): void {
 
     namesColumnView.value = { ...namesColumnView.value }
 }
-
-effect(function () {
-    saveState("names-column-view-", namesColumnView.value)
-})

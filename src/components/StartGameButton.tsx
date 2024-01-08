@@ -1,19 +1,16 @@
 import { i18n } from "@helpers/i18n"
-import { useRecoilValue } from "recoil"
 import { ButtonWithIcon } from "./ButtonWithIcon"
 import cx from "classnames"
-import { startGameButtonDisabledSelector } from '../recoil/selectors/startGameButtonDisabledSelector'
 import { GamePhases, updateGamePhase } from "@signals/gamePhase"
 import { childPlay } from "@signals/childPlay"
 import { nextTurn } from "@signals/players/updaters/nextTurn"
+import { startGameButtonDisabled } from "@signals/startGameButtonDisabled"
 
 export function StartGameButton() {
-    const disabled = useRecoilValue(startGameButtonDisabledSelector)
-
     return (
         <ButtonWithIcon
             icon="casino"
-            disabled={disabled}
+            disabled={startGameButtonDisabled.value}
             onClick={function () {
                 nextTurn()
                 updateGamePhase(childPlay.value ? GamePhases.CHILD_PLAY : GamePhases.IN_PLAY)
