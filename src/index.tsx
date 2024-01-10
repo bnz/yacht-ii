@@ -3,15 +3,12 @@ import { createRoot } from 'react-dom/client'
 import reportWebVitals from './reportWebVitals'
 import "./index.css"
 import { App } from "./App"
-import { RecoilRoot } from "recoil"
 
 createRoot(
     document.getElementById('root') as HTMLElement,
 ).render(
     <StrictMode>
-        <RecoilRoot>
-            <App />
-        </RecoilRoot>
+        <App />
     </StrictMode>,
 )
 
