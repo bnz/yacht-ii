@@ -1,4 +1,4 @@
-import { theme, Themes } from "@signals/theme"
+import { theme, Themes } from "@store/theme"
 import dog0Black from "@icons/dog0-black.svg"
 import dog1Black from "@icons/dog1-black.svg"
 import dog2Black from "@icons/dog2-black.svg"

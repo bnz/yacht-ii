@@ -6,8 +6,8 @@ import icon from "@icons/icon.svg"
 import { AvatarChooser } from "./AvatarChooser"
 import { createPortal } from "react-dom"
 import { useStateToggle } from '@helpers/useStateToggle'
-import { isDark } from "@signals/theme"
-import { takenAvatars } from "@signals/players/takenAvatars"
+import { isDark } from "@store/theme"
+import { takenAvatars } from "@store/players/takenAvatars"
 import { getDogs } from "@helpers/getDogs"
 
 interface AvatarProps {

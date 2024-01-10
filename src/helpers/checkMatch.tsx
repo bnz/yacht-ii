@@ -1,7 +1,7 @@
-import { Combination } from "../components/Combinations/combinationsData"
-import { DicesType } from "../recoil/atoms"
+import { Combination } from "@components/Combinations/combinationsData"
 import { uniq } from "./uniq"
 import { checkMatchTopSection } from "./checkMatchTopSection"
+import { DicesType } from "@store/dices"
 
 export type Return<T> = {
     points?: T

@@ -1,8 +1,8 @@
-import { playersData } from "@signals/players/playersData"
+import { playersData } from "@store/players/playersData"
 import { PlayersListItem } from "./PlayersListItem"
 import { AddPlayerForm } from "./AddPlayerForm"
 import { ListWrap } from "./ListWrap"
-import { addPlayerFormVisible } from "@signals/addPlayerFormVisible"
+import { addPlayerFormVisible } from "@store/addPlayerFormVisible"
 
 export function PlayersList() {
     if (playersData.value.length <= 0) {

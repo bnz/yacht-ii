@@ -1,5 +1,5 @@
 import { lazy, Suspense } from "react"
-import { isInPlay } from "@signals/gamePhase"
+import { isInPlay } from "@store/gamePhase"
 
 const LazyDrawer = lazy(function () {
     return import("./Drawer")

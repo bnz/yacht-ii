@@ -1,9 +1,9 @@
 import { useCallback } from "react"
 import { MAX_PLAYERS_COUNT } from "../../recoil/atoms"
 import { ButtonWithIcon } from "../ButtonWithIcon"
-import { playersCount } from "@signals/players/playersCount"
-import { editingInProgress, updateEditingInProgress } from "@signals/editingInProgress"
-import { addPlayerFormVisible, updateAddPlayerFormVisible } from "@signals/addPlayerFormVisible"
+import { playersCount } from "@store/players/playersCount"
+import { editingInProgress, updateEditingInProgress } from "@store/editingInProgress"
+import { addPlayerFormVisible, updateAddPlayerFormVisible } from "@store/addPlayerFormVisible"
 
 export function AddPlayer() {
     return (

@@ -2,7 +2,7 @@ import { Footer } from "../Footer"
 import cx from "classnames"
 import { MenuButton } from "./MenuButton"
 import { DrawerContent } from './DrawerContent'
-import { drawer } from "@signals/drawer"
+import { drawer } from "@store/drawer"
 import { useSignals } from "@preact/signals-react/runtime"
 import { DrawerActions } from "@components/Drawer/DrawerActions"
 import { DrawerBackdrop } from "@components/Drawer/DrawerBackdrop"

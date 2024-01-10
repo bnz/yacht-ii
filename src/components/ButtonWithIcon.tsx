@@ -1,6 +1,6 @@
 import type { PropsWithChildren } from "react"
 import cx from "classnames"
-import { isDark } from "@signals/theme"
+import { isDark } from "@store/theme"
 import iconSVG from "@icons/icon.svg"
 import { Icons } from "@icons/Icons"
 

@@ -1,10 +1,10 @@
 import { i18n } from "@helpers/i18n"
 import { ButtonWithIcon } from "./ButtonWithIcon"
 import cx from "classnames"
-import { GamePhases, updateGamePhase } from "@signals/gamePhase"
-import { childPlay } from "@signals/childPlay"
-import { nextTurn } from "@signals/players/updaters/nextTurn"
-import { startGameButtonDisabled } from "@signals/startGameButtonDisabled"
+import { GamePhases, updateGamePhase } from "@store/gamePhase"
+import { childPlay } from "@store/childPlay"
+import { nextTurn } from "@store/players/updaters/nextTurn"
+import { startGameButtonDisabled } from "@store/startGameButtonDisabled"
 
 export function StartGameButton() {
     return (

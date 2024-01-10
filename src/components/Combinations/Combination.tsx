@@ -1,7 +1,5 @@
 import { Combination as CombinationType, EMPTY_CELL, isBonus as _isBonus } from "./combinationsData"
-import { useRecoilValue, useSetRecoilState } from "recoil"
-import { dicesAtom, playerPointsAtomFamily } from "../../recoil/atoms"
-import { saveCombinationSelector } from "../../recoil/selectors/saveCombinationSelector"
+import { saveCombination } from "@store/saveCombination"
 import { checkMatch } from "@helpers/checkMatch"
 import cx from "classnames"
 import { Points } from "../Points"
@@ -10,8 +8,10 @@ import { defineWorkEnding } from "@helpers/defineWorkEnding"
 import { useCallback } from "react"
 import { CombinationButton } from "./CombinationButton"
 import { CombinationMatched } from "./CombinationMatched"
-import { childPlay } from "@signals/childPlay"
-import { activePlayerId } from "@signals/players/activePlayerId"
+import { childPlay } from "@store/childPlay"
+import { activePlayerId } from "@store/players/activePlayerId"
+import { getPlayerPoints } from "@store/playerPoints"
+import { dices } from "@store/dices"
 
 interface CombinationProps {
     playerId: string
@@ -21,9 +21,8 @@ interface CombinationProps {
 }
 
 export function Combination({ playerId, combination, isMoveAvailable, className }: CombinationProps) {
-    const dices = useRecoilValue(dicesAtom)
-    const { points, maxPoints } = checkMatch(combination, dices, childPlay.value)
-    const playerPoints = useRecoilValue(playerPointsAtomFamily(playerId))
+    const { points, maxPoints } = checkMatch(combination, dices.value, childPlay.value)
+    const playerPoints = getPlayerPoints(playerId)
     const existingCombination = (playerPoints || [])[combination] as number === undefined
         ? EMPTY_CELL
         : (playerPoints || [])[combination] as number
@@ -38,13 +37,13 @@ export function Combination({ playerId, combination, isMoveAvailable, className 
         strike: active && !matched && !isBonus && !isMoveAvailable,
     })
 
-    const saveCombination = useSetRecoilState(saveCombinationSelector)
     const save = useCallback(function () {
         saveCombination({ combination, points })
-    }, [saveCombination, combination, points])
+    }, [combination, points])
+
     const strikeOut = useCallback(function () {
         saveCombination({ combination, points: 0 })
-    }, [saveCombination, combination])
+    }, [combination])
 
     const classes = cx(className, active && "border-l border-r")
 

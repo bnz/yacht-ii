@@ -6,8 +6,8 @@ import { InputWithError } from "../InputWithError"
 import { ButtonWithIcon } from "../ButtonWithIcon"
 import { Avatar } from "./Avatar"
 import { RandomNameButton } from "./RandomNameButton"
-import { players } from "@signals/players/players"
-import { updatePlayerById } from "@signals/players/updaters/updatePlayerById"
+import { players } from "@store/players/players"
+import { updatePlayerById } from "@store/players/updaters/updatePlayerById"
 
 interface EditNameProps {
     id: string

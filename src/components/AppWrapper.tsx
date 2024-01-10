@@ -1,7 +1,7 @@
 import type { PropsWithChildren } from "react"
 import cx from "classnames"
 import { useEffect, useRef } from "react"
-import { update } from "@signals/scrolledTo"
+import { update } from "@store/scrolledTo"
 
 export function AppWrapper({ children }: PropsWithChildren<{}>) {
     const ref = useRef<HTMLDivElement | null>(null)

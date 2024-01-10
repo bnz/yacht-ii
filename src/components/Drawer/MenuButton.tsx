@@ -1,7 +1,7 @@
 import cx from "classnames"
-import { isDark } from "@signals/theme"
+import { isDark } from "@store/theme"
 import icon from "@icons/icon.svg"
-import { drawer, toggle } from "@signals/drawer"
+import { drawer, toggle } from "@store/drawer"
 
 export function MenuButton() {
     const open = drawer.value

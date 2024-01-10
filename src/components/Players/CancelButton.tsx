@@ -1,7 +1,7 @@
 import { ButtonWithIcon } from "../ButtonWithIcon"
 import { useCallback } from "react"
-import { GamePhases, updateGamePhase } from "@signals/gamePhase"
-import { resetPlayers } from "@signals/players/resetPlayers"
+import { GamePhases, updateGamePhase } from "@store/gamePhase"
+import { resetPlayers } from "@store/players/resetPlayers"
 
 export function CancelButton() {
     return (

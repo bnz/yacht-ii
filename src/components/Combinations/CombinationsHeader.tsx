@@ -1,13 +1,12 @@
 import { Avatar } from "../Players/Avatar"
-import { useRecoilValue } from "recoil"
-import { playersDataActiveFirst } from "../../recoil/selectors/playersDataActiveFirst"
+import { playersDataActiveFirst } from "@store/players/playersDataActiveFirst"
 import cx from "classnames"
 import { commonBorder } from "./Combinations"
 import { ToggleNamesColumnViewButton } from "./ToggleNamesColumnViewButton"
-import { activePlayerId } from "@signals/players/activePlayerId"
+import { activePlayerId } from "@store/players/activePlayerId"
 
 export function CombinationsHeader() {
-    const players = useRecoilValue(playersDataActiveFirst)
+    const players = playersDataActiveFirst.value
 
     return (
         <>

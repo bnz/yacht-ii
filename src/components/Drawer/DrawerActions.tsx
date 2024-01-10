@@ -1,15 +1,12 @@
 import { KeyboardActions } from "@helpers/KeyboardActions"
-import { toggle } from "@signals/drawer"
-import { useRecoilValue } from "recoil"
-import { endOfGameVisibilityAtom } from "../../recoil/atoms/endOfGameVisibilityAtom"
-import { combinationDescDialogVisibility } from "@signals/combinationDescDialogVisibility"
+import { toggle } from "@store/drawer"
+import { combinationDescDialogVisibility } from "@store/combinationDescDialogVisibility"
+import { endOfGameVisibility } from "@store/endOfGameVisibility"
 
 export function DrawerActions() {
-    const endOfGameVisibility = useRecoilValue(endOfGameVisibilityAtom)
-
     return (
         <>
-            {combinationDescDialogVisibility.value === null && endOfGameVisibility && (
+            {combinationDescDialogVisibility.value === null && endOfGameVisibility.value && (
                 <KeyboardActions actions={{ Escape: toggle }} />
             )}
         </>

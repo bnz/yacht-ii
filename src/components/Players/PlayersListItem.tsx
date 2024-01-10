@@ -3,7 +3,7 @@ import { EditName } from "./EditName"
 import { Row } from "./Row"
 import { ItemWrap } from "./ItemWrap"
 import { useStateToggle } from '@helpers/useStateToggle'
-import { updateEditingInProgress } from "@signals/editingInProgress"
+import { updateEditingInProgress } from "@store/editingInProgress"
 
 interface PlayersListItemProps {
     id: string

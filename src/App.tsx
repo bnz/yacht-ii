@@ -1,4 +1,4 @@
-import { gamePhase, GamePhases } from "@signals/gamePhase"
+import { gamePhase, GamePhases } from "@store/gamePhase"
 import { lazy, Suspense } from 'react'
 import { AppWrapper } from "@components/AppWrapper"
 import { Spinner } from '@components/Spinner';

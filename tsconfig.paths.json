@@ -2,8 +2,8 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@signals/*": [
-        "src/signals/*"
+      "@store/*": [
+        "src/store/*"
       ],
       "@helpers/*": [
         "src/helpers/*"

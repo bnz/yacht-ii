@@ -1,25 +1,18 @@
 import { i18n } from '@helpers/i18n'
-import { useSetRecoilState } from 'recoil'
-import { restartGame } from '../../recoil/atoms'
 import { useCallback } from 'react'
 import { createPortal } from 'react-dom'
 import { Backdrop } from '../Backdrop'
-import { useStateToggle } from '../../helpers/useStateToggle'
-import { KeyboardActions } from '../../helpers/KeyboardActions'
-import { update } from "@signals/drawer"
-
-function useRestart() {
-    const restart = useSetRecoilState(restartGame)
-
-    return useCallback(function () {
-        restart(true)
-        update(false)
-    }, [restart])
-}
+import { useStateToggle } from '@helpers/useStateToggle'
+import { KeyboardActions } from '@helpers/KeyboardActions'
+import { update } from "@store/drawer"
+import { restartGame } from "@store/restartGame"
 
 export function RestartDialogAndButton() {
     const [open, toggle] = useStateToggle()
-    const restart = useRestart()
+    const restart = useCallback(function () {
+        restartGame()
+        update(false)
+    }, [])
 
     return (
         <>

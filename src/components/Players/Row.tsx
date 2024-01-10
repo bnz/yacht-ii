@@ -2,9 +2,9 @@ import { useCallback } from "react"
 import { i18n } from "@helpers/i18n"
 import { ButtonWithIcon } from "../ButtonWithIcon"
 import { Avatar } from "./Avatar"
-import { players } from "@signals/players/players"
-import { removePlayer } from "@signals/players/updaters/removePlayer"
-import { editingInProgress } from "@signals/editingInProgress"
+import { players } from "@store/players/players"
+import { removePlayer } from "@store/players/updaters/removePlayer"
+import { editingInProgress } from "@store/editingInProgress"
 
 interface RowProps {
     id: string

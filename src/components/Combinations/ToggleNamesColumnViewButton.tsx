@@ -2,8 +2,8 @@ import cx from "classnames"
 import { i18n } from "@helpers/i18n"
 import { Dice } from "../Dices/Dice/Dice"
 import { commonBorder } from "./Combinations"
-import { activePlayerNamesColumnView } from "@signals/activePlayerNamesColumnView"
-import { NamesColumnViewEnum, toggleActivePlayerNamesColumnView } from "@signals/namesColumnView"
+import { activePlayerNamesColumnView } from "@store/activePlayerNamesColumnView"
+import { NamesColumnViewEnum, toggleActivePlayerNamesColumnView } from "@store/namesColumnView"
 
 export function ToggleNamesColumnViewButton() {
     return (

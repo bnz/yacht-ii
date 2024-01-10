@@ -1,16 +1,17 @@
 import { i18n } from "@helpers/i18n"
 import { useCallback } from "react"
-import { useRecoilState, useSetRecoilState } from "recoil"
-import { dicesAtom, dicesSelectedAtom, MAX_SHOT_COUNT } from "../../recoil/atoms"
+import { MAX_SHOT_COUNT } from "../../recoil/atoms"
 import { rand } from "@helpers/random"
 import { ButtonWithIcon } from "../ButtonWithIcon"
 import cx from "classnames"
-import { historyUpdateDicesSelector } from "../../recoil/selectors/historyUpdateDicesSelector"
 import { Dev } from "../Dev/Dev"
-import { activePlayerShot } from "@signals/players/activePlayerShot"
-import { isShotAvailable } from "@signals/players/isShotAvailable"
-import { updatePlayerMove } from "@signals/players/playerMove"
-import { loading, updateLoading } from "@signals/loading"
+import { activePlayerShot } from "@store/players/activePlayerShot"
+import { isShotAvailable } from "@store/players/isShotAvailable"
+import { updatePlayerMove } from "@store/players/playerMove"
+import { loading, updateLoading } from "@store/loading"
+import { dicesSelected as dicesSelectedSignal, updateDicesSelected } from "@store/dicesSelected"
+import { dices as dicesSignal, updateDices } from "@store/dices"
+import { historyUpdateDices } from "@store/history"
 
 const defaultDelay = 300
 let delay = 0
@@ -18,9 +19,8 @@ let delay = 0
 let timer: number | null = null
 
 export function DicesActions() {
-    const [dicesSelected, setDicesSelected] = useRecoilState(dicesSelectedAtom)
-    const [dices, setDices] = useRecoilState(dicesAtom)
-    const history = useSetRecoilState(historyUpdateDicesSelector)
+    const dicesSelected = dicesSelectedSignal.value
+    const dices = dicesSignal.value
 
     const shuffle = useCallback(function () {
         delay = Date.now()
@@ -41,21 +41,21 @@ export function DicesActions() {
                             randDices[index] = rand()
                         }
                     })
-                    setDices(randDices)
+                    updateDices(randDices)
                     updatePlayerMove(function ([playerId, shot]) {
                         return [playerId, shot + 1]
                     })
-                    history(true)
+                    historyUpdateDices()
                     updateLoading(false)
                 },
                 d < defaultDelay ? defaultDelay - d : 0,
             )
         }
-    }, [dices, setDices, dicesSelected, history])
+    }, [dices, dicesSelected])
 
     const deselectAll = useCallback(function () {
-        setDicesSelected([])
-    }, [setDicesSelected])
+        updateDicesSelected([])
+    }, [])
 
     return (
         <div className={cx(

@@ -1,7 +1,7 @@
 import type { PropsWithChildren } from "react"
 import { i18n } from "@helpers/i18n"
 import { Rules } from "../Rules/Rules"
-import { isDark } from "@signals/theme"
+import { isDark } from "@store/theme"
 import cx from "classnames"
 import logoIconWhite from "@icons/logo-white.svg"
 import logoIconBlack from "@icons/logo-black.svg"
@@ -9,9 +9,9 @@ import { GameHeading } from "../GameHeading"
 import { P } from "../Rules/P"
 import { Footer } from "../Footer"
 import { ButtonWithIcon } from '../ButtonWithIcon'
-import { scrolledTo } from "@signals/scrolledTo"
-import { GamePhases, updateGamePhase } from "@signals/gamePhase"
-import { updateChildPlay } from "@signals/childPlay"
+import { scrolledTo } from "@store/scrolledTo"
+import { GamePhases, updateGamePhase } from "@store/gamePhase"
+import { updateChildPlay } from "@store/childPlay"
 import { useCallback } from "react"
 
 function Heading() {

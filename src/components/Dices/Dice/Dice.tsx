@@ -1,6 +1,6 @@
 import { DiceDot } from './DiceDot'
 import cx from "classnames"
-import { isDark } from "@signals/theme"
+import { isDark } from "@store/theme"
 import faceIcon from "@icons/face.svg"
 import faceDarkIcon from "@icons/face-dark.svg"
 

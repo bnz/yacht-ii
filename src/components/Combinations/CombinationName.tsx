@@ -5,9 +5,9 @@ import { commonBorder, commonSizes } from "./Combinations"
 import { CombinationTitle } from "./CombinationTitle"
 import { getDicesPreview } from "./getDicesPreview"
 import { createPortal } from "react-dom"
-import { activePlayerNamesColumnView } from "@signals/activePlayerNamesColumnView"
-import { NamesColumnViewEnum } from "@signals/namesColumnView"
-import { combinationDescDialogVisibility, updateDialogVisibility } from "@signals/combinationDescDialogVisibility"
+import { activePlayerNamesColumnView } from "@store/activePlayerNamesColumnView"
+import { NamesColumnViewEnum } from "@store/namesColumnView"
+import { combinationDescDialogVisibility, updateDialogVisibility } from "@store/combinationDescDialogVisibility"
 
 interface CombinationNameProps {
     className?: string | undefined

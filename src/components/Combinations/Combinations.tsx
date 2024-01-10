@@ -1,14 +1,13 @@
 import { Fragment } from "react"
 import { Combination as CombinationType, CombinationInfo, isBonus } from "./combinationsData"
-import { useRecoilValue } from "recoil"
-import { playersDataActiveFirst } from "../../recoil/selectors/playersDataActiveFirst"
+import { playersDataActiveFirst } from "@store/players/playersDataActiveFirst"
 import { MAX_PLAYERS_COUNT } from "../../recoil/atoms"
-import { isMoveAvailableSelector } from "../../recoil/selectors/isMoveAvailableSelector"
 import cx from "classnames"
 import { CombinationsHeader } from "./CombinationsHeader"
 import { CombinationsFooter } from "./CombinationsFooter"
 import { Combination } from "./Combination"
 import { CombinationName } from "./CombinationName"
+import { isMoveAvailable } from "@store/isMoveAvailable"
 
 const decoratorWidth = 10
 const titleWidth = 160
@@ -24,36 +23,19 @@ for (let i = 1; i <= MAX_PLAYERS_COUNT; i++) {
     ].join("px ") + "px"
 }
 
-export const wrapClassName = cx(
-    "grid",
-    // "[&>div]:py-6",
-    "max-w-2/3",
-    "w-fit",
-    "mx-auto",
-    "relative",
-)
-
-export const commonBorder = cx(
-    "border-b border-[--line-color]",
-)
-
-export const commonSizes = cx(
-    "h-14",
-    "flex items-center justify-center",
-)
+export const wrapClassName = "grid max-w-2/3 w-fit mx-auto relative"
+export const commonBorder = "border-b border-[--line-color]"
+export const commonSizes = "h-14 flex items-center justify-center"
 
 interface CombinationsProps {
     combinations: CombinationInfo[]
 }
 
 export function Combinations({ combinations }: CombinationsProps) {
-    const players = useRecoilValue(playersDataActiveFirst)
-    const isMoveAvailable = useRecoilValue(isMoveAvailableSelector)
-
     return (
         <div className="w-full px-2 overflow-auto lg:px-0 pb-10">
             <div className={wrapClassName} style={{
-                gridTemplateColumns: playersColsStyle[players.length],
+                gridTemplateColumns: playersColsStyle[playersDataActiveFirst.value.length],
             }}>
                 <CombinationsHeader />
                 {combinations.map(function ({ name, title, combination }) {
@@ -72,13 +54,13 @@ export function Combinations({ combinations }: CombinationsProps) {
                                 title={title}
                                 combination={combination}
                             />
-                            {players.map(function ({ id }) {
+                            {playersDataActiveFirst.value.map(function ({ id }) {
                                 return (
                                     <Combination
                                         key={id}
                                         playerId={id}
                                         combination={combination}
-                                        isMoveAvailable={isMoveAvailable}
+                                        isMoveAvailable={isMoveAvailable.value}
                                         className={cx(
                                             bonusClassName,
                                             commonBorder,

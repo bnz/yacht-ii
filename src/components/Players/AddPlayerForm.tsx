@@ -1,17 +1,17 @@
 import type { ChangeEvent, FormEvent } from "react"
 import { useCallback, useEffect, useRef, useState } from "react"
 import { i18n } from "@helpers/i18n"
-import { getDogName } from "../../recoil/atoms"
 import { ItemWrap } from "./ItemWrap"
 import { InputWithError } from "../InputWithError"
 import { KeyboardActions } from "@helpers/KeyboardActions"
 import { ButtonWithIcon } from "../ButtonWithIcon"
 import { Avatar } from "./Avatar"
 import { RandomNameButton } from "./RandomNameButton"
-import { addPlayer } from "@signals/players/updaters/addPlayer"
-import { availableAvatar } from "@signals/players/availableAvatar"
-import { updateEditingInProgress } from "@signals/editingInProgress"
-import { updateAddPlayerFormVisible } from "@signals/addPlayerFormVisible"
+import { addPlayer } from "@store/players/updaters/addPlayer"
+import { availableAvatar } from "@store/players/availableAvatar"
+import { updateEditingInProgress } from "@store/editingInProgress"
+import { updateAddPlayerFormVisible } from "@store/addPlayerFormVisible"
+import { getRandomDogName } from "@store/getRandomDogName"
 
 interface AddPlayerFormProps {
     initial?: boolean
@@ -19,7 +19,7 @@ interface AddPlayerFormProps {
 
 export function AddPlayerForm({ initial }: AddPlayerFormProps) {
     const ref = useRef<null | HTMLInputElement>(null)
-    const [name, setName] = useState(getDogName())
+    const [name, setName] = useState(getRandomDogName())
     const [error, setError] = useState<null | string>(null)
     const [avatar, setAvatar] = useState(availableAvatar.value)
 

@@ -3,21 +3,16 @@ import { createPortal } from "react-dom"
 import { Backdrop } from "../Backdrop"
 import cx from "classnames"
 import { Combination, combinationsData } from "../Combinations/combinationsData"
-import { saveCombinationSelector } from "../../recoil/selectors/saveCombinationSelector"
-import { useRecoilValue, useSetRecoilState } from "recoil"
-import { dicesAtom, playerPointsAtomFamily } from "../../recoil/atoms"
-import { historyUpdateDicesSelector } from "../../recoil/selectors/historyUpdateDicesSelector"
 import { useStateToggle } from '@helpers/useStateToggle'
-import { activePlayerId } from "@signals/players/activePlayerId"
-import { updatePlayerMove } from "@signals/players/playerMove"
+import { updatePlayerMove } from "@store/players/playerMove"
+import { activePlayerPoints } from "@store/playerPoints"
+import { updateDices } from "@store/dices"
+import { saveCombination } from "@store/saveCombination"
+import { historyUpdateDices } from "@store/history"
 
 export const Dev = memo(function () {
     const [open, toggle] = useStateToggle()
     const [visible, setVisible] = useState(false)
-
-    const saveCombination = useSetRecoilState(saveCombinationSelector)
-    const setDices = useSetRecoilState(dicesAtom)
-    const history = useSetRecoilState(historyUpdateDicesSelector)
 
     function fakeSet(combination: Combination, points: number, min: boolean) {
         switch (combination) {
@@ -28,7 +23,7 @@ export const Dev = memo(function () {
             case Combination.FIVE:
             case Combination.SIX:
                 if (min) {
-                    setDices(
+                    updateDices(
                         new Array(3).fill(combination).concat(
                             new Array(2).fill(combination === Combination.SIX
                                 ? combination - 1
@@ -37,51 +32,51 @@ export const Dev = memo(function () {
                         ),
                     )
                 } else {
-                    setDices(new Array(5).fill(combination))
+                    updateDices(new Array(5).fill(combination))
                 }
                 break
             case Combination.EQUAL_3:
                 if (min) {
-                    setDices([1, 1, 1, 4, 6])
+                    updateDices([1, 1, 1, 4, 6])
                 } else {
-                    setDices([6, 6, 6, 4, 2])
+                    updateDices([6, 6, 6, 4, 2])
                 }
                 break
             case Combination.EQUAL_4:
                 if (min) {
-                    setDices([1, 1, 1, 4, 1])
+                    updateDices([1, 1, 1, 4, 1])
                 } else {
-                    setDices([6, 6, 6, 4, 6])
+                    updateDices([6, 6, 6, 4, 6])
                 }
                 break
             case Combination.SMALL_STRAIGHT:
-                setDices([2, 3, 4, 5, 5])
+                updateDices([2, 3, 4, 5, 5])
                 break
             case Combination.BIG_STRAIGHT:
-                setDices([1, 2, 3, 4, 5])
+                updateDices([1, 2, 3, 4, 5])
                 break
             case Combination.TWO_PAIR:
-                setDices([2, 2, 3, 4, 4])
+                updateDices([2, 2, 3, 4, 4])
                 break
             case Combination.FULL_HOUSE:
-                setDices([3, 3, 3, 5, 5])
+                updateDices([3, 3, 3, 5, 5])
                 break
             case Combination.CHANCE:
                 if (min) {
-                    setDices([1, 1, 1, 1, 1])
+                    updateDices([1, 1, 1, 1, 1])
                 } else {
-                    setDices([6, 6, 6, 6, 6])
+                    updateDices([6, 6, 6, 6, 6])
                 }
                 break
             case Combination.THE_YACHT:
-                setDices([4, 4, 4, 4, 4])
+                updateDices([4, 4, 4, 4, 4])
                 break
         }
 
         updatePlayerMove(function ([playerId, shot]) {
             return [playerId, shot + 1]
         })
-        history(true)
+        historyUpdateDices()
         saveCombination({ combination, points })
     }
 
@@ -150,7 +145,7 @@ interface RowProps {
 
 function Row({ combination, isLast, name, min, max, onClick }: RowProps) {
     const [points, setPoints] = useState(min || max)
-    const playerPoints = useRecoilValue(playerPointsAtomFamily(activePlayerId.value))
+    const playerPoints = activePlayerPoints.value
     const disabled = Object.keys(playerPoints).indexOf(`${combination}`) === -1
 
     return (

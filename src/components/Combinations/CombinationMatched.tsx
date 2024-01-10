@@ -1,11 +1,10 @@
 import { useCallback, useMemo } from "react"
 import { Combination } from "./combinationsData"
 import cx from "classnames"
-import { useRecoilState, useRecoilValue } from "recoil"
-import { playerPointsAtomFamily } from "../../recoil/atoms"
-import { MatchedView, matchedViewAtom } from "../../recoil/atoms/matchedViewAtom"
-import { historyAtomFamily } from "../../recoil/atoms/historyAtomFamily"
 import { Dice } from "../Dices/Dice/Dice"
+import { getPlayerMatchedView, MatchedView, toggleMatchedView } from "@store/matchedView"
+import { getPlayerPoints } from "@store/playerPoints"
+import { playerHistory } from "@store/history"
 
 interface CombinationMatchedProps {
     className?: string
@@ -14,16 +13,14 @@ interface CombinationMatchedProps {
 }
 
 export function CombinationMatched({ className, playerId, combination }: CombinationMatchedProps) {
-    const playerPoints = useRecoilValue(playerPointsAtomFamily(playerId))
-    const [matchedView, setMatchedView] = useRecoilState(matchedViewAtom(playerId))
+    const playerPoints = getPlayerPoints(playerId)
+    const matchedView = getPlayerMatchedView(playerId)
     const isPoints = matchedView === MatchedView.points
     const toggle = useCallback(function () {
-        setMatchedView(function (prev) {
-            return prev === MatchedView.points ? MatchedView.preview : MatchedView.points
-        })
-    }, [setMatchedView])
+        toggleMatchedView(playerId)
+    }, [playerId])
 
-    const history = useRecoilValue(historyAtomFamily(playerId))
+    const history = playerHistory(playerId)
 
     const historyMove = useMemo(
         function () {

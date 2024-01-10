@@ -1,5 +1,5 @@
-import { Combination } from "../components/Combinations/combinationsData"
-import { DicesType } from "../recoil/atoms"
+import { Combination } from "@components/Combinations/combinationsData"
+import { DicesType } from "@store/dices"
 import { Return } from "./checkMatch"
 
 export function checkMatchTopSection(combinationType: Combination, dices: DicesType): Return<number> | false {

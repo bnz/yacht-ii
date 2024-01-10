@@ -1,4 +1,4 @@
-import { isDark } from "@signals/theme"
+import { isDark } from "@store/theme"
 
 export function DiceDot({ filled }: { filled?: boolean }) {
     return (

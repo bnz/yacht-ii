@@ -3,10 +3,10 @@ import cx from "classnames"
 import icon from "@icons/icon.svg"
 import { i18n } from "@helpers/i18n"
 import { AvatarEnum } from "../../recoil/atoms"
-import { isDark } from "@signals/theme"
+import { isDark } from "@store/theme"
 import { getDogs } from "@helpers/getDogs"
-import { playersData } from "@signals/players/playersData"
-import { takenAvatars } from "@signals/players/takenAvatars"
+import { playersData } from "@store/players/playersData"
+import { takenAvatars } from "@store/players/takenAvatars"
 
 interface AvatarChooserProps {
     toggle: VoidFunction
