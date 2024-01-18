@@ -7,8 +7,7 @@ import { KeyboardActions } from "@helpers/KeyboardActions"
 import { ButtonWithIcon } from "../ButtonWithIcon"
 import { Avatar } from "./Avatar"
 import { RandomNameButton } from "./RandomNameButton"
-import { addPlayer } from "@store/players/updaters/addPlayer"
-import { availableAvatar } from "@store/players/availableAvatar"
+import { players } from "@store/players/players"
 import { updateEditingInProgress } from "@store/editingInProgress"
 import { updateAddPlayerFormVisible } from "@store/addPlayerFormVisible"
 import { getRandomDogName } from "@store/getRandomDogName"
@@ -21,7 +20,7 @@ export function AddPlayerForm({ initial }: AddPlayerFormProps) {
     const ref = useRef<null | HTMLInputElement>(null)
     const [name, setName] = useState(getRandomDogName())
     const [error, setError] = useState<null | string>(null)
-    const [avatar, setAvatar] = useState(availableAvatar.value)
+    const [avatar, setAvatar] = useState(players.availableAvatar)
 
     const onChange = useCallback(function (e: ChangeEvent<HTMLInputElement>) {
         setName(e.currentTarget.value)
@@ -32,7 +31,7 @@ export function AddPlayerForm({ initial }: AddPlayerFormProps) {
         e.preventDefault()
         const trimmed = name.trim()
         if (trimmed !== "") {
-            addPlayer({ name: trimmed, avatar })
+            players.add({ name: trimmed, avatar })
             updateAddPlayerFormVisible(false)
             updateEditingInProgress(false)
         } else {

@@ -1,4 +1,5 @@
 import { builder } from "@helpers/localStorage"
+import { createCopy } from "@helpers/createCopy"
 
 export enum MatchedView {
     points,
@@ -7,21 +8,24 @@ export enum MatchedView {
 
 type MatchedViewType = Record<string, MatchedView>
 
-export const {
-    signal: matchedView,
-    update: updateMatchedView,
-} = builder<MatchedViewType>("matchedView", {})
+export const matchedView = (function () {
+    const { signal, update } = builder<MatchedViewType>("matchedView", {})
 
-export function getPlayerMatchedView(playerId: string) {
-    return matchedView.value[playerId]
-}
+    return {
+        getByPlayerId(playerId: string) {
+            return signal.value[playerId]
+        },
+        toggle(playerId: string) {
+            const copy = createCopy(signal.value)
 
-export function toggleMatchedView(playerId: string) {
-    const copy = JSON.parse(JSON.stringify(matchedView.value)) as MatchedViewType
+            copy[playerId] = copy[playerId] === MatchedView.points
+                ? MatchedView.preview
+                : MatchedView.points
 
-    copy[playerId] = copy[playerId] === MatchedView.points
-        ? MatchedView.preview
-        : MatchedView.points
-
-    updateMatchedView({ ...copy })
-}
+            update(copy)
+        },
+        reset() {
+            update({})
+        }
+    }
+})()

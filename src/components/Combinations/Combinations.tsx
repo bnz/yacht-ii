@@ -1,6 +1,5 @@
 import { Fragment } from "react"
 import { Combination as CombinationType, CombinationInfo, isBonus } from "./combinationsData"
-import { playersDataActiveFirst } from "@store/players/playersDataActiveFirst"
 import { MAX_PLAYERS_COUNT } from "../../recoil/atoms"
 import cx from "classnames"
 import { CombinationsHeader } from "./CombinationsHeader"
@@ -8,6 +7,7 @@ import { CombinationsFooter } from "./CombinationsFooter"
 import { Combination } from "./Combination"
 import { CombinationName } from "./CombinationName"
 import { isMoveAvailable } from "@store/isMoveAvailable"
+import { players } from "@store/players/players"
 
 const decoratorWidth = 10
 const titleWidth = 160
@@ -35,7 +35,7 @@ export function Combinations({ combinations }: CombinationsProps) {
     return (
         <div className="w-full px-2 overflow-auto lg:px-0 pb-10">
             <div className={wrapClassName} style={{
-                gridTemplateColumns: playersColsStyle[playersDataActiveFirst.value.length],
+                gridTemplateColumns: playersColsStyle[players.dataActiveFirst.length],
             }}>
                 <CombinationsHeader />
                 {combinations.map(function ({ name, title, combination }) {
@@ -54,7 +54,7 @@ export function Combinations({ combinations }: CombinationsProps) {
                                 title={title}
                                 combination={combination}
                             />
-                            {playersDataActiveFirst.value.map(function ({ id }) {
+                            {players.dataActiveFirst.map(function ({ id }) {
                                 return (
                                     <Combination
                                         key={id}

@@ -1,7 +1,7 @@
 import { computed } from "@preact/signals-react"
-import { playersData } from "@store/players/playersData"
+import { players } from "@store/players/players"
 import { editingInProgress } from "@store/editingInProgress"
 
 export const startGameButtonDisabled = computed(function () {
-    return playersData.value.length <= 0 || editingInProgress.value
+    return players.data.length <= 0 || editingInProgress.value
 })

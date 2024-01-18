@@ -1,5 +1,5 @@
 import { BONUS_CONDITION, BONUS_POINTS, Combination } from "@components/Combinations/combinationsData"
-import { nextTurn } from "@store/players/updaters/nextTurn"
+import { players } from "@store/players/players"
 import { activePlayerPoints, Points, updateActivePlayerPoints } from "@store/playerPoints"
 import { updateDicesSelected } from "@store/dicesSelected"
 import { resetDices } from "@store/dices"
@@ -23,7 +23,7 @@ export function saveCombination({ combination, points }: Props) {
     playerPoints[combination] = points
     playerPoints[Combination.BONUS] = calcBonus(playerPoints)
     updateActivePlayerPoints(playerPoints)
-    nextTurn()
+    players.nextTurn()
     resetDices()
     updateDicesSelected([])
     updateActivePlayerHistoryResult({ combination, points })

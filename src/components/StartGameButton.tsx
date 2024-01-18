@@ -3,7 +3,7 @@ import { ButtonWithIcon } from "./ButtonWithIcon"
 import cx from "classnames"
 import { GamePhases, updateGamePhase } from "@store/gamePhase"
 import { childPlay } from "@store/childPlay"
-import { nextTurn } from "@store/players/updaters/nextTurn"
+import { players } from "@store/players/players"
 import { startGameButtonDisabled } from "@store/startGameButtonDisabled"
 
 export function StartGameButton() {
@@ -12,7 +12,7 @@ export function StartGameButton() {
             icon="casino"
             disabled={startGameButtonDisabled.value}
             onClick={function () {
-                nextTurn()
+                players.nextTurn()
                 updateGamePhase(childPlay.value ? GamePhases.CHILD_PLAY : GamePhases.IN_PLAY)
             }}
             className={cx(

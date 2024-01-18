@@ -1,18 +1,45 @@
-import { memo, useEffect, useState } from "react"
+import { memo, useCallback, useEffect, useMemo, useState } from "react"
 import { createPortal } from "react-dom"
-import { Backdrop } from "../Backdrop"
 import cx from "classnames"
 import { Combination, combinationsData } from "../Combinations/combinationsData"
 import { useStateToggle } from '@helpers/useStateToggle'
-import { updatePlayerMove } from "@store/players/playerMove"
 import { activePlayerPoints } from "@store/playerPoints"
 import { updateDices } from "@store/dices"
 import { saveCombination } from "@store/saveCombination"
-import { historyUpdateDices } from "@store/history"
+import { history, historyUpdateDices } from "@store/history"
+import { players } from "@store/players/players"
+import { useSignals } from "@preact/signals-react/runtime"
+
+function HistoryPreview() {
+    const preparedHistory = useMemo(function () {
+        const res: any = {}
+        Object.keys(history.value).forEach(function (key) {
+            res[players.getById(key) ? players.getById(key).name : key] = history.value[key]
+        })
+        return res
+    }, [players.value, history.value])
+
+    if (!Object.keys(preparedHistory).length) {
+        return null
+    }
+
+    return (
+        <pre className="fixed top-1 bottom-1 right-1 rounded p-1 z-[999999] bg-amber-800 overflow-auto text-xs">
+            {JSON.stringify(preparedHistory, function (key, value) {
+                if (key === "tries" || key === "dicesSelected") {
+                    return JSON.stringify(value)
+                }
+                return value
+            }, 2)}
+        </pre>
+    )
+}
 
 export const Dev = memo(function () {
-    const [open, toggle] = useStateToggle()
+    const [open, , setOpen] = useStateToggle()
     const [visible, setVisible] = useState(false)
+
+    useSignals()
 
     function fakeSet(combination: Combination, points: number, min: boolean) {
         switch (combination) {
@@ -73,7 +100,7 @@ export const Dev = memo(function () {
                 break
         }
 
-        updatePlayerMove(function ([playerId, shot]) {
+        players.move.update(function ([playerId, shot]) {
             return [playerId, shot + 1]
         })
         historyUpdateDices()
@@ -86,22 +113,32 @@ export const Dev = memo(function () {
         }
     }, [setVisible])
 
+    const dump = useCallback(function () {
+        console.group("state")
+        console.log({ history: history.value })
+        console.groupEnd()
+    }, [])
+
     if (!visible) {
         return null
     }
 
     return (
         <>
-            <button type="button" onClick={toggle} className="absolute bottom-2 right-2">
-                Dev
-            </button>
+            <div className="absolute bottom-2 left-2 flex gap-3">
+                <button type="button" className={cx(open && "shadow-none")} onClick={function () {
+                    setOpen(true)
+                }}>Dev</button>
+                <button type="button" onClick={dump}>Dump</button>
+            </div>
+
             {open && createPortal(
                 <>
-                    <Backdrop className="bg-black/20 dark:bg-black/30" onClick={toggle} />
+                    <HistoryPreview />
                     <div className={cx(
                         "z-10",
                         "bg-[--background-color] shadow-2xl rounded",
-                        "fixed right-2 top-1/2 -translate-y-1/2",
+                        "fixed left-2 top-1/2 -translate-y-1/2",
                         "p-3",
                         "min-w-max",
                     )}>

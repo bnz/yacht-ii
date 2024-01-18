@@ -3,7 +3,6 @@ import { i18n } from "@helpers/i18n"
 import { ButtonWithIcon } from "../ButtonWithIcon"
 import { Avatar } from "./Avatar"
 import { players } from "@store/players/players"
-import { removePlayer } from "@store/players/updaters/removePlayer"
 import { editingInProgress } from "@store/editingInProgress"
 
 interface RowProps {
@@ -17,9 +16,9 @@ interface RowProps {
 }
 
 export function Row({ id, callback, flash, flashEnd }: RowProps) {
-    const { name, avatar } = players.value[id]
+    const { name, avatar } = players.getById(id)
     const handleRemove = useCallback(function () {
-        removePlayer(id)
+        players.remove(id)
     }, [id])
     const disabled = editingInProgress.value
 

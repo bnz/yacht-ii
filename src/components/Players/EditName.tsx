@@ -7,7 +7,6 @@ import { ButtonWithIcon } from "../ButtonWithIcon"
 import { Avatar } from "./Avatar"
 import { RandomNameButton } from "./RandomNameButton"
 import { players } from "@store/players/players"
-import { updatePlayerById } from "@store/players/updaters/updatePlayerById"
 
 interface EditNameProps {
     id: string
@@ -15,7 +14,7 @@ interface EditNameProps {
 }
 
 export function EditName({ id, callback }: EditNameProps) {
-    const { name, avatar: avatarInitial } = players.value[id]
+    const { name, avatar: avatarInitial } = players.getById(id)
     const [avatar, setAvatar] = useState(avatarInitial)
     const [inputValue, setInputValue] = useState<string>(name)
     const [error, setError] = useState<null | string>(null)
@@ -29,7 +28,7 @@ export function EditName({ id, callback }: EditNameProps) {
         e.preventDefault()
         const trimmed = inputValue.trim()
         if (trimmed !== "") {
-            updatePlayerById(id, { name: inputValue, avatar })
+            players.update(id, { name: inputValue, avatar })
             callback(true)
         } else {
             setError(i18n("required"))
@@ -42,7 +41,7 @@ export function EditName({ id, callback }: EditNameProps) {
 
     const editAvatar = useCallback(function (index: AvatarEnum) {
         setAvatar(index)
-        updatePlayerById(function (players) {
+        players.update(function (players) {
             players[id] = { ...players[id], avatar: index }
             return players
         })

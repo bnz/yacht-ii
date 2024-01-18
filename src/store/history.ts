@@ -1,10 +1,10 @@
 import { builder } from "@helpers/localStorage"
 import { Combination } from "@components/Combinations/combinationsData"
-import { activePlayerId } from "@store/players/activePlayerId"
 import { computed } from "@preact/signals-react"
-import { activePlayerShot } from "@store/players/activePlayerShot"
 import { dices, DicesType } from "@store/dices"
 import { dicesSelected } from "@store/dicesSelected"
+import { createCopy } from "@helpers/createCopy"
+import { players } from "@store/players/players"
 
 export interface Move {
     tries: DicesType[]
@@ -22,37 +22,45 @@ export const {
 } = builder<History>("history", {})
 
 export const activePlayerHistory = computed(function () {
-    return history.value[activePlayerId.value] || []
+    return history.value[players.activeId] || []
 })
 
 export function playerHistory(playerId: string): Move[] {
     return history.value[playerId]
 }
 
-export function updateActivePlayerHistoryResult({ combination, points }: { combination: Combination, points?: number }): void {
-    const playerHistory = JSON.parse(JSON.stringify(activePlayerHistory.value)) as Move[]
+export function updateActivePlayerHistoryResult({ combination, points }: {
+    combination: Combination,
+    points?: number
+}): void {
+    const copy = createCopy(activePlayerHistory.value)
 
-    if (!playerHistory.length) {
-        // @ts-ignore FIXME types
-        playerHistory.push({ result: { [combination]: points } })
+    // @ts-ignore FIXME types
+    //
+
+    if (!copy.length) {
+        copy.push({
+            result: { [combination]: points },
+            dicesSelected: [],
+            tries: [],
+        })
     }
 
-    const lastElementIndex = playerHistory.length - 1
-    playerHistory[lastElementIndex].result[combination] = points
-    updateActivePlayerHistory(playerHistory)
+    const lastElementIndex = copy.length - 1
+    copy[lastElementIndex].result[combination] = points
+    updateActivePlayerHistory(copy)
 }
 
 export function updateActivePlayerHistory(value: Move[]) {
-    const copy = JSON.parse(JSON.stringify(history.value)) as History
-    copy[activePlayerId.value] = value
-    updateHistory(copy)
+    const copy = createCopy(history.value)
+    copy[players.activeId] = value
+    updateHistory({ ...copy })
 }
 
 export function historyUpdateDices() {
-    const shot = activePlayerShot.value
-    const copy = JSON.parse(JSON.stringify(activePlayerHistory.value)) as Move[]
+    const copy = createCopy(activePlayerHistory.value)
 
-    if (shot === 1) {
+    if (players.activeShot === 1) {
         copy.push({
             tries: [dices.value],
             result: {},

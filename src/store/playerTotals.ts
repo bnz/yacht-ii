@@ -1,7 +1,7 @@
 import { computed } from "@preact/signals-react"
-import { playersData } from "@store/players/playersData"
 import { getPlayerPoints } from "@store/playerPoints"
 import { Combination } from "@components/Combinations/combinationsData"
+import { players } from "@store/players/players"
 
 type PlayersTotals = {
     [playerId: string]: number
@@ -10,7 +10,7 @@ type PlayersTotals = {
 export const playerTotals = computed(function () {
     const totals: PlayersTotals = {}
 
-    playersData.value.forEach(function ({ id: playerId }) {
+    players.data.forEach(function ({ id: playerId }) {
         const points = getPlayerPoints(playerId)
         totals[playerId] = Object.keys(points).reduce(function (prev, key) {
             const curr = points[key as Combination]!

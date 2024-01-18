@@ -2,7 +2,7 @@ import { useCallback, useMemo } from "react"
 import { Combination } from "./combinationsData"
 import cx from "classnames"
 import { Dice } from "../Dices/Dice/Dice"
-import { getPlayerMatchedView, MatchedView, toggleMatchedView } from "@store/matchedView"
+import { MatchedView, matchedView } from "@store/matchedView"
 import { getPlayerPoints } from "@store/playerPoints"
 import { playerHistory } from "@store/history"
 
@@ -14,10 +14,9 @@ interface CombinationMatchedProps {
 
 export function CombinationMatched({ className, playerId, combination }: CombinationMatchedProps) {
     const playerPoints = getPlayerPoints(playerId)
-    const matchedView = getPlayerMatchedView(playerId)
-    const isPoints = matchedView === MatchedView.points
+    const isPoints = matchedView.getByPlayerId(playerId) === MatchedView.points
     const toggle = useCallback(function () {
-        toggleMatchedView(playerId)
+        matchedView.toggle(playerId)
     }, [playerId])
 
     const history = playerHistory(playerId)
@@ -40,6 +39,8 @@ export function CombinationMatched({ className, playerId, combination }: Combina
             </div>
         )
     }
+
+    // console.log(history, historyMove)
 
     let dices = [...historyMove.tries[historyMove.tries.length - 1]].sort()
 

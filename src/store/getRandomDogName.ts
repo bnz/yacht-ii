@@ -1,5 +1,5 @@
-import { playersData } from "@store/players/playersData"
 import { getRandomInt } from "@helpers/random"
+import { players } from "@store/players/players"
 
 const dogNamesFemale = [
     "Ася", "Боня", "Вита", "Голди", "Джес", "Ева", "Жужа", "Зара", "Ирма", "Кира", "Кики", "Лора", "Марта", "Нора", "Рада", "Соня", "Тося", "Феня", "Хася", "Чара",
@@ -15,7 +15,7 @@ const dogNames = [
 ]
 
 export function getRandomDogName() {
-    const taken = playersData.value.map(function ({ data: { name } }) {
+    const taken = players.data.map(function ({ data: { name } }) {
         return name
     })
     let index

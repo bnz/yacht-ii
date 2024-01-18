@@ -5,9 +5,7 @@ import { rand } from "@helpers/random"
 import { ButtonWithIcon } from "../ButtonWithIcon"
 import cx from "classnames"
 import { Dev } from "../Dev/Dev"
-import { activePlayerShot } from "@store/players/activePlayerShot"
-import { isShotAvailable } from "@store/players/isShotAvailable"
-import { updatePlayerMove } from "@store/players/playerMove"
+import { players } from "@store/players/players"
 import { loading, updateLoading } from "@store/loading"
 import { dicesSelected as dicesSelectedSignal, updateDicesSelected } from "@store/dicesSelected"
 import { dices as dicesSignal, updateDices } from "@store/dices"
@@ -42,7 +40,7 @@ export function DicesActions() {
                         }
                     })
                     updateDices(randDices)
-                    updatePlayerMove(function ([playerId, shot]) {
+                    players.move.update(function ([playerId, shot]) {
                         return [playerId, shot + 1]
                     })
                     historyUpdateDices()
@@ -61,27 +59,27 @@ export function DicesActions() {
         <div className={cx(
             "relative",
             "justify-center flex gap-5 transition-all duration-300",
-            isShotAvailable.value ? "h-0 overflow-hidden" : "mb-6 py-3",
+            players.isShotAvailable ? "h-0 overflow-hidden" : "mb-6 py-3",
         )}>
             <Dev />
             <ButtonWithIcon
                 onMouseUp={shuffleUp}
                 onMouseDown={shuffle}
-                disabled={isShotAvailable.value}
+                disabled={players.isShotAvailable}
                 className="!pl-10 !bg-[8px_center] flex"
                 icon="casino"
             >
-                {isShotAvailable.value ? i18n('button.writeDownYourPoints') : (
+                {players.isShotAvailable ? i18n('button.writeDownYourPoints') : (
                     <>
                         {i18n('button.dropDices')}
                         <span className="ml-2 text-red-600 w-12 block">
-                            {activePlayerShot.value}
+                            {players.activeShot}
                             <span className="text-gray-500 dark:text-gray-300 font-bold"> / {MAX_SHOT_COUNT}</span>
                         </span>
                     </>
                 )}
             </ButtonWithIcon>
-            <button type="button" onClick={deselectAll} disabled={dicesSelected.length === 0 || isShotAvailable.value}>
+            <button type="button" onClick={deselectAll} disabled={dicesSelected.length === 0 || players.isShotAvailable}>
                 {i18n('button.reset')}
             </button>
         </div>

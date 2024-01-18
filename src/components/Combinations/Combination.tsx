@@ -9,9 +9,9 @@ import { useCallback } from "react"
 import { CombinationButton } from "./CombinationButton"
 import { CombinationMatched } from "./CombinationMatched"
 import { childPlay } from "@store/childPlay"
-import { activePlayerId } from "@store/players/activePlayerId"
 import { getPlayerPoints } from "@store/playerPoints"
 import { dices } from "@store/dices"
+import { players } from "@store/players/players"
 
 interface CombinationProps {
     playerId: string
@@ -26,7 +26,7 @@ export function Combination({ playerId, combination, isMoveAvailable, className 
     const existingCombination = (playerPoints || [])[combination] as number === undefined
         ? EMPTY_CELL
         : (playerPoints || [])[combination] as number
-    const active = activePlayerId.value === playerId
+    const active = players.activeId === playerId
     const isBonus = _isBonus(combination)
     const matched = existingCombination !== EMPTY_CELL && !isBonus
 

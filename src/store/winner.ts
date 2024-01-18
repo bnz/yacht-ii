@@ -1,11 +1,10 @@
 import { computed } from "@preact/signals-react"
 import { isEndOfGame } from "@store/isEndOfGame"
-import { playersData } from "@store/players/playersData"
+import { players } from "@store/players/players"
 import { playerTotals } from "@store/playerTotals"
 
 export const winner = computed(function () {
     if (isEndOfGame.value) {
-        const players = playersData.value
         const playerKeys = Object.keys(playerTotals.value)
         const max = Math.max(...playerKeys.map(function (key) {
             return playerTotals.value[key]
@@ -13,7 +12,7 @@ export const winner = computed(function () {
         const index = playerKeys.findIndex(function (key) {
             return playerTotals.value[key] === max
         })
-        const { data: { name, avatar } } = players[index]
+        const { data: { name, avatar } } = players.data[index]
         return {
             name,
             avatar,

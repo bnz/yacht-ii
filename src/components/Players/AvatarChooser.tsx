@@ -5,8 +5,7 @@ import { i18n } from "@helpers/i18n"
 import { AvatarEnum } from "../../recoil/atoms"
 import { isDark } from "@store/theme"
 import { getDogs } from "@helpers/getDogs"
-import { playersData } from "@store/players/playersData"
-import { takenAvatars } from "@store/players/takenAvatars"
+import { players } from "@store/players/players"
 
 interface AvatarChooserProps {
     toggle: VoidFunction
@@ -38,9 +37,9 @@ export function AvatarChooser({ avatar, toggle, onClick }: AvatarChooserProps) {
                 <ul className="flex flex-grow flex-wrap gap-5 justify-center">
                     {getDogs().normal.map(function (url, index) {
                         const selected = avatar === index
-                        const taken = takenAvatars.value.includes(index)
+                        const taken = players.takenAvatars.includes(index)
                         const isClickable = !selected && !taken
-                        const player = playersData.value.find(function ({ data: { avatar } }) {
+                        const player = players.data.find(function ({ data: { avatar } }) {
                             return avatar === index
                         })
 

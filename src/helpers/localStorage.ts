@@ -1,4 +1,5 @@
 import { effect, Signal, signal } from "@preact/signals-react"
+import { CommonBuilderType } from "@store/types"
 
 type Keys =
     | "gamePhase"
@@ -55,7 +56,7 @@ export function saveState<T>(key: Keys, value: T): void {
     }
 }
 
-type Updater<T> = (value: T) => T
+export type Updater<T> = (value: T) => T
 
 type ReturnType<T> = {
     signal: Signal<T>
@@ -90,4 +91,19 @@ export function builder<T>(key: keyof typeof storageKeys | null, defaultValue: T
     }
 
     return result
+}
+
+type Fn<T, R> = (methods: (signal: Signal<T>, update: (value: T | Updater<T>) => void) => R) => CommonBuilderType<T, R>
+
+export function builder2<T, R>(localStorageKey: keyof typeof storageKeys | null, defaultValue: T): Fn<T, R> {
+    const { signal, update } = builder<T>(localStorageKey, defaultValue)
+
+    return function (methods) {
+        return {
+            get value() {
+                return signal.value
+            },
+            ...methods(signal, update),
+        }
+    }
 }

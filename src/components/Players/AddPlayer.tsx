@@ -1,9 +1,9 @@
 import { useCallback } from "react"
 import { MAX_PLAYERS_COUNT } from "../../recoil/atoms"
 import { ButtonWithIcon } from "../ButtonWithIcon"
-import { playersCount } from "@store/players/playersCount"
 import { editingInProgress, updateEditingInProgress } from "@store/editingInProgress"
 import { addPlayerFormVisible, updateAddPlayerFormVisible } from "@store/addPlayerFormVisible"
+import { players } from "@store/players/players"
 
 export function AddPlayer() {
     return (
@@ -16,9 +16,9 @@ export function AddPlayer() {
                 updateEditingInProgress(true)
             }, [])}
             disabled={
-                playersCount.value === 0
+                players.count === 0
                 || addPlayerFormVisible.value
-                || playersCount.value >= MAX_PLAYERS_COUNT
+                || players.count >= MAX_PLAYERS_COUNT
                 || editingInProgress.value
             }
         />

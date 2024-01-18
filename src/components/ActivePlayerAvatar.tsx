@@ -1,9 +1,9 @@
 import cx from "classnames"
 import { getDogs } from "@helpers/getDogs"
-import { activePlayer } from "@store/players/activePlayer"
+import { players } from "@store/players/players"
 
 export function ActivePlayerAvatar() {
-    const { avatar, name } = activePlayer.value
+    const { avatar, name } = players.active
 
     return (
         <div

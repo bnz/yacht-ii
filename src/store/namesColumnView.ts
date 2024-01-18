@@ -1,5 +1,5 @@
 import { builder } from "@helpers/localStorage"
-import { activePlayerId } from "@store/players/activePlayerId"
+import { players } from "@store/players/players"
 
 export const enum NamesColumnViewEnum {
     "text",
@@ -19,14 +19,14 @@ export function resetNamesColumnView() {
 
 export function toggleActivePlayerNamesColumnView(): void {
 
-    if (!namesColumnView.value[activePlayerId.value]) {
+    if (!namesColumnView.value[players.activeId]) {
         namesColumnView.value = {
             ...namesColumnView.value,
-            [activePlayerId.value]: NamesColumnViewEnum.text,
+            [players.activeId]: NamesColumnViewEnum.text,
         }
     }
 
-    namesColumnView.value[activePlayerId.value] = namesColumnView.value[activePlayerId.value] === NamesColumnViewEnum.text
+    namesColumnView.value[players.activeId] = namesColumnView.value[players.activeId] === NamesColumnViewEnum.text
         ? NamesColumnViewEnum.preview
         : NamesColumnViewEnum.text
 

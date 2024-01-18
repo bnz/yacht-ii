@@ -1,7 +1,7 @@
 import { gamePhase, GamePhases } from "@store/gamePhase"
 import { lazy, Suspense } from 'react'
 import { AppWrapper } from "@components/AppWrapper"
-import { Spinner } from '@components/Spinner';
+import { Spinner } from '@components/Spinner'
 import { useSignals } from "@preact/signals-react/runtime"
 import { DrawerVisibilityResolver } from "@components/Drawer/DrawerVisibilityResolver"
 
@@ -17,7 +17,7 @@ const phases = {
     }),
     [GamePhases.CHILD_PLAY]: lazy(function () {
         return import("./components/Sections/ChildPlay")
-    })
+    }),
 }
 
 export function App() {

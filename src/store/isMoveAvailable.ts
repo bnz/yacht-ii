@@ -4,7 +4,7 @@ import { Combination, combinationsData } from "@components/Combinations/combinat
 import { checkMatch } from "@helpers/checkMatch"
 import { dices } from "@store/dices"
 import { childPlay } from "@store/childPlay"
-import { activePlayerShot } from "@store/players/activePlayerShot"
+import { players } from "@store/players/players"
 import { MAX_SHOT_COUNT } from "../recoil/atoms"
 
 export const isMoveAvailable = computed(function () {
@@ -27,7 +27,7 @@ export const isMoveAvailable = computed(function () {
         /**
          * If no matches, no more shots and player already have this combination
          */
-        if (points === undefined && activePlayerShot.value === MAX_SHOT_COUNT) {
+        if (points === undefined && players.activeShot === MAX_SHOT_COUNT) {
             noMoves = true
         }
     })
