@@ -2,7 +2,6 @@ import { builder } from "@helpers/localStorage"
 import { Combination } from "@components/Combinations/combinationsData"
 import { computed } from "@preact/signals-react"
 import { dices, DicesType } from "@store/dices"
-import { dicesSelected } from "@store/dicesSelected"
 import { createCopy } from "@helpers/createCopy"
 import { players } from "@store/players/players"
 
@@ -69,7 +68,7 @@ export function historyUpdateDices() {
     } else {
         const lastElementIndex = copy.length - 1
         copy[lastElementIndex].tries.push(dices.value)
-        copy[lastElementIndex].dicesSelected.push(dicesSelected.value)
+        copy[lastElementIndex].dicesSelected.push(dices.selected.value)
     }
 
     updateActivePlayerHistory(copy)

@@ -7,9 +7,9 @@ import cx from "classnames"
 import { Dev } from "../Dev/Dev"
 import { players } from "@store/players/players"
 import { loading, updateLoading } from "@store/loading"
-import { dicesSelected as dicesSelectedSignal, updateDicesSelected } from "@store/dicesSelected"
-import { dices as dicesSignal, updateDices } from "@store/dices"
+import { dices as dicesSignal } from "@store/dices"
 import { historyUpdateDices } from "@store/history"
+import { createCopy } from "@helpers/createCopy"
 
 const defaultDelay = 300
 let delay = 0
@@ -17,8 +17,8 @@ let delay = 0
 let timer: number | null = null
 
 export function DicesActions() {
-    const dicesSelected = dicesSelectedSignal.value
     const dices = dicesSignal.value
+    const dicesSelected = dicesSignal.selected.value
 
     const shuffle = useCallback(function () {
         delay = Date.now()
@@ -33,13 +33,13 @@ export function DicesActions() {
             const d = Date.now() - delay
             timer = window.setTimeout(
                 function () {
-                    let randDices = [...dices]
+                    let randDices = createCopy(dices)
                     dices.forEach(function (item, index) {
                         if (dicesSelected.indexOf(index) === -1) {
                             randDices[index] = rand()
                         }
                     })
-                    updateDices(randDices)
+                    dicesSignal.update(randDices)
                     players.move.update(function ([playerId, shot]) {
                         return [playerId, shot + 1]
                     })
@@ -52,7 +52,7 @@ export function DicesActions() {
     }, [dices, dicesSelected])
 
     const deselectAll = useCallback(function () {
-        updateDicesSelected([])
+        dicesSignal.selected.reset()
     }, [])
 
     return (
@@ -79,7 +79,8 @@ export function DicesActions() {
                     </>
                 )}
             </ButtonWithIcon>
-            <button type="button" onClick={deselectAll} disabled={dicesSelected.length === 0 || players.isShotAvailable}>
+            <button type="button" onClick={deselectAll}
+                disabled={dicesSelected.length === 0 || players.isShotAvailable}>
                 {i18n('button.reset')}
             </button>
         </div>

@@ -1,21 +1,18 @@
-import { resetDices } from "@store/dices"
-import { updateDicesSelected } from "@store/dicesSelected"
+import { dices } from "@store/dices"
 import { GamePhases, updateGamePhase } from "@store/gamePhase"
 import { updateChildPlay } from "@store/childPlay"
 import { updateHistory } from "@store/history"
-import { updatePlayerPoints } from "@store/playerPoints"
-import { resetNamesColumnView } from "@store/namesColumnView"
 import { players } from "@store/players/players"
 import { matchedView } from "@store/matchedView"
 
 export function restartGame() {
-    resetDices()
-    updateDicesSelected([])
+    dices.reset()
+    dices.selected.reset()
     updateGamePhase(GamePhases.PRE_GAME)
     updateChildPlay(false)
     updateHistory({})
-    updatePlayerPoints({})
-    resetNamesColumnView()
+    players.points.reset()
+    players.columnView.reset()
 
     players.reset()
     matchedView.reset()

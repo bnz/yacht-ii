@@ -1,7 +1,8 @@
-import { dicesSelected, updateDicesSelected } from "@store/dicesSelected"
+import { createCopy } from "@helpers/createCopy"
+import { dices } from "@store/dices"
 
 export function selectDice(diceIndex: number) {
-    const all = [...dicesSelected.value]
+    const all = createCopy(dices.selected.value)
     const index = all.indexOf(diceIndex)
 
     if (index !== -1) {
@@ -9,5 +10,5 @@ export function selectDice(diceIndex: number) {
     } else if (all.length !== 4) {
         all.push(diceIndex)
     }
-    updateDicesSelected(all)
+    dices.selected.update(all)
 }

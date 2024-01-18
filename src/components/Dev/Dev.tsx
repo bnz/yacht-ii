@@ -3,8 +3,7 @@ import { createPortal } from "react-dom"
 import cx from "classnames"
 import { Combination, combinationsData } from "../Combinations/combinationsData"
 import { useStateToggle } from '@helpers/useStateToggle'
-import { activePlayerPoints } from "@store/playerPoints"
-import { updateDices } from "@store/dices"
+import { dices } from "@store/dices"
 import { saveCombination } from "@store/saveCombination"
 import { history, historyUpdateDices } from "@store/history"
 import { players } from "@store/players/players"
@@ -50,7 +49,7 @@ export const Dev = memo(function () {
             case Combination.FIVE:
             case Combination.SIX:
                 if (min) {
-                    updateDices(
+                    dices.update(
                         new Array(3).fill(combination).concat(
                             new Array(2).fill(combination === Combination.SIX
                                 ? combination - 1
@@ -59,44 +58,44 @@ export const Dev = memo(function () {
                         ),
                     )
                 } else {
-                    updateDices(new Array(5).fill(combination))
+                    dices.update(new Array(5).fill(combination))
                 }
                 break
             case Combination.EQUAL_3:
                 if (min) {
-                    updateDices([1, 1, 1, 4, 6])
+                    dices.update([1, 1, 1, 4, 6])
                 } else {
-                    updateDices([6, 6, 6, 4, 2])
+                    dices.update([6, 6, 6, 4, 2])
                 }
                 break
             case Combination.EQUAL_4:
                 if (min) {
-                    updateDices([1, 1, 1, 4, 1])
+                    dices.update([1, 1, 1, 4, 1])
                 } else {
-                    updateDices([6, 6, 6, 4, 6])
+                    dices.update([6, 6, 6, 4, 6])
                 }
                 break
             case Combination.SMALL_STRAIGHT:
-                updateDices([2, 3, 4, 5, 5])
+                dices.update([2, 3, 4, 5, 5])
                 break
             case Combination.BIG_STRAIGHT:
-                updateDices([1, 2, 3, 4, 5])
+                dices.update([1, 2, 3, 4, 5])
                 break
             case Combination.TWO_PAIR:
-                updateDices([2, 2, 3, 4, 4])
+                dices.update([2, 2, 3, 4, 4])
                 break
             case Combination.FULL_HOUSE:
-                updateDices([3, 3, 3, 5, 5])
+                dices.update([3, 3, 3, 5, 5])
                 break
             case Combination.CHANCE:
                 if (min) {
-                    updateDices([1, 1, 1, 1, 1])
+                    dices.update([1, 1, 1, 1, 1])
                 } else {
-                    updateDices([6, 6, 6, 6, 6])
+                    dices.update([6, 6, 6, 6, 6])
                 }
                 break
             case Combination.THE_YACHT:
-                updateDices([4, 4, 4, 4, 4])
+                dices.update([4, 4, 4, 4, 4])
                 break
         }
 
@@ -128,7 +127,8 @@ export const Dev = memo(function () {
             <div className="absolute bottom-2 left-2 flex gap-3">
                 <button type="button" className={cx(open && "shadow-none")} onClick={function () {
                     setOpen(true)
-                }}>Dev</button>
+                }}>Dev
+                </button>
                 <button type="button" onClick={dump}>Dump</button>
             </div>
 
@@ -182,7 +182,7 @@ interface RowProps {
 
 function Row({ combination, isLast, name, min, max, onClick }: RowProps) {
     const [points, setPoints] = useState(min || max)
-    const playerPoints = activePlayerPoints.value
+    const playerPoints = players.points.active
     const disabled = Object.keys(playerPoints).indexOf(`${combination}`) === -1
 
     return (

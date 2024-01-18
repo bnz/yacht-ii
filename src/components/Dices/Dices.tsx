@@ -2,7 +2,6 @@ import { Dice } from "./Dice/Dice"
 import cx from "classnames"
 import { players } from "@store/players/players"
 import { loading } from "@store/loading"
-import { dicesSelected } from "@store/dicesSelected"
 import { dices } from "@store/dices"
 import { selectDice } from "@store/selectDice"
 
@@ -13,7 +12,7 @@ export function Dices() {
             players.isShotAvailable ? "pt-3 pb-2" : "pt-8 pb-3",
         )}>
             {dices.value.map(function (dice, index) {
-                const selected = dicesSelected.value.indexOf(index) !== -1
+                const selected = dices.selected.value.indexOf(index) !== -1
 
                 function onClick() {
                     if (!players.isShotAvailable && dice !== -1) {

@@ -1,7 +1,6 @@
 import { i18n } from "@helpers/i18n"
 import cx from "classnames"
 import { commonSizes } from "./Combinations"
-import { playerTotals } from "@store/playerTotals"
 import { players } from "@store/players/players"
 
 const common = "border-t-2 border-[--line-color]"
@@ -20,7 +19,7 @@ export function CombinationsFooter() {
                             ? "border-l border-r bg-[--background-color-active]"
                             : "",
                     )}>
-                        {playerTotals.value[id]}
+                        {players.points.totals[id]}
                     </div>
                 )
             })}

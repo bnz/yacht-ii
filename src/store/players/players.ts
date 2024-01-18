@@ -3,54 +3,11 @@ import { builder } from "@helpers/localStorage"
 import { computed } from "@preact/signals-react"
 import { createCopy } from "@helpers/createCopy"
 import { makeId } from "@helpers/makeId"
-import { CommonBuilderType, Updater } from "@store/types"
+import type { Player, PlayerData, PlayerMove, Players, PlayersTotals, Points, Result } from "@store/types"
 import { getRandomInt } from "@helpers/random"
 import { activePlayerFirst } from "@store/players/activePlayerFirst"
-
-export interface Player {
-    id: string
-    data: PlayerData
-}
-
-export interface PlayerData {
-    name: string
-    avatar: AvatarEnum
-}
-
-export type Players = Record<string, PlayerData>
-
-type Ids<T> = CommonBuilderType<T, {
-    update: (value: T | Updater<T>) => void
-    reset(): void
-}>
-
-export type PlayerMove = [playerId: string, shot: number]
-
-type Move<T> = CommonBuilderType<T, {
-    reset(): void
-    update(value: T | Updater<T>): void
-}>
-
-type Result<T, I> = CommonBuilderType<T, {
-    active: I
-    activeId: string
-    activeShot: number
-    isShotAvailable: boolean
-    data: Player[]
-    dataActiveFirst: Player[]
-    count: number
-    takenAvatars: AvatarEnum[]
-    availableAvatar: AvatarEnum
-    add(data: I): void
-    update(...args: [playerIdOrUpdater: string | Updater<T>, data?: I]): void
-    remove(playerId: string): void
-    reset(): void
-    getById(playerId: string): I
-    nextTurn(): void
-
-    ids: Ids<string[]>
-    move: Move<PlayerMove>
-}>
+import { Combination } from "@components/Combinations/combinationsData"
+import { ColumnView, ColumnViewEnum } from "@store/types"
 
 export const players = (function (): Result<Players, PlayerData> {
     const { signal, update } = builder<Players>("players", {})
@@ -64,6 +21,16 @@ export const players = (function (): Result<Players, PlayerData> {
         signal: move,
         update: updateMove,
     } = builder<PlayerMove>("playerMove", ["", 0])
+
+    const {
+        signal: points,
+        update: updatePoints,
+    } = builder<Record<string, Points>>("playerPoints", {})
+
+    const {
+        signal: columnView,
+        update: updateColumnView,
+    } = builder<ColumnView>("namesColumnView", {})
 
     return {
         get value() {
@@ -199,7 +166,74 @@ export const players = (function (): Result<Players, PlayerData> {
                 updateMove(value)
             },
             reset() {
-                updateMove(["", 0])
+                this.update(["", 0])
+            },
+        },
+
+        points: {
+            get value() {
+                return points.value
+            },
+            get active() {
+                return computed(() => {
+                    return this.value[players.activeId] || {}
+                }).value
+            },
+            get totals() {
+                return computed(() => {
+                    const totals: PlayersTotals = {}
+
+                    players.data.forEach(({ id: playerId }) => {
+                        const points = this.get(playerId)
+                        totals[playerId] = Object.keys(points).reduce(function (prev, key) {
+                            const curr = points[key as Combination]!
+                            if (key === Combination.BONUS && Math.sign(curr) === -1) {
+                                return prev
+                            }
+                            return prev + curr
+                        }, 0)
+                    })
+                    return totals
+                }).value
+            },
+            update(value) {
+                updatePoints(value)
+            },
+            updateActive(points) {
+                const copy = createCopy(this.value)
+                copy[players.activeId] = points
+                this.update(copy)
+            },
+            get(playerId) {
+                return this.value[playerId] || {}
+            },
+            reset() {
+                this.update({})
+            },
+        },
+
+        columnView: {
+            get value() {
+                return columnView.value
+            },
+            get active() {
+                return this.value[players.activeId] || ColumnViewEnum.text
+            },
+            reset() {
+                updateColumnView({})
+            },
+            toggleActive() {
+                let copy = createCopy(this.value)
+                if (!copy[players.activeId]) {
+                    copy = {
+                        ...copy,
+                        [players.activeId]: ColumnViewEnum.text,
+                    }
+                }
+                copy[players.activeId] = copy[players.activeId] === ColumnViewEnum.text
+                    ? ColumnViewEnum.preview
+                    : ColumnViewEnum.text
+                updateColumnView(copy)
             },
         },
     }

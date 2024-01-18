@@ -5,9 +5,9 @@ import { commonBorder, commonSizes } from "./Combinations"
 import { CombinationTitle } from "./CombinationTitle"
 import { getDicesPreview } from "./getDicesPreview"
 import { createPortal } from "react-dom"
-import { activePlayerNamesColumnView } from "@store/activePlayerNamesColumnView"
-import { NamesColumnViewEnum } from "@store/namesColumnView"
 import { combinationDescDialogVisibility, updateDialogVisibility } from "@store/combinationDescDialogVisibility"
+import { ColumnViewEnum } from "@store/types"
+import { players } from "@store/players/players"
 
 interface CombinationNameProps {
     className?: string | undefined
@@ -23,7 +23,7 @@ export function CombinationName({ className, name, title, combination }: Combina
             return value === null ? combination : null
         })
     }, [combination])
-    const isText = activePlayerNamesColumnView.value === NamesColumnViewEnum.text
+    const isText = players.columnView.active === ColumnViewEnum.text
     const dicesPreview = useMemo(function () {
         return getDicesPreview(combination)
     }, [combination])

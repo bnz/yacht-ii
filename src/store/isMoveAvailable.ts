@@ -1,5 +1,4 @@
 import { computed } from "@preact/signals-react"
-import { activePlayerPoints } from "@store/playerPoints"
 import { Combination, combinationsData } from "@components/Combinations/combinationsData"
 import { checkMatch } from "@helpers/checkMatch"
 import { dices } from "@store/dices"
@@ -8,7 +7,7 @@ import { players } from "@store/players/players"
 import { MAX_SHOT_COUNT } from "../recoil/atoms"
 
 export const isMoveAvailable = computed(function () {
-    const playerPoints = activePlayerPoints.value
+    const playerPoints = players.points.active
 
     let matchesCount = 0
     let noMoves = false

@@ -3,7 +3,7 @@ import { Combination } from "./combinationsData"
 import cx from "classnames"
 import { Dice } from "../Dices/Dice/Dice"
 import { MatchedView, matchedView } from "@store/matchedView"
-import { getPlayerPoints } from "@store/playerPoints"
+import { players } from "@store/players/players"
 import { playerHistory } from "@store/history"
 
 interface CombinationMatchedProps {
@@ -13,7 +13,7 @@ interface CombinationMatchedProps {
 }
 
 export function CombinationMatched({ className, playerId, combination }: CombinationMatchedProps) {
-    const playerPoints = getPlayerPoints(playerId)
+    const playerPoints = players.points.get(playerId)
     const isPoints = matchedView.getByPlayerId(playerId) === MatchedView.points
     const toggle = useCallback(function () {
         matchedView.toggle(playerId)
@@ -40,9 +40,7 @@ export function CombinationMatched({ className, playerId, combination }: Combina
         )
     }
 
-    // console.log(history, historyMove)
-
-    let dices = [...historyMove.tries[historyMove.tries.length - 1]].sort()
+    let dices = [...historyMove.tries[historyMove.tries.length - 1] || []].sort()
 
     function filterOutRestDices(dices: number[], combination: Combination) {
         switch (combination) {

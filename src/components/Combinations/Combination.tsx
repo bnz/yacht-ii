@@ -9,7 +9,6 @@ import { useCallback } from "react"
 import { CombinationButton } from "./CombinationButton"
 import { CombinationMatched } from "./CombinationMatched"
 import { childPlay } from "@store/childPlay"
-import { getPlayerPoints } from "@store/playerPoints"
 import { dices } from "@store/dices"
 import { players } from "@store/players/players"
 
@@ -22,7 +21,7 @@ interface CombinationProps {
 
 export function Combination({ playerId, combination, isMoveAvailable, className }: CombinationProps) {
     const { points, maxPoints } = checkMatch(combination, dices.value, childPlay.value)
-    const playerPoints = getPlayerPoints(playerId)
+    const playerPoints = players.points.get(playerId)
     const existingCombination = (playerPoints || [])[combination] as number === undefined
         ? EMPTY_CELL
         : (playerPoints || [])[combination] as number
