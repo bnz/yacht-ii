@@ -3,34 +3,146 @@ import { builder } from "@helpers/localStorage"
 import { computed } from "@preact/signals-react"
 import { createCopy } from "@helpers/createCopy"
 import { makeId } from "@helpers/makeId"
-import type { Player, PlayerData, PlayerMove, Players, PlayersTotals, Points, Result } from "@store/types"
+import type {
+    Player,
+    PlayerData,
+    PlayerMove,
+    Players,
+    PlayersTotals,
+    Points,
+    PlayersStore,
+    PlayerPoints,
+} from "@store/types"
 import { getRandomInt } from "@helpers/random"
 import { activePlayerFirst } from "@store/players/activePlayerFirst"
 import { Combination } from "@components/Combinations/combinationsData"
-import { ColumnView, ColumnViewEnum } from "@store/types"
+import { ColumnView, ColumnViewEnum, Ids, NamesColumnView, PlayersMoveStore } from "@store/types"
 
-export const players = (function (): Result<Players, PlayerData> {
+function columnView(): NamesColumnView {
+    const { signal, update } = builder<ColumnView>("columnView", {})
+
+    const active = computed(function () {
+        return signal.value[players.activeId] || ColumnViewEnum.text
+    })
+
+    const isText = computed(function () {
+        return active.value === ColumnViewEnum.text
+    })
+
+    return {
+        get value() {
+            return signal.value
+        },
+        get active() {
+            return active.value
+        },
+        get isText() {
+            return isText.value
+        },
+        reset() {
+            update({})
+        },
+        toggleActive() {
+            let copy = createCopy(signal.value)
+            if (!copy[players.activeId]) {
+                copy = {
+                    ...copy,
+                    [players.activeId]: ColumnViewEnum.text,
+                }
+            }
+            copy[players.activeId] = isText.value ? ColumnViewEnum.preview : ColumnViewEnum.text
+            update(copy)
+        },
+    }
+}
+
+function points(): PlayerPoints {
+    const { signal, update } = builder<Record<string, Points>>("playerPoints", {})
+
+    const active = computed(function () {
+        return signal.value[players.activeId] || {}
+    })
+
+    return {
+        get value() {
+            return signal.value
+        },
+        get active() {
+            return active.value
+        },
+        get totals() {
+            return computed(() => {
+                const totals: PlayersTotals = {}
+
+                players.data.forEach(({ id: playerId }) => {
+                    const points = signal.value[playerId]
+
+                    console.log({
+                        points,
+                    })
+
+                    totals[playerId] = Object.keys(points).reduce(function (prev, key) {
+                        const curr = points[key as Combination]!
+                        if (key === Combination.BONUS && Math.sign(curr) === -1) {
+                            return prev
+                        }
+                        return prev + curr
+                    }, 0)
+                })
+                return totals
+            }).value
+        },
+        update(value) {
+            update(value)
+        },
+        updateActive(points) {
+            const copy = createCopy(signal.value)
+            copy[players.activeId] = points
+            update(copy)
+        },
+        get(playerId) {
+            return signal.value[playerId] || {}
+        },
+        reset() {
+            update({})
+        },
+    }
+}
+
+function ids(): Ids {
+    const { signal, update } = builder<string[]>("playersIds", [])
+
+    return {
+        get value() {
+            return signal.value
+        },
+        update(value) {
+            update(value)
+        },
+        reset() {
+            update([])
+        },
+    }
+}
+
+function move(): PlayersMoveStore {
+    const { signal, update } = builder<PlayerMove>("playerMove", ["", 0])
+
+    return {
+        get value() {
+            return signal.value
+        },
+        update(value) {
+            update(value)
+        },
+        reset() {
+            update(["", 0])
+        },
+    }
+}
+
+export const players = (function (): PlayersStore {
     const { signal, update } = builder<Players>("players", {})
-
-    const {
-        signal: playersIdsSignal,
-        update: updatePlayersIds,
-    } = builder<string[]>("playersIds", [])
-
-    const {
-        signal: move,
-        update: updateMove,
-    } = builder<PlayerMove>("playerMove", ["", 0])
-
-    const {
-        signal: points,
-        update: updatePoints,
-    } = builder<Record<string, Points>>("playerPoints", {})
-
-    const {
-        signal: columnView,
-        update: updateColumnView,
-    } = builder<ColumnView>("namesColumnView", {})
 
     return {
         get value() {
@@ -146,95 +258,9 @@ export const players = (function (): Result<Players, PlayerData> {
             this.move.update([playerId, 0])
         },
 
-        ids: {
-            get value() {
-                return playersIdsSignal.value
-            },
-            update(value) {
-                updatePlayersIds(value)
-            },
-            reset() {
-                updatePlayersIds([])
-            },
-        },
-
-        move: {
-            get value() {
-                return move.value
-            },
-            update(value) {
-                updateMove(value)
-            },
-            reset() {
-                this.update(["", 0])
-            },
-        },
-
-        points: {
-            get value() {
-                return points.value
-            },
-            get active() {
-                return computed(() => {
-                    return this.value[players.activeId] || {}
-                }).value
-            },
-            get totals() {
-                return computed(() => {
-                    const totals: PlayersTotals = {}
-
-                    players.data.forEach(({ id: playerId }) => {
-                        const points = this.get(playerId)
-                        totals[playerId] = Object.keys(points).reduce(function (prev, key) {
-                            const curr = points[key as Combination]!
-                            if (key === Combination.BONUS && Math.sign(curr) === -1) {
-                                return prev
-                            }
-                            return prev + curr
-                        }, 0)
-                    })
-                    return totals
-                }).value
-            },
-            update(value) {
-                updatePoints(value)
-            },
-            updateActive(points) {
-                const copy = createCopy(this.value)
-                copy[players.activeId] = points
-                this.update(copy)
-            },
-            get(playerId) {
-                return this.value[playerId] || {}
-            },
-            reset() {
-                this.update({})
-            },
-        },
-
-        columnView: {
-            get value() {
-                return columnView.value
-            },
-            get active() {
-                return this.value[players.activeId] || ColumnViewEnum.text
-            },
-            reset() {
-                updateColumnView({})
-            },
-            toggleActive() {
-                let copy = createCopy(this.value)
-                if (!copy[players.activeId]) {
-                    copy = {
-                        ...copy,
-                        [players.activeId]: ColumnViewEnum.text,
-                    }
-                }
-                copy[players.activeId] = copy[players.activeId] === ColumnViewEnum.text
-                    ? ColumnViewEnum.preview
-                    : ColumnViewEnum.text
-                updateColumnView(copy)
-            },
-        },
+        ids: ids(),
+        move: move(),
+        points: points(),
+        columnView: columnView(),
     }
 })()

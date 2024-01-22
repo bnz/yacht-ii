@@ -7,14 +7,14 @@ export type CommonBuilderType<Value, R> = {
 
 export type Updater<T> = (value: T) => T
 
-type Ids<T> = CommonBuilderType<T, {
+export type Ids<T = string[]> = CommonBuilderType<T, {
     update: (value: T | Updater<T>) => void
     reset(): void
 }>
 
 export type PlayerMove = [playerId: string, shot: number]
 
-type Move<T> = CommonBuilderType<T, {
+export type PlayersMoveStore<T = PlayerMove> = CommonBuilderType<T, {
     reset(): void
     update(value: T | Updater<T>): void
 }>
@@ -27,7 +27,7 @@ export type PlayersTotals = {
     [playerId: string]: number
 }
 
-type PlayerPoints<T> = CommonBuilderType<T, {
+export type PlayerPoints<T = Record<string, Points>> = CommonBuilderType<T, {
     active: Points
     update(value: T): void
     updateActive(points: Points): void
@@ -48,7 +48,7 @@ export interface Player {
     data: PlayerData
 }
 
-export type Result<T, I> = CommonBuilderType<T, {
+export type PlayersStore<T = Players, I = PlayerData> = CommonBuilderType<T, {
     active: I
     activeId: string
     activeShot: number
@@ -65,10 +65,10 @@ export type Result<T, I> = CommonBuilderType<T, {
     getById(playerId: string): I
     nextTurn(): void
 
-    ids: Ids<string[]>
-    move: Move<PlayerMove>
-    points: PlayerPoints<Record<string, Points>>
-    columnView: NamesColumnView<ColumnView>
+    ids: Ids
+    move: PlayersMoveStore
+    points: PlayerPoints
+    columnView: NamesColumnView
 }>
 
 export const enum ColumnViewEnum {
@@ -78,8 +78,9 @@ export const enum ColumnViewEnum {
 
 export type ColumnView = Record<string, ColumnViewEnum>
 
-type NamesColumnView<T> = CommonBuilderType<T, {
+export type NamesColumnView = CommonBuilderType<ColumnView, {
     active: ColumnViewEnum
     reset(): void
     toggleActive(): void
+    isText: boolean
 }>

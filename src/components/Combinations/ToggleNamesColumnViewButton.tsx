@@ -2,7 +2,6 @@ import cx from "classnames"
 import { i18n } from "@helpers/i18n"
 import { Dice } from "../Dices/Dice/Dice"
 import { commonBorder } from "./Combinations"
-import { ColumnViewEnum } from "@store/types"
 import { players } from "@store/players/players"
 
 export function ToggleNamesColumnViewButton() {
@@ -16,7 +15,7 @@ export function ToggleNamesColumnViewButton() {
                 "before:block before:bg-[--line-color] before:w-[calc(50%-.05em)] before:rounded-full",
                 "before:absolute before:left-[0.05em] before:top-[.05em] before:bottom-[.05em]",
                 "before:transition-all before:duration-300",
-                players.columnView.active === ColumnViewEnum.preview && cx(
+                !players.columnView.isText && cx(
                     "before:translate-x-full",
                     "[&>span:first-child]:text-[--text-color-semi]",
                 ),
@@ -29,7 +28,7 @@ export function ToggleNamesColumnViewButton() {
                 </span>
                 <span className={cx(
                     "right-0 text-[.3em] pt-[.2em] flex gap-[.25em] relative",
-                    players.columnView.active === ColumnViewEnum.text && cx(
+                    players.columnView.isText && cx(
                         "after:absolute after:inset-0 after:rounded-full",
                         "after:bg-[--background-color-disabled]",
                     ),

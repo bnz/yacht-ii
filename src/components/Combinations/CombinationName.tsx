@@ -6,7 +6,6 @@ import { CombinationTitle } from "./CombinationTitle"
 import { getDicesPreview } from "./getDicesPreview"
 import { createPortal } from "react-dom"
 import { combinationDescDialogVisibility, updateDialogVisibility } from "@store/combinationDescDialogVisibility"
-import { ColumnViewEnum } from "@store/types"
 import { players } from "@store/players/players"
 
 interface CombinationNameProps {
@@ -23,7 +22,6 @@ export function CombinationName({ className, name, title, combination }: Combina
             return value === null ? combination : null
         })
     }, [combination])
-    const isText = players.columnView.active === ColumnViewEnum.text
     const dicesPreview = useMemo(function () {
         return getDicesPreview(combination)
     }, [combination])
@@ -42,13 +40,13 @@ export function CombinationName({ className, name, title, combination }: Combina
                     <>
                         <div className={cx(
                             "opacity-0 absolute left-0 pl-2 top-1/2 -translate-y-1/2",
-                            isText ? "animate-fadeOut" : "animate-fadeIn",
+                            players.columnView.isText ? "animate-fadeOut" : "animate-fadeIn",
                         )}>
                             {name}
                         </div>
                         <div className={cx(
                             "opacity-0 pl-2 text-sm flex absolute left-0 top-1/2 -translate-y-1/2",
-                            isText ? "animate-fadeIn" : "animate-fadeOut",
+                            players.columnView.isText ? "animate-fadeIn" : "animate-fadeOut",
                         )}>
                             {Array.isArray(dicesPreview) ? dicesPreview[0] : dicesPreview}
                         </div>

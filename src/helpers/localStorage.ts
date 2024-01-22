@@ -8,7 +8,7 @@ type Keys =
     | "playerMove"
     | "players"
     | "playersIds"
-    | "namesColumnView"
+    | "columnView"
     | "drawer"
     | "matchedView"
     | "playerPoints"
@@ -25,7 +25,7 @@ export const storageKeys: Record<Keys, string> = {
     playerMove: `player-move${VERSION}`,
     players: `players${VERSION}`,
     playersIds: `players-ids${VERSION}`,
-    namesColumnView: `names-column-view${VERSION}`,
+    columnView: `names-column-view${VERSION}`,
     drawer: `drawer-state${VERSION}`,
     matchedView: `matched-view${VERSION}`,
     playerPoints: `player-points${VERSION}`,

@@ -8,6 +8,7 @@ import { Combination } from "./Combination"
 import { CombinationName } from "./CombinationName"
 import { isMoveAvailable } from "@store/isMoveAvailable"
 import { players } from "@store/players/players"
+import { useSignals } from "@preact/signals-react/runtime"
 
 const decoratorWidth = 10
 const titleWidth = 160
@@ -32,6 +33,10 @@ interface CombinationsProps {
 }
 
 export function Combinations({ combinations }: CombinationsProps) {
+
+    // FIXME - why?..
+    useSignals()
+
     return (
         <div className="w-full px-2 overflow-auto lg:px-0 pb-10">
             <div className={wrapClassName} style={{
