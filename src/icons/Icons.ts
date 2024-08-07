@@ -10,7 +10,6 @@ export type Icons =
     | 'edit'
     | 'edit-white'
     | 'face'
-    | 'face-white'
     | 'menu'
     | 'menu-white'
     | 'save'

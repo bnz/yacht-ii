@@ -20,7 +20,7 @@ export function AddPlayerForm({ initial }: AddPlayerFormProps) {
     const ref = useRef<null | HTMLInputElement>(null)
     const [name, setName] = useState(getRandomDogName())
     const [error, setError] = useState<null | string>(null)
-    const [avatar, setAvatar] = useState(players.availableAvatar)
+    const [avatar, setAvatar] = useState<string>(players.availableAvatar)
 
     const onChange = useCallback(function (e: ChangeEvent<HTMLInputElement>) {
         setName(e.currentTarget.value)

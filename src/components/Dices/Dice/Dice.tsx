@@ -1,8 +1,7 @@
 import { DiceDot } from './DiceDot'
 import cx from "classnames"
-import { isDark } from "@store/theme"
+import { isDark, theme } from "@store/theme"
 import faceIcon from "@icons/face.svg"
-import faceDarkIcon from "@icons/face-dark.svg"
 
 const dots: { [key: number]: number[] } = {
     1: [5],
@@ -48,7 +47,7 @@ export function Dice({ value, roll, selected, onClick, index }: DiceProps) {
                 {roll ? (
                     <div
                         className="bg-no-repeat bg-center bg-contain absolute left-2 right-2 top-2 bottom-2"
-                        style={{ backgroundImage: `url('${isDark.value ? faceDarkIcon : faceIcon}')` }}
+                        style={{ backgroundImage: `url('${faceIcon}#${theme}')` }}
                     />
                 ) : array9.map(function (i) {
                     return (

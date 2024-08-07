@@ -1,7 +1,7 @@
 import { Dices } from "../Dices/Dices"
 import { DicesActions } from "../Dices/DicesActions"
 import { Combinations } from "../Combinations/Combinations"
-// import { ActivePlayerAvatar } from "../ActivePlayerAvatar"
+import { ActivePlayerAvatar } from "../ActivePlayerAvatar"
 import { EndOfGame } from "../EndOfGame/EndOfGame"
 import { i18n } from "@helpers/i18n"
 import { combinationsData } from '../Combinations/combinationsData'
@@ -32,7 +32,7 @@ export default function InPlay() {
     return (
         <>
             <DicesWrapper>
-                {/*<ActivePlayerAvatar />*/}
+                <ActivePlayerAvatar />
                 <Dices />
                 <DicesActions />
                 <EndOfGamePlaceholder />

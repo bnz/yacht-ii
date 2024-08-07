@@ -1,4 +1,4 @@
-import type { checkMatch } from "../helpers/checkMatch"
+import type { checkMatch } from "@helpers/checkMatch"
 import { i18n } from "@helpers/i18n"
 
 interface PointsProps {

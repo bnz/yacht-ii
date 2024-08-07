@@ -1,4 +1,3 @@
-import { AvatarEnum } from "../../recoil/atoms"
 import { ChangeEvent, FormEvent, useCallback, useState } from "react"
 import { KeyboardActions } from "@helpers/KeyboardActions"
 import { i18n } from "@helpers/i18n"
@@ -39,10 +38,10 @@ export function EditName({ id, callback }: EditNameProps) {
         callback(false)
     }, [callback])
 
-    const editAvatar = useCallback(function (index: AvatarEnum) {
-        setAvatar(index)
+    const editAvatar = useCallback(function (avatar: string) {
+        setAvatar(avatar)
         players.update(function (players) {
-            players[id] = { ...players[id], avatar: index }
+            players[id] = { ...players[id], avatar }
             return players
         })
         callback(true)

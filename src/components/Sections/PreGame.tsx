@@ -1,17 +1,16 @@
 import type { PropsWithChildren } from "react"
 import { i18n } from "@helpers/i18n"
 import { Rules } from "../Rules/Rules"
-import { isDark } from "@store/theme"
+import { theme } from "@store/theme"
 import cx from "classnames"
-import logoIconWhite from "@icons/logo-white.svg"
-import logoIconBlack from "@icons/logo-black.svg"
+import logo from "@icons/logo.svg"
 import { GameHeading } from "../GameHeading"
 import { P } from "../Rules/P"
 import { Footer } from "../Footer"
-import { ButtonWithIcon } from '../ButtonWithIcon'
+// import { ButtonWithIcon } from '../ButtonWithIcon'
+// import { updateChildPlay } from "@store/childPlay"
 import { scrolledTo } from "@store/scrolledTo"
 import { GamePhases, updateGamePhase } from "@store/gamePhase"
-import { updateChildPlay } from "@store/childPlay"
 import { useCallback } from "react"
 
 function Heading() {
@@ -42,10 +41,10 @@ export default function PreGame() {
         updateGamePhase(GamePhases.PLAYERS_SELECTION)
     }, [])
 
-    const startNewChildGame = useCallback(function () {
-        updateChildPlay(true)
-        updateGamePhase(GamePhases.PLAYERS_SELECTION)
-    }, [])
+    // const startNewChildGame = useCallback(function () {
+    //     updateChildPlay(true)
+    //     updateGamePhase(GamePhases.PLAYERS_SELECTION)
+    // }, [])
 
     return (
         <>
@@ -56,7 +55,7 @@ export default function PreGame() {
                     "mx-auto my-5 lg:my-10",
                     "bg-no-repeat bg-contain",
                 )}
-                style={{ backgroundImage: `url('${isDark.value ? logoIconWhite : logoIconBlack}')` }}
+                style={{ backgroundImage: `url('${logo}#${theme}')` }}
             />
             <P className="text-2xl px-5 mx-auto text-center w-full md:w-2/3">
                 {i18n('help.intro')}
@@ -69,17 +68,17 @@ export default function PreGame() {
                 >
                     <div
                         className="w-8 h-8 lg:w-12 lg:h-12 bg-no-repeat bg-contain absolute left-3 lg:left-7 top-2 lg:top-3 group-hover:animate-spin"
-                        style={{ backgroundImage: `url('${isDark.value ? logoIconWhite : logoIconBlack}')` }}
+                        style={{ backgroundImage: `url('${logo}#${theme}')` }}
                     />
                     {i18n('button.startNewGame')}
                 </button>
             </ButtonWrapper>
-            <ButtonWithIcon
-                icon="child" className="!bg-[8px_center] !pl-10 mx-auto block mb-10"
-                onClick={startNewChildGame}
-            >
-                для детей
-            </ButtonWithIcon>
+            {/*<ButtonWithIcon*/}
+            {/*    icon="child" className="!bg-[8px_center] !pl-10 mx-auto block mb-10"*/}
+            {/*    onClick={startNewChildGame}*/}
+            {/*>*/}
+            {/*    для детей*/}
+            {/*</ButtonWithIcon>*/}
             <Rules />
             <Footer />
         </>

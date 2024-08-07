@@ -1,4 +1,3 @@
-import { AvatarEnum } from "../recoil/atoms"
 import { Combination } from "@components/Combinations/combinationsData"
 
 export type CommonBuilderType<Value, R> = {
@@ -38,7 +37,7 @@ export type PlayerPoints<T = Record<string, Points>> = CommonBuilderType<T, {
 
 export interface PlayerData {
     name: string
-    avatar: AvatarEnum
+    avatar: string
 }
 
 export type Players = Record<string, PlayerData>
@@ -56,8 +55,8 @@ export type PlayersStore<T = Players, I = PlayerData> = CommonBuilderType<T, {
     data: Player[]
     dataActiveFirst: Player[]
     count: number
-    takenAvatars: AvatarEnum[]
-    availableAvatar: AvatarEnum
+    takenAvatars: string[]
+    availableAvatar: string
     add(data: I): void
     update(...args: [playerIdOrUpdater: string | Updater<T>, data?: I]): void
     remove(playerId: string): void

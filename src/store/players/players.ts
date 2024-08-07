@@ -1,4 +1,4 @@
-import { AvatarEnum, MAX_PLAYERS_COUNT, MAX_SHOT_COUNT } from "../../recoil/atoms"
+import { MAX_PLAYERS_COUNT, MAX_SHOT_COUNT } from "../../recoil/atoms"
 import { builder } from "@helpers/localStorage"
 import { computed } from "@preact/signals-react"
 import { createCopy } from "@helpers/createCopy"
@@ -17,6 +17,7 @@ import { getRandomInt } from "@helpers/random"
 import { activePlayerFirst } from "@store/players/activePlayerFirst"
 import { Combination } from "@components/Combinations/combinationsData"
 import { ColumnView, ColumnViewEnum, Ids, NamesColumnView, PlayersMoveStore } from "@store/types"
+import { warIconIds } from "@helpers/getWarIcons"
 
 function columnView(): NamesColumnView {
     const { signal, update } = builder<ColumnView>("columnView", {})
@@ -71,17 +72,11 @@ function points(): PlayerPoints {
             return active.value
         },
         get totals() {
-            return computed(() => {
+            return computed(function () {
                 const totals: PlayersTotals = {}
-
-                players.data.forEach(({ id: playerId }) => {
+                players.data.forEach(function ({ id: playerId }) {
                     const points = signal.value[playerId]
-
-                    console.log({
-                        points,
-                    })
-
-                    totals[playerId] = Object.keys(points).reduce(function (prev, key) {
+                    totals[playerId] = Object.keys(points || {}).reduce(function (prev, key) {
                         const curr = points[key as Combination]!
                         if (key === Combination.BONUS && Math.sign(curr) === -1) {
                             return prev
@@ -196,18 +191,20 @@ export const players = (function (): PlayersStore {
             }).value
         },
         get takenAvatars() {
-            return computed<AvatarEnum[]>(() => {
+            return computed<string[]>(() => {
                 return this.data.map(function ({ data: { avatar } }) {
                     return avatar
                 })
             }).value
         },
         get availableAvatar() {
+            const iconsCount = warIconIds.length
+
             let avatar
             do {
-                avatar = getRandomInt(0, MAX_PLAYERS_COUNT - 1)
-            } while (this.takenAvatars.includes(avatar) && this.takenAvatars.length !== MAX_PLAYERS_COUNT)
-            return avatar as AvatarEnum
+                avatar = getRandomInt(0, iconsCount - 1)
+            } while (this.takenAvatars.includes(warIconIds[avatar]) && this.takenAvatars.length !== MAX_PLAYERS_COUNT)
+            return warIconIds[avatar]
         },
         getById(playerId) {
             return signal.value[playerId]
