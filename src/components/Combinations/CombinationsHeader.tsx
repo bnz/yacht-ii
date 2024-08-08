@@ -9,14 +9,31 @@ export function CombinationsHeader() {
         <>
             <ToggleNamesColumnViewButton />
             {players.dataActiveFirst.map(function ({ id, data: { name, avatar } }) {
+                const disabled = players.activeId !== id
+
                 return (
-                    <div key={id} className={cx(
-                        commonBorder,
-                        "flex flex-row justify-center items-center gap-3 relative",
-                    )}>
-                        <Avatar disabled={players.activeId !== id} avatar={avatar} className="!w-20 !h-20" />
-                        <div className="absolute bottom-0 left-1/2 translate-x-6">
-                            {name}
+                    <div key={id} className={cx(commonBorder, "p-2")}>
+                        <div className={cx(
+                            "cursor-pointer",
+                            "hover:shadow-md hover:outline hover:outline-[--line-color]",
+                            "active:shadow-inner",
+                            "grid grid-cols-[80px_1fr]",
+                            "rounded-full",
+                        )}>
+                            <Avatar
+                                disabled={disabled}
+                                avatar={avatar}
+                                className="!w-20 !h-20 row-span-2"
+                            />
+                            <div className={cx(
+                                "flex items-end justify-start",
+                                disabled && "text-[--text-color-disabled]",
+                            )}>
+                                {name}
+                            </div>
+                            <div className={cx("text-2xl", disabled && "text-[--text-color-disabled]")}>
+                                {players.points.totals[id]}
+                            </div>
                         </div>
                     </div>
                 )

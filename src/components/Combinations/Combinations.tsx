@@ -3,7 +3,7 @@ import { Combination as CombinationType, CombinationInfo, isBonus } from "./comb
 import { MAX_PLAYERS_COUNT } from "../../recoil/atoms"
 import cx from "classnames"
 import { CombinationsHeader } from "./CombinationsHeader"
-import { CombinationsFooter } from "./CombinationsFooter"
+// import { CombinationsFooter } from "./CombinationsFooter"
 import { Combination } from "./Combination"
 import { CombinationName } from "./CombinationName"
 import { isMoveAvailable } from "@store/isMoveAvailable"
@@ -84,7 +84,7 @@ export function Combinations({ combinations }: CombinationsProps) {
                         </Fragment>
                     )
                 })}
-                <CombinationsFooter />
+                {/*<CombinationsFooter />*/}
             </div>
             <div className="h-20 lg:hidden" />
         </div>

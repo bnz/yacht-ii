@@ -28,4 +28,8 @@ export const warIcons: WarIcons = {
     priestAlt: priestAlt,
 }
 
+export const dogIconIds = Object.keys(warIcons).filter(function (id) {
+    return id.startsWith("dog")
+})
+
 export const warIconIds = Object.keys(warIcons)

@@ -6,6 +6,8 @@ import { ButtonWithIcon } from "../ButtonWithIcon"
 import { Avatar } from "./Avatar"
 import { RandomNameButton } from "./RandomNameButton"
 import { players } from "@store/players/players"
+import { getRandomName } from "@store/getRandomName"
+import { dogIconIds } from "@helpers/getWarIcons"
 
 interface EditNameProps {
     id: string
@@ -47,13 +49,17 @@ export function EditName({ id, callback }: EditNameProps) {
         callback(true)
     }, [setAvatar, id, callback])
 
+    const setRandomName = useCallback(function () {
+        setInputValue(getRandomName(dogIconIds.indexOf(avatar) !== -1))
+    }, [setInputValue, avatar])
+
     const disabled = inputValue === name && avatar === avatarInitial
 
     return (
         <>
+            <KeyboardActions actions={{ Escape: onCancel }} />
             <Avatar edit={editAvatar} avatar={avatar} />
             <form className="flex-1 flex gap-3" onSubmit={onSubmit}>
-                <KeyboardActions actions={{ Escape: onCancel }} />
                 <div className="w-full relative">
                     <InputWithError
                         placeholder={i18n("enterName")}
@@ -61,7 +67,7 @@ export function EditName({ id, callback }: EditNameProps) {
                         onChange={onInputChange}
                         error={error}
                     />
-                    <RandomNameButton callback={setInputValue} />
+                    <RandomNameButton callback={setRandomName} />
                 </div>
                 <ButtonWithIcon type="submit" icon="save" disabled={disabled} />
                 <ButtonWithIcon icon="close" onClick={onCancel} />

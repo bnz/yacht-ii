@@ -10,7 +10,8 @@ import { RandomNameButton } from "./RandomNameButton"
 import { players } from "@store/players/players"
 import { updateEditingInProgress } from "@store/editingInProgress"
 import { updateAddPlayerFormVisible } from "@store/addPlayerFormVisible"
-import { getRandomDogName } from "@store/getRandomDogName"
+import { getRandomName } from "@store/getRandomName"
+import { dogIconIds } from "@helpers/getWarIcons"
 
 interface AddPlayerFormProps {
     initial?: boolean
@@ -18,9 +19,9 @@ interface AddPlayerFormProps {
 
 export function AddPlayerForm({ initial }: AddPlayerFormProps) {
     const ref = useRef<null | HTMLInputElement>(null)
-    const [name, setName] = useState(getRandomDogName())
-    const [error, setError] = useState<null | string>(null)
     const [avatar, setAvatar] = useState<string>(players.availableAvatar)
+    const [name, setName] = useState(getRandomName(dogIconIds.indexOf(avatar) !== -1))
+    const [error, setError] = useState<null | string>(null)
 
     const onChange = useCallback(function (e: ChangeEvent<HTMLInputElement>) {
         setName(e.currentTarget.value)
@@ -44,6 +45,15 @@ export function AddPlayerForm({ initial }: AddPlayerFormProps) {
         updateEditingInProgress(false)
     }, [])
 
+    const edit = useCallback(function (avatarId: string) {
+        setAvatar(avatarId)
+        setName(getRandomName(dogIconIds.indexOf(avatarId) !== -1))
+    }, [])
+
+    const setRandomName = useCallback(function () {
+        setName(getRandomName(dogIconIds.indexOf(avatar) !== -1))
+    }, [setName, avatar])
+
     useEffect(function () {
         ref.current?.focus()
     }, [ref])
@@ -51,7 +61,7 @@ export function AddPlayerForm({ initial }: AddPlayerFormProps) {
     return (
         <ItemWrap>
             <KeyboardActions actions={{ Escape: onCancel }} />
-            <Avatar edit={setAvatar} avatar={avatar} />
+            <Avatar edit={edit} avatar={avatar} />
             <form className="flex-1 flex gap-3" onSubmit={onSubmit}>
                 <div className="w-full relative">
                     <InputWithError
@@ -61,7 +71,7 @@ export function AddPlayerForm({ initial }: AddPlayerFormProps) {
                         error={error}
                         className="[&>input]:pr-9"
                     />
-                    <RandomNameButton callback={setName} />
+                    <RandomNameButton callback={setRandomName} />
                 </div>
                 <ButtonWithIcon type="submit" icon="add" />
                 <ButtonWithIcon

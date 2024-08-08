@@ -6,7 +6,7 @@ import { players } from "@store/players/players"
 
 export function ToggleNamesColumnViewButton() {
     return (
-        <div className={cx("flex items-center justify-center text-3xl", commonBorder)}>
+        <div className={cx("flex items-center justify-center text-3xl px-1", commonBorder)}>
             <button type="button" data-empty={true} onClick={players.columnView.toggleActive} className={cx(
                 "border border-[--line-color] rounded-full w-full h-[1em] relative",
                 "shadow-inner",

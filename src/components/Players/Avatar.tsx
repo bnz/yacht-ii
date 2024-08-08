@@ -10,7 +10,7 @@ import { warIcons } from "@helpers/getWarIcons"
 
 interface AvatarProps {
     avatar: string
-    edit?: Dispatch<SetStateAction<string>> | ((index: string) => void)
+    edit?: Dispatch<SetStateAction<string>> | ((avatarId: string) => void)
     className?: string
     disabled?: boolean
 }
