@@ -1,0 +1,37 @@
+<svg width="128" height="128" viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+        <style>
+            :root {
+            --dark: rgba(247, 248, 251, 1);
+            --dark-disabled: rgba(247, 248, 251, .2);
+            --light: rgba(57, 57, 61, 1);
+            --light-disabled: rgba(57, 57, 61, .2);
+            }
+            g[id] { display: none }
+            g[id]:target { display: inline }
+        </style>
+        <polygon id="_part1" points="55 55.274 55 66.493 63 72.789 71 66.493 71 55.274 63 48.978"/>
+        <path id="_part2"
+              d="M64,2.167C29.85,2.167,2.167,29.85,2.167,64S29.85,125.833,64,125.833S125.833,98.15,125.833,64S98.15,2.167,64,2.167z    M73,100h-3v17.107c0,0-4,1.247-13,0V100h-2V90h18V100z M103,74.97l-13.08-7.198L70.358,88H57.143L37.83,67.772L25,74.97V46.796   l12.83,7.542l19.536-19.191L49.539,23h28.423l-7.636,12.148L89.92,54.654L103,46.796V74.97z"/>
+    </defs>
+
+    <g id="dark" fill="var(--dark)">
+        <use href="#_part1"/>
+        <use href="#_part2"/>
+    </g>
+
+    <g id="dark-disabled" fill="var(--dark-disabled)">
+        <use href="#_part1"/>
+        <use href="#_part2"/>
+    </g>
+
+    <g id="light" fill="var(--light)">
+        <use href="#_part1"/>
+        <use href="#_part2"/>
+    </g>
+
+    <g id="light-disabled" fill="var(--light-disabled)">
+        <use href="#_part1"/>
+        <use href="#_part2"/>
+    </g>
+</svg>
