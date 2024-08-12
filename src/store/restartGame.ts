@@ -1,7 +1,7 @@
 import { dices } from "@store/dices"
 import { GamePhases, updateGamePhase } from "@store/gamePhase"
 import { updateChildPlay } from "@store/childPlay"
-import { updateHistory } from "@store/history"
+import { history } from "@store/history"
 import { players } from "@store/players/players"
 import { matchedView } from "@store/matchedView"
 
@@ -10,7 +10,7 @@ export function restartGame() {
     dices.selected.reset()
     updateGamePhase(GamePhases.PRE_GAME)
     updateChildPlay(false)
-    updateHistory({})
+    history.update({})
     players.points.reset()
     players.columnView.reset()
 

@@ -1,41 +1,40 @@
 import type { PropsWithChildren } from "react"
 import cx from "classnames"
-import { i18n } from "@helpers/i18n"
 import { players } from "@store/players/players"
 import { warIcons } from "@helpers/getWarIcons"
 import { theme } from "@store/theme"
 
-type LabelProps = PropsWithChildren<{
-    htmlFor: HTMLLabelElement["htmlFor"]
-    className?: string
-}>
+// type LabelProps = PropsWithChildren<{
+//     htmlFor: HTMLLabelElement["htmlFor"]
+//     className?: string
+// }>
 
-function Label({ htmlFor, className, children }: LabelProps) {
-    return (
-        <label
-            htmlFor={htmlFor}
-            className={cx(
-                "p-3 cursor-pointer bg-[--line-color] rounded-xl text-center",
-                className,
-            )}
-        >
-            {children}
-        </label>
-    )
-}
+// function Label({ htmlFor, className, children }: LabelProps) {
+//     return (
+//         <label
+//             htmlFor={htmlFor}
+//             className={cx(
+//                 "p-3 cursor-pointer bg-[--line-color] rounded-xl text-center",
+//                 className,
+//             )}
+//         >
+//             {children}
+//         </label>
+//     )
+// }
 
 type TabsProps = {
     avatar: string
     onClick(avatar: string): void
 }
 
-function Heading({ children }: PropsWithChildren<{}>) {
-    return (
-        <h3 className="text-center font-bold py-5">
-            {children}
-        </h3>
-    )
-}
+// function Heading({ children }: PropsWithChildren<{}>) {
+//     return (
+//         <h3 className="text-center font-bold py-5">
+//             {children}
+//         </h3>
+//     )
+// }
 
 function Ul({ children }: PropsWithChildren<{}>) {
     return (
@@ -81,7 +80,7 @@ function Li({ url, isClickable, taken, selected, onClick, children }: LiProps) {
 function War({ avatar, onClick }: TabsProps) {
     return (
         <>
-            <Heading>{i18n("chooseDog")}</Heading>
+            {/*<Heading>{i18n("chooseDog")}</Heading>*/}
             <Ul>
                 {Object.keys(warIcons).map(function (id) {
                     const url = warIcons[id]
@@ -130,12 +129,12 @@ export function Tabs({ avatar, onClick }: TabsProps) {
                 className="peer/tab2 hidden appearance-none"
                 defaultChecked
             />
-            <Label htmlFor="avatar-tab-1" className="peer-checked/tab1:bg-[--text-color-semi]">
-                dogs
-            </Label>
-            <Label htmlFor="avatar-tab-2" className="peer-checked/tab2:bg-[--text-color-semi]">
-                war
-            </Label>
+            {/*<Label htmlFor="avatar-tab-1" className="peer-checked/tab1:bg-[--text-color-semi]">*/}
+            {/*    dogs*/}
+            {/*</Label>*/}
+            {/*<Label htmlFor="avatar-tab-2" className="peer-checked/tab2:bg-[--text-color-semi]">*/}
+            {/*    war*/}
+            {/*</Label>*/}
             <div className="col-span-2 hidden animate-fadeIn peer-checked/tab1:animate-fadeOut peer-checked/tab1:block">
             </div>
             <div className="col-span-2 hidden animate-fadeIn peer-checked/tab2:animate-fadeOut peer-checked/tab2:block">

@@ -1,4 +1,4 @@
-import type { PropsWithChildren } from "react"
+import type { CSSProperties, PropsWithChildren } from "react"
 import cx from "classnames"
 import { isDark } from "@store/theme"
 import iconSVG from "@icons/icon.svg"
@@ -12,13 +12,24 @@ interface ButtonWithIconProps extends PropsWithChildren<{}> {
     onMouseUp?(): void
     onMouseDown?(): void
     disabled?: boolean
+    style?: CSSProperties
 }
 
-export function ButtonWithIcon({ children, type = "button", className, icon, disabled, onClick, onMouseUp, onMouseDown }: ButtonWithIconProps) {
+export function ButtonWithIcon({
+    children,
+    type = "button",
+    className,
+    style,
+    icon,
+    disabled,
+    onClick,
+    onMouseUp,
+    onMouseDown,
+}: ButtonWithIconProps) {
     return (
         <button
             className={cx("bg-no-repeat bg-center", className)}
-            style={{ backgroundImage: `url(${iconSVG}#${icon}${isDark.value ? "-white" : ""})` }}
+            style={{ ...style, backgroundImage: `url(${iconSVG}#${icon}${isDark.value ? "-white" : ""})` }}
             onClick={onClick}
             {...type ? { type } : {}}
             {...onMouseUp ? { onMouseUp } : {}}

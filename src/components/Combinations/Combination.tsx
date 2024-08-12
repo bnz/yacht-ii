@@ -44,14 +44,17 @@ export function Combination({ playerId, combination, isMoveAvailable, className 
         saveCombination({ combination, points: 0 })
     }, [combination])
 
-    const classes = cx(className, active && "border-l border-r")
+    const classes = cx(className,
+        // active && "border-l border-r"
+    )
+    const shadowClasses = cx("bg-[--background-color-active]")
 
     switch (type) {
         case "matching":
             return (
                 <CombinationButton
                     onClick={save}
-                    buttonClassName={classes}
+                    buttonClassName={cx(classes, shadowClasses)}
                     innerClassName="bg-blue-200 dark:bg-blue-950"
                 >
                     <Points
@@ -65,7 +68,7 @@ export function Combination({ playerId, combination, isMoveAvailable, className 
                 <CombinationMatched
                     playerId={playerId}
                     combination={combination}
-                    className={cx(classes, active && "bg-[--background-color-active]")}
+                    className={cx(classes, active && shadowClasses)}
                 />
             )
         case "bonus": {
@@ -98,11 +101,7 @@ export function Combination({ playerId, combination, isMoveAvailable, className 
         }
         default: {
             return (
-                <div className={cx(
-                    classes,
-                    "text-[--line-color]",
-                    active && "bg-[--background-color-active]",
-                )}>
+                <div className={cx(classes, "text-[--line-color]", active && shadowClasses)}>
                     {EMPTY_CELL}
                 </div>
             )

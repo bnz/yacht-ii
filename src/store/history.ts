@@ -15,61 +15,60 @@ export interface Move {
 
 type History = Record<string, Move[]>
 
-export const {
-    signal: history,
-    update: updateHistory,
-} = builder<History>("history", {})
+export const history = (function () {
+    const { signal: s, update } = builder<History>("history", {})
 
-export const activePlayerHistory = computed(function () {
-    return history.value[players.activeId] || []
-})
+    return {
+        get value() {
+            return s.value
+        },
+        update(value: History) {
+            update(value)
+        },
+        get activePlayer() {
+            return computed(function () {
+                return s.value[players.activeId] || []
+            }).value
+        },
+        player(playerId: string) {
+            return s.value[playerId]
+        },
+        updateActivePlayerResult({ combination, points }: { combination: Combination, points?: number }) {
+            const copy = createCopy(this.activePlayer)
 
-export function playerHistory(playerId: string): Move[] {
-    return history.value[playerId]
-}
+            if (!copy.length) {
+                copy.push({
+                    result: {},
+                    dicesSelected: [],
+                    tries: [],
+                })
+            }
 
-export function updateActivePlayerHistoryResult({ combination, points }: {
-    combination: Combination,
-    points?: number
-}): void {
-    const copy = createCopy(activePlayerHistory.value)
+            const lastElementIndex = copy.length - 1
+            copy[lastElementIndex].result[combination] = points
+            this.updateActivePlayer(copy)
+        },
+        updateActivePlayer(value: Move[]) {
+            const copy = createCopy(s.value)
+            copy[players.activeId] = value
+            this.update({ ...copy })
+        },
+        updateDices() {
+            const copy = createCopy(this.activePlayer)
 
-    // @ts-ignore FIXME types
-    //
+            if (players.activeShot === 1) {
+                copy.push({
+                    tries: [dices.value],
+                    result: {},
+                    dicesSelected: [],
+                })
+            } else {
+                const lastElementIndex = copy.length - 1
+                copy[lastElementIndex].tries.push(dices.value)
+                copy[lastElementIndex].dicesSelected.push(dices.selected.value)
+            }
 
-    if (!copy.length) {
-        copy.push({
-            result: { [combination]: points },
-            dicesSelected: [],
-            tries: [],
-        })
+            this.updateActivePlayer(copy)
+        },
     }
-
-    const lastElementIndex = copy.length - 1
-    copy[lastElementIndex].result[combination] = points
-    updateActivePlayerHistory(copy)
-}
-
-export function updateActivePlayerHistory(value: Move[]) {
-    const copy = createCopy(history.value)
-    copy[players.activeId] = value
-    updateHistory({ ...copy })
-}
-
-export function historyUpdateDices() {
-    const copy = createCopy(activePlayerHistory.value)
-
-    if (players.activeShot === 1) {
-        copy.push({
-            tries: [dices.value],
-            result: {},
-            dicesSelected: [],
-        })
-    } else {
-        const lastElementIndex = copy.length - 1
-        copy[lastElementIndex].tries.push(dices.value)
-        copy[lastElementIndex].dicesSelected.push(dices.selected.value)
-    }
-
-    updateActivePlayerHistory(copy)
-}
+})()

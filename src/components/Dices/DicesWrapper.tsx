@@ -1,9 +1,12 @@
-import { PropsWithChildren } from "react"
+import type { PropsWithChildren } from "react"
+import cx from "classnames"
 
 export function DicesWrapper({ children }: PropsWithChildren<{}>) {
     return (
-        // backdrop-blur-lg
-        <div className="bg-[--background-color] sticky top-0 shadow-lg dark:shadow-2xl z-10 overflow-hidden">
+        <div className={cx(
+            "bg-[--background-color] sticky top-0 z-10 overflow-hidden mb-6",
+            "shadow-lg dark:shadow-2xl md:shadow-none",
+        )}>
             {children}
         </div>
     )

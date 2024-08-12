@@ -4,7 +4,7 @@ import cx from "classnames"
 import { Dice } from "../Dices/Dice/Dice"
 import { MatchedView, matchedView } from "@store/matchedView"
 import { players } from "@store/players/players"
-import { playerHistory } from "@store/history"
+import { history as historySignal } from "@store/history"
 
 interface CombinationMatchedProps {
     className?: string
@@ -19,18 +19,15 @@ export function CombinationMatched({ className, playerId, combination }: Combina
         matchedView.toggle(playerId)
     }, [playerId])
 
-    const history = playerHistory(playerId)
+    const history = historySignal.player(playerId)
 
-    const historyMove = useMemo(
-        function () {
-            return history.find(function ({ result }) {
-                return Object.keys(result).some(function (key) {
-                    return key === `${combination}`
-                })
+    const historyMove = useMemo(function () {
+        return history.find(function ({ result }) {
+            return Object.keys(result).some(function (key) {
+                return key === `${combination}`
             })
-        },
-        [history, combination],
-    )
+        })
+    }, [history, combination])
 
     if (!historyMove || !playerPoints[combination]) {
         return (

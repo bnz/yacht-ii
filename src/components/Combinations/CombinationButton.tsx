@@ -11,7 +11,7 @@ export function CombinationButton({ onClick, innerClassName, buttonClassName, ch
     return (
         <button type="button" onClick={onClick} data-empty={true} className={buttonClassName}>
             <div className={cx(
-                "rounded animate-pulse shadow-2xl flex justify-center items-center h-12 mx-1",
+                "rounded-2xl animate-pulse shadow-2xl flex justify-center items-center h-12 mx-1",
                 innerClassName,
             )}>
                 {children}

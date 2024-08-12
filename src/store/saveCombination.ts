@@ -1,7 +1,7 @@
 import { BONUS_CONDITION, BONUS_POINTS, Combination } from "@components/Combinations/combinationsData"
 import { players } from "@store/players/players"
 import { dices } from "@store/dices"
-import { updateActivePlayerHistoryResult } from "@store/history"
+import { history } from "@store/history"
 import { createCopy } from "@helpers/createCopy"
 import { Points } from "@store/types"
 
@@ -19,6 +19,8 @@ function calcBonus(points: Points): number {
 }
 
 export function saveCombination({ combination, points }: Props) {
+    history.updateActivePlayerResult({ combination, points })
+
     const playerPoints = createCopy(players.points.active)
     playerPoints[combination] = points
     playerPoints[Combination.BONUS] = calcBonus(playerPoints)
@@ -27,6 +29,5 @@ export function saveCombination({ combination, points }: Props) {
     players.nextTurn()
     dices.reset()
     dices.selected.reset()
-    updateActivePlayerHistoryResult({ combination, points })
     window.scrollTo({ top: 0, behavior: "smooth" })
 }

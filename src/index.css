@@ -5,7 +5,7 @@
 :root {
     --background-color: rgba(247, 248, 251, 1);
     --background-color-disabled: rgba(247, 248, 251, .9);
-    --background-color-active: rgba(255, 255, 255, 0.5);
+    --background-color-active: rgba(0, 0, 0, 0.025);
     --text-color: rgba(0, 32, 51, 1);
     --text-color-disabled: rgba(57, 57, 61, .2);
     --text-color-semi: rgba(0, 32, 51, .3);
@@ -16,7 +16,7 @@
     :root {
         --background-color: rgba(57, 57, 61, 1);
         --background-color-disabled: rgba(57, 57, 61, .9);
-        --background-color-active: rgba(57, 57, 57, 0.5);
+        --background-color-active: rgba(255, 255, 255, 0.025);
         --text-color: rgba(255, 255, 255, 0.8);
         --text-color-disabled: rgba(247, 248, 251, .2);
         --text-color-semi: rgba(255, 255, 255, 0.3);

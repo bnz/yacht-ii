@@ -5,7 +5,7 @@ import { Combination, combinationsData } from "../Combinations/combinationsData"
 import { useStateToggle } from '@helpers/useStateToggle'
 import { dices } from "@store/dices"
 import { saveCombination } from "@store/saveCombination"
-import { history, historyUpdateDices } from "@store/history"
+import { history } from "@store/history"
 import { players } from "@store/players/players"
 import { useSignals } from "@preact/signals-react/runtime"
 
@@ -102,7 +102,7 @@ export const Dev = memo(function () {
         players.move.update(function ([playerId, shot]) {
             return [playerId, shot + 1]
         })
-        historyUpdateDices()
+        history.updateDices()
         saveCombination({ combination, points })
     }
 
