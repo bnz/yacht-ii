@@ -9,9 +9,9 @@ import { useSignals } from "@preact/signals-react/runtime"
 
 export default function Players() {
     useSignals()
-    
+
     return (
-        <div className="md:w-2/3 lg:w-1/2 mx-auto text-center">
+        <div className="w-full md:w-2/3 lg:w-1/2 mx-auto text-center">
             <GameHeading />
             <h3 className="text-center mb-5 font-bold py-7 relative">
                 <CancelButton />

@@ -71,7 +71,7 @@ export function AddPlayerForm({ initial }: AddPlayerFormProps) {
                         error={error}
                         className="[&>input]:pr-9"
                     />
-                    <RandomNameButton callback={setRandomName} />
+                    <RandomNameButton onClick={setRandomName} />
                 </div>
                 <ButtonWithIcon type="submit" icon="add" />
                 <ButtonWithIcon

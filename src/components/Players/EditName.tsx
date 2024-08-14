@@ -67,7 +67,7 @@ export function EditName({ id, callback }: EditNameProps) {
                         onChange={onInputChange}
                         error={error}
                     />
-                    <RandomNameButton callback={setRandomName} />
+                    <RandomNameButton onClick={setRandomName} />
                 </div>
                 <ButtonWithIcon type="submit" icon="save" disabled={disabled} />
                 <ButtonWithIcon icon="close" onClick={onCancel} />
