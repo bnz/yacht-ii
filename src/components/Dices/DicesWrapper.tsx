@@ -15,6 +15,7 @@ export function DicesWrapper({ children }: PropsWithChildren<{}>) {
             "order-2 md:order-1",
             "shadow-[0_-5px_15px_rgba(0,0,0,0.3)] md:shadow-none",
             "md:mb-6 mt-6 md:mt-0",
+            "pb-6 md:p-0",
         )}>
             {children}
         </div>

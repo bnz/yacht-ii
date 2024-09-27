@@ -19,7 +19,7 @@ export function CombinationTitle({ children, onClose }: CombinationTitleProps) {
                     "fixed",
                     "left-1/2 -translate-y-1/2",
                     "top-1/2 -translate-x-1/2",
-                    "max-w-7xl w-80 bg-[--background-color] shadow-2xl z-10 p-5 cursor-auto",
+                    "max-w-7xl w-80 bg-[--background-color] shadow-2xl z-50 p-5 cursor-auto",
                     "border border-[--line-color] rounded",
                 )}
             >

@@ -24,7 +24,7 @@ export function RestartDialogAndButton() {
                     <KeyboardActions actions={{ Escape: toggle }} />
                     <Backdrop onClick={toggle} />
                     <div
-                        className="bg-[--background-color] object-center z-10 p-5 rounded shadow-2xl flex gap-5 whitespace-nowrap"
+                        className="bg-[--background-color] object-center z-50 p-5 rounded shadow-2xl flex gap-5 whitespace-nowrap"
                     >
                         <button type="button" onClick={toggle}>
                             {i18n("button.cancel")}

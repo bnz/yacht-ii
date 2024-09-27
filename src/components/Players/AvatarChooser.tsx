@@ -15,7 +15,7 @@ export function AvatarChooser({ avatar, toggle, onClick }: AvatarChooserProps) {
         <>
             <Backdrop onClick={toggle} />
             <div className={cx(
-                "w-[calc(100%-24px)] md:w-[800px] z-10",
+                "w-[calc(100%-24px)] md:w-[800px] z-50",
                 "rounded shadow",
                 "object-center",
                 "bg-[--background-color]",
