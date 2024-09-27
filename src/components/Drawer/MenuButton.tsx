@@ -19,7 +19,7 @@ export function MenuButton() {
                 // animationFillMode: "forwards",
             }}
             className={cx(
-                "z-10 w-10 h-10 fixed lg:top-6 lg:left-6 bottom-5 right-5 rounded",
+                "z-50 w-10 h-10 fixed lg:top-6 lg:left-6 bottom-5 right-5 rounded",
                 "bg-no-repeat bg-center bg-cover",
                 "animate-button",
             )}

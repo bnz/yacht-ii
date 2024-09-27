@@ -15,7 +15,7 @@ export default function Drawer() {
             <DrawerActions />
             <DrawerBackdrop />
             <div className={cx(
-                "z-10",
+                "z-50",
                 "w-80 pt-28 px-5",
                 "fixed top-0 left-0 h-full",
                 "transition-transform duration-100",
