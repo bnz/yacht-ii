@@ -90,7 +90,7 @@ export function DicesActions() {
                     "absolute left-1/2 top-1/2",
                     "w-11 h-11 !rounded-full",
                 )}
-                style={{ transform: "translate(-50%, -50%) translateX(160px)" }}
+                style={{ transform: "translate(-50%, -50%) translateX(-160px)" }}
             />
         </div>
     )

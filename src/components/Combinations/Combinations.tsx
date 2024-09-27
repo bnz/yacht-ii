@@ -1,4 +1,4 @@
-import { Fragment } from "react"
+import { Fragment, PropsWithChildren, useEffect, useState } from "react"
 import { Combination as CombinationType, CombinationInfo, isBonus } from "./combinationsData"
 import { MAX_PLAYERS_COUNT } from "../../recoil/atoms"
 import cx from "classnames"
@@ -24,11 +24,34 @@ for (let i = 1; i <= MAX_PLAYERS_COUNT; i++) {
     ].join("px ") + "px"
 }
 
-console.log(playersColsStyle[players.dataActiveFirst.length])
-
 export const wrapClassName = "grid max-w-2/3 w-fit mx-auto relative"
 export const commonBorder = "border-b border-[--line-color]"
 export const commonSizes = "h-14 flex items-center justify-center"
+
+function HeaderWrapper({ children }: PropsWithChildren<{}>) {
+    const [scrolled, setScrolled] = useState(false)
+
+    useEffect(function () {
+        window.addEventListener("scroll", function (e: any) {
+            setScrolled(e.target?.documentElement?.scrollTop > 5)
+        })
+    }, [setScrolled])
+
+    return (
+        <div
+            className={cx(
+                wrapClassName,
+                "sticky top-0 bg-[--background-color] z-10 pt-3 md:pt-0",
+                scrolled && "shadow-xl md:shadow-none",
+            )}
+            style={{
+                gridTemplateColumns: playersColsStyle[players.dataActiveFirst.length],
+            }}
+        >
+            {children}
+        </div>
+    )
+}
 
 interface CombinationsProps {
     combinations: CombinationInfo[]
@@ -40,12 +63,10 @@ export function Combinations({ combinations }: CombinationsProps) {
     useSignals()
 
     return (
-        <div className="w-full px-2 md:overflow-auto lg:px-0 order-1 md:order-2">
-            <div className={cx(wrapClassName, "sticky top-0 bg-[--background-color] z-10 pt-3 md:pt-0")} style={{
-                gridTemplateColumns: playersColsStyle[players.dataActiveFirst.length],
-            }}>
+        <div className="w-full px-2 md:overflow-auto lg:px-0 order-1 md:order-2 pb-36">
+            <HeaderWrapper>
                 <CombinationsHeader />
-            </div>
+            </HeaderWrapper>
             <div className={wrapClassName} style={{
                 gridTemplateColumns: playersColsStyle[players.dataActiveFirst.length],
             }}>

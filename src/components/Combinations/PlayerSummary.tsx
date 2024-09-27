@@ -22,7 +22,7 @@ export function PlayerSummary({ playerId, children }: PlayerSummaryProps) {
                 "cursor-pointer",
                 "hover:shadow-md hover:outline hover:outline-[--line-color]",
                 "active:shadow-inner",
-                "grid grid-cols-[80px_1fr]",
+                "grid grid-cols-[60px_1fr] md:grid-cols-[80px_1fr]",
                 "rounded-full select-none",
             )}>
                 {children}

@@ -26,7 +26,7 @@ export function CombinationsHeader() {
                             <Avatar
                                 disabled={disabled}
                                 avatar={avatar}
-                                className="!w-20 !h-20 row-span-2 !z-0"
+                                className="!w-12 !h-12 md:!w-20 md:!h-20 row-span-2 !z-0"
                             />
                             <div className={cx(
                                 "flex items-end justify-start",
@@ -34,7 +34,7 @@ export function CombinationsHeader() {
                             )}>
                                 {name}
                             </div>
-                            <div className={cx("text-3xl", disabled && "text-[--text-color-disabled]")}>
+                            <div className={cx("md:text-3xl", disabled && "text-[--text-color-disabled]")}>
                                 {players.points.totals[id]}
                             </div>
                         </PlayerSummary>

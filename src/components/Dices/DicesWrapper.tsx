@@ -5,13 +5,16 @@ export function DicesWrapper({ children }: PropsWithChildren<{}>) {
     return (
         <div className={cx(
             "bg-[--background-color]",
-            "sticky z-10 overflow-hidden",
-            "bottom-0 md:bottom-auto md:top-0",
+            "z-50",
+            "fixed md:sticky",
+            "left-0 md:left-auto",
+            "right-0 md:right-auto",
+            "bottom-0 md:bottom-auto",
+            "md:top-0",
+            "overflow-hidden",
             "order-2 md:order-1",
-
-            // "shadow-lg dark:shadow-2xl md:shadow-none",
+            "shadow-[0_-5px_15px_rgba(0,0,0,0.3)] md:shadow-none",
             "md:mb-6 mt-6 md:mt-0",
-            // "shadow-[0_35px_60px_-15px_rgba(0,0,0,0.3)]",
         )}>
             {children}
         </div>
